@@ -43,3 +43,10 @@ logs/
 outputs/
 reports/executions/*.csv
 tmp_plans/
+# ignore large artifacts
+models/
+*.joblib
+*.pkl
+*.pt
+*.onnx
+*.h5
