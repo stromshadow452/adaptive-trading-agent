@@ -67,3 +67,18 @@ models/
 *.dll
 *.lib
 *.so
+# already added:
+models/
+.venv*/
+*.joblib
+*.pkl
+*.pt
+*.onnx
+*.h5
+*.dll
+*.lib
+*.so
+# add common data:
+data/raw/
+*.csv
+*.parquet
