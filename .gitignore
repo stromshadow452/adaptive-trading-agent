@@ -50,3 +50,10 @@ models/
 *.pt
 *.onnx
 *.h5
+models/
+*.joblib
+*.pkl
+*.pt
+*.onnx
+*.h5
+
