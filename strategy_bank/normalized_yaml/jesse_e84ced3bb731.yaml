@@ -1,0 +1,11 @@
+id: jesse_e84ced3bb731
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/tsi.py
+name: tsi
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

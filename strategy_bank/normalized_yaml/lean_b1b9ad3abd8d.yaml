@@ -1,0 +1,11 @@
+id: lean_b1b9ad3abd8d
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/Benchmarks/StatelessCoarseUniverseSelectionBenchmark.py
+name: StatelessCoarseUniverseSelectionBenchmark
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

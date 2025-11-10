@@ -1,0 +1,11 @@
+id: jesse_5efc3434d7dc
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/maaq.py
+name: maaq
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: lean_d60d9bea720a
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/MACDTrendAlgorithm.py
+name: MACDTrendAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

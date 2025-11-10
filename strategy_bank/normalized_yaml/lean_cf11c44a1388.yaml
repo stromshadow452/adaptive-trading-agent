@@ -1,0 +1,11 @@
+id: lean_cf11c44a1388
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/AddAlphaModelAlgorithm.py
+name: AddAlphaModelAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

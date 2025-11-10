@@ -1,0 +1,11 @@
+id: jesse_1c6ae7d29ac2
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/adosc.py
+name: adosc
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,32 @@
+[
+  {
+    "symbol": "EURUSD",
+    "timeframe": "M15",
+    "side": "buy",
+    "size": 0.05
+  },
+  {
+    "symbol": "EURGBP",
+    "timeframe": "M15",
+    "side": "buy",
+    "size": 0.05
+  },
+  {
+    "symbol": "GBPUSD",
+    "timeframe": "M15",
+    "side": "buy",
+    "size": 0.05
+  },
+  {
+    "symbol": "USDCAD",
+    "timeframe": "M15",
+    "side": "buy",
+    "size": 0.05
+  },
+  {
+    "symbol": "USDJPY",
+    "timeframe": "M15",
+    "side": "buy",
+    "size": 0.05
+  }
+]

@@ -1,0 +1,11 @@
+id: lean_d6ac004fc303
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Portfolio/ConfidenceWeightedPortfolioConstructionModel.py
+name: ConfidenceWeightedPortfolioConstructionModel
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

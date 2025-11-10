@@ -1,0 +1,11 @@
+id: jesse_410af1197a32
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/tests/test_exchange.py
+name: test_exchange
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

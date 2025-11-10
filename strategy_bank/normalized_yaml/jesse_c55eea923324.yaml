@@ -1,0 +1,11 @@
+id: jesse_c55eea923324
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/services/file.py
+name: file
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

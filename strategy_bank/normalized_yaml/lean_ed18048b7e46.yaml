@@ -1,0 +1,11 @@
+id: lean_ed18048b7e46
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/AlgorithmModeAndDeploymentTargetAlgorithm.py
+name: AlgorithmModeAndDeploymentTargetAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: lean_23a3af1fa6db
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/HistoryWithCustomDataSourceRegressionAlgorithm.py
+name: HistoryWithCustomDataSourceRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

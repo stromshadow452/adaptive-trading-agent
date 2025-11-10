@@ -1,0 +1,11 @@
+id: backtesting_py_60c66c542447
+source_vendor: backtesting_py
+file: strategy_bank/external_raw/backtesting_py/doc/examples/Parameter Heatmap & Optimization.py
+name: Parameter Heatmap & Optimization
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

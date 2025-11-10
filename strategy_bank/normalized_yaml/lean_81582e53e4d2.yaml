@@ -1,0 +1,11 @@
+id: lean_81582e53e4d2
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/AddOptionContractFromUniverseRegressionAlgorithm.py
+name: AddOptionContractFromUniverseRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

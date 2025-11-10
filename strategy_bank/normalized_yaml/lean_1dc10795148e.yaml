@@ -1,0 +1,11 @@
+id: lean_1dc10795148e
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/ETFConstituentUniverseFrameworkRegressionAlgorithm.py
+name: ETFConstituentUniverseFrameworkRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

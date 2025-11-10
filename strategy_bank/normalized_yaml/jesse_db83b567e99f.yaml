@@ -1,0 +1,11 @@
+id: jesse_db83b567e99f
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/voss.py
+name: voss
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

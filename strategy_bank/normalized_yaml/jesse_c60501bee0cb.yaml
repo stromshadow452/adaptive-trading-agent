@@ -1,0 +1,11 @@
+id: jesse_c60501bee0cb
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/stiffness.py
+name: stiffness
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

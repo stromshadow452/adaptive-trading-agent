@@ -1,0 +1,11 @@
+id: lean_c91c94d4cde7
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/StopLimitOrderRegressionAlgorithm.py
+name: StopLimitOrderRegressionAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

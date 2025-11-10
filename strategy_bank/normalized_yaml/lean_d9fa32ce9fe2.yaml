@@ -1,0 +1,11 @@
+id: lean_d9fa32ce9fe2
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/ComboOrdersFillModelAlgorithm.py
+name: ComboOrdersFillModelAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

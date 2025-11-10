@@ -1,0 +1,11 @@
+id: lean_7da51ea4ceb2
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Tests/Python/Indicators/IndicatorExtensionsTests.py
+name: IndicatorExtensionsTests
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

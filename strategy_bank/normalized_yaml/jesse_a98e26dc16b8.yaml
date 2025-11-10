@@ -1,0 +1,11 @@
+id: jesse_a98e26dc16b8
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/tests/test_state_logs.py
+name: test_state_logs
+family: event_driven
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

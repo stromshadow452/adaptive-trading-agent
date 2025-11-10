@@ -1,0 +1,11 @@
+id: lean_eab0ad0b625d
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/StochasticIndicatorWarmsUpProperlyRegressionAlgorithm.py
+name: StochasticIndicatorWarmsUpProperlyRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: jesse_2b24e447010e
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/models/NotificationApiKeys.py
+name: NotificationApiKeys
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

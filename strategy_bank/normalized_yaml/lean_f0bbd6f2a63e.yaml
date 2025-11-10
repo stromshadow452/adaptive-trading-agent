@@ -1,0 +1,11 @@
+id: lean_f0bbd6f2a63e
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/Alphas/RebalancingLeveragedETFAlpha.py
+name: RebalancingLeveragedETFAlpha
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

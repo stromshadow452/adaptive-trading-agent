@@ -1,0 +1,11 @@
+id: lean_17fa0256219d
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Execution/SpreadExecutionModel.py
+name: SpreadExecutionModel
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

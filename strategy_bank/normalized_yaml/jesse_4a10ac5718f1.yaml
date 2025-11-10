@@ -1,0 +1,11 @@
+id: jesse_4a10ac5718f1
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/tests/test_research.py
+name: test_research
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

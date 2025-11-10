@@ -1,0 +1,11 @@
+id: jesse_a73408c01b5f
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/median_ad.py
+name: median_ad
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

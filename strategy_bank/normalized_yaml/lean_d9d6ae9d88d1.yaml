@@ -1,0 +1,11 @@
+id: lean_d9d6ae9d88d1
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/AddRiskManagementAlgorithm.py
+name: AddRiskManagementAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

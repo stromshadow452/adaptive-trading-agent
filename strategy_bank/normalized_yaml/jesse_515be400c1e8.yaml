@@ -1,0 +1,11 @@
+id: jesse_515be400c1e8
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/correl.py
+name: correl
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

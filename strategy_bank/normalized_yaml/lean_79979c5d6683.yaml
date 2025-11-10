@@ -1,0 +1,11 @@
+id: lean_79979c5d6683
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/BasicTemplateOptionsFilterUniverseAlgorithm.py
+name: BasicTemplateOptionsFilterUniverseAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

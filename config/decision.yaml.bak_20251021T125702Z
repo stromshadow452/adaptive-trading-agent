@@ -1,0 +1,10 @@
+atr_multiplier_sl: 1.5
+buy_threshold: 0.8
+max_position: null
+max_size_pct: 0.05
+meta_temp: 1.25
+min_size_pct: 0.002
+min_trades_for_confidence: 50
+risk_per_trade: 0.005
+rr: 2.0
+sell_threshold: -0.8

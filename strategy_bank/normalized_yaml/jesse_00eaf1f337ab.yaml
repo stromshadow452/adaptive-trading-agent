@@ -1,0 +1,11 @@
+id: jesse_00eaf1f337ab
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/factories/order_factory.py
+name: order_factory
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

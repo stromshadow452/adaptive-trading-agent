@@ -1,0 +1,47 @@
+﻿decision:
+  filters:
+    universe: fx+crypto
+    exclude: [AAPL, SPY, TSLA]
+
+  min_score_to_enter: 0.20
+  min_confidence: 0.00
+
+  # --- SIZING & R:R ---
+  risk_per_trade: 0.01        # (used only if your decision engine reads this; else risk.risk_pct_per_trade is SSOT)
+  default_equity: 10000.0
+  stop_atr_mult: 1.5           # align with risk.k_atr
+  takeprofit_rr: 1.5
+  min_size: 0.01               # <- MATCH min_lot
+  max_size: 0.05
+  sl_pct: 0.01
+  tp_pct: 0.02
+
+  use_two_layer: true
+  stats_conf_min: 0.60
+  rl_conf_min: 0.60
+  agree_min: 0.55
+  abstain_gap: 0.15
+
+  mtf:
+    enabled: true
+    primary_tf: M15
+    confirm_tfs: [M5, H1]
+    agree_min: 0.55
+    abstain_gap: 0.15
+
+risk:
+  account_equity: 10000
+  risk_pct_per_trade: 0.01     # TEMP for test; revert to 0.005 after confirming non-zero sizes
+  min_lot: 0.01
+  lot_step: 0.01
+  contract_size: 100000
+  pip_size:
+    default: 0.0001
+    JPY: 0.01
+  pip_value_per_lot:
+    default: 10.0
+    JPY: 9.1
+  atr_period: 14
+  k_atr: 1.5                   # align with decision.stop_atr_mult
+  slippage_pips: 0.1
+  min_notional: 0

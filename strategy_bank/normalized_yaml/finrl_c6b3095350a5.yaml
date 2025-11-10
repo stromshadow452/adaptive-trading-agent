@@ -1,0 +1,11 @@
+id: finrl_c6b3095350a5
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/unit_tests/test_core.py
+name: test_core
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

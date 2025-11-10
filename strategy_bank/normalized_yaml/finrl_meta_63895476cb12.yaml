@@ -1,0 +1,11 @@
+id: finrl_meta_63895476cb12
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_execution_optimizing/order_execution_qlib/trade/action/action_rl.py
+name: action_rl
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

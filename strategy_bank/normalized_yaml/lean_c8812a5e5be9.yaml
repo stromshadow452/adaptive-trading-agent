@@ -1,0 +1,11 @@
+id: lean_c8812a5e5be9
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/IndexOptionPutCalendarSpreadAlgorithm.py
+name: IndexOptionPutCalendarSpreadAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

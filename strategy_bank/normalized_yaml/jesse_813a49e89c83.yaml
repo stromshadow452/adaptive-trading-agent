@@ -1,0 +1,11 @@
+id: jesse_813a49e89c83
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/tests/test_spot_mode.py
+name: test_spot_mode
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: lean_11885ba83a04
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/HistoryWithDifferentDataMappingModeRegressionAlgorithm.py
+name: HistoryWithDifferentDataMappingModeRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

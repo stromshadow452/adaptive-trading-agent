@@ -1,0 +1,11 @@
+id: jesse_37754d8b73b0
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/stochastic.py
+name: stochastic
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

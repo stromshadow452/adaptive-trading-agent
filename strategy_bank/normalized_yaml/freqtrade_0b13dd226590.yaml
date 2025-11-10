@@ -1,0 +1,11 @@
+id: freqtrade_0b13dd226590
+source_vendor: freqtrade
+file: strategy_bank/external_raw/freqtrade/user_data/strategies/Strategy001.py
+name: Strategy001
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: finrl_435dbdb4e0d7
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/meta/env_cryptocurrency_trading/env_btc_ccxt.py
+name: env_btc_ccxt
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

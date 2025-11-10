@@ -1,0 +1,11 @@
+id: lean_a06224140b9e
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/LongAndShortPutCalendarSpreadStrategiesAlgorithm.py
+name: LongAndShortPutCalendarSpreadStrategiesAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

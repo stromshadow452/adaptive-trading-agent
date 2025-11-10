@@ -1,0 +1,11 @@
+id: lean_90ee5880a99e
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/SliceGetByTypeRegressionAlgorithm.py
+name: SliceGetByTypeRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

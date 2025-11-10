@@ -1,0 +1,11 @@
+id: lean_13863f806e3e
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Tests/Research/RegressionScripts/Test_QuantBookHistory.py
+name: Test_QuantBookHistory
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

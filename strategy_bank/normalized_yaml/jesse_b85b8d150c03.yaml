@@ -1,0 +1,11 @@
+id: jesse_b85b8d150c03
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/fisher.py
+name: fisher
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

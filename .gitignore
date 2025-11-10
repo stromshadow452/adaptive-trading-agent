@@ -1,0 +1,45 @@
+﻿# Python / venv
+.venv*/
+venv*/
+ENV*/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.cache/
+.ipynb_checkpoints/
+
+# Platform junk
+.DS_Store
+Thumbs.db
+
+# Binaries & libs
+*.dll
+*.lib
+*.so
+*.dylib
+*.exe
+*.pdb
+
+# Large data & exports
+data/
+datasets/
+*.csv
+*.parquet
+*.feather
+*.zip
+*.tar
+*.gz
+*.7z
+
+# Project-specific heavy dirs
+strategy_bank/external_raw/**
+tools/FX-1-Minute-Data/**
+tools/finrl_local/**
+
+# Logs / artifacts
+logs/
+outputs/
+reports/executions/*.csv
+tmp_plans/

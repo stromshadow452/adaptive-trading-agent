@@ -1,0 +1,11 @@
+id: finrl_meta_af0b57b61d2e
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_future_trading/wt4elegantrl/wtpy/wrapper/x64/__init__.py
+name: __init__
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

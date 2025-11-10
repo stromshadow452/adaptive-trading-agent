@@ -1,0 +1,11 @@
+id: jesse_5f2721bcb2d2
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/research/monte_carlo/monte_carlo_trades.py
+name: monte_carlo_trades
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

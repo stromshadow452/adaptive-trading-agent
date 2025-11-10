@@ -1,0 +1,11 @@
+id: lean_bb4ee09f7568
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CustomBrokerageSideOrderHandlingRegressionAlgorithm.py
+name: CustomBrokerageSideOrderHandlingRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

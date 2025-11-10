@@ -1,0 +1,11 @@
+id: jesse_73ab7c0139d6
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/damiani_volatmeter.py
+name: damiani_volatmeter
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

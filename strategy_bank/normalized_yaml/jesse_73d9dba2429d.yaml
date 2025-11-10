@@ -1,0 +1,11 @@
+id: jesse_73d9dba2429d
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/efi.py
+name: efi
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

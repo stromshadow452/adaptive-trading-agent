@@ -1,0 +1,11 @@
+id: jesse_df81c05f0fe0
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/skew.py
+name: skew
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

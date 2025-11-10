@@ -1,0 +1,11 @@
+id: jesse_2e49e2b4a991
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/services/ws_manager.py
+name: ws_manager
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

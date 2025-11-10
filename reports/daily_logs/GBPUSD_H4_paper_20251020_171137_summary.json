@@ -1,0 +1,8 @@
+{
+  "pair": "GBPUSD",
+  "tf": "H4",
+  "sharpe": -0.08905549053964151,
+  "total_return": -0.03030726917515958,
+  "bars": 2588,
+  "source_equity_csv": "reports\\daily_logs\\GBPUSD_H4_paper_20251020_171137_equity.csv"
+}

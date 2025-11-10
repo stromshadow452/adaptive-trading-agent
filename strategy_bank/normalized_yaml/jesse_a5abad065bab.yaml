@@ -1,0 +1,11 @@
+id: jesse_a5abad065bab
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/bollinger_bands.py
+name: bollinger_bands
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

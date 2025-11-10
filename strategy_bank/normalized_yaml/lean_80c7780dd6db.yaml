@@ -1,0 +1,11 @@
+id: lean_80c7780dd6db
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/RawPricesCoarseUniverseAlgorithm.py
+name: RawPricesCoarseUniverseAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

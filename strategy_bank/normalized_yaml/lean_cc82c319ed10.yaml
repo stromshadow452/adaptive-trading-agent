@@ -1,0 +1,11 @@
+id: lean_cc82c319ed10
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Tests/Python/PandasTests/PandasIndexingTests.py
+name: PandasIndexingTests
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

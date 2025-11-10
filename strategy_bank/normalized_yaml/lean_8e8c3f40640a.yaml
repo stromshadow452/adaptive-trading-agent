@@ -1,0 +1,11 @@
+id: lean_8e8c3f40640a
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/BasicTemplateOptionsDailyAlgorithm.py
+name: BasicTemplateOptionsDailyAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

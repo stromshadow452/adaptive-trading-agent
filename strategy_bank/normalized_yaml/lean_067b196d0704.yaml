@@ -1,0 +1,11 @@
+id: lean_067b196d0704
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Portfolio/InsightWeightingPortfolioConstructionModel.py
+name: InsightWeightingPortfolioConstructionModel
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

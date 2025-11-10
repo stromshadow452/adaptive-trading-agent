@@ -1,0 +1,11 @@
+id: lean_2169631f4c78
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/OptionChainsMultipleFullDataRegressionAlgorithm.py
+name: OptionChainsMultipleFullDataRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

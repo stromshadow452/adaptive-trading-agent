@@ -1,0 +1,11 @@
+id: jesse_6c67cecb39eb
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/optimize_mode/fitness.py
+name: fitness
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

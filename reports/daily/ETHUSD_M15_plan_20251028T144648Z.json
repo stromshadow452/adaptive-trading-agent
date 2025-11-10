@@ -1,0 +1,76 @@
+{
+  "symbol": "ETHUSD",
+  "tf": "M15",
+  "generated_at": "2025-10-28T14:46:48.484319Z",
+  "candidate": {
+    "pair": "ETHUSD",
+    "tf": "M15",
+    "close": 1.1238315355135033,
+    "price": 1.1238315355135033,
+    "score": -1.4526463310896274,
+    "tech_score": -1.4526463310896274,
+    "tech_sharpe": 0.0,
+    "tech_trades": 0.0,
+    "adx": 24.296470716567782,
+    "atr": 0.005637517544541146,
+    "vol_ratio": 0.10947394349091878,
+    "impact": 0.0,
+    "impact_score": 0.0,
+    "surprise_norm": 0.0,
+    "fund_score": 0.0,
+    "within_1h_event": false,
+    "session": "LONDON"
+  },
+  "meta_w": 0.5,
+  "finrl_present": false,
+  "two_layer_enabled": false,
+  "enter": true,
+  "side": "sell",
+  "size": 0.05,
+  "price": 1.1238315355135033,
+  "atr": 0.005637517544541146,
+  "sl": 1.132287811830315,
+  "tp": 1.1111471210382857,
+  "sl_type": "atr",
+  "final_score": -1.0,
+  "reason": {
+    "screener_score": -1.4526463310896274,
+    "meta_w": 0.5,
+    "finrl_boost": 0.0,
+    "min_entry": 0.2,
+    "min_confidence": 0.0,
+    "explain": "score_neg -1.089",
+    "mtf": {
+      "reason": "no_confirms",
+      "primary": "sell",
+      "pri_score": -1.4526463310896274
+    }
+  },
+  "layer_signals": null,
+  "notes": [
+    "Single-layer (hybrid heuristic) path",
+    "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+  ],
+  "decision": {
+    "enter": true,
+    "side": "sell",
+    "final_score": -1.0894847483172205,
+    "size": 0.05,
+    "sl": 1.132287811830315,
+    "tp": 1.1111471210382857,
+    "sl_type": "atr",
+    "reason": {
+      "screener_score": -1.4526463310896274,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "score_neg -1.089",
+      "mtf": {
+        "reason": "no_confirms",
+        "primary": "sell",
+        "pri_score": -1.4526463310896274
+      }
+    }
+  }
+}

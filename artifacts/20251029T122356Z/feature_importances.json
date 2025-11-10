@@ -1,0 +1,38 @@
+[
+  {
+    "feature": "vol",
+    "importance": 0.12307620589229946
+  },
+  {
+    "feature": "ret_5",
+    "importance": 0.11983797791288492
+  },
+  {
+    "feature": "atr",
+    "importance": 0.11970938536407051
+  },
+  {
+    "feature": "ret_1",
+    "importance": 0.11737658688200488
+  },
+  {
+    "feature": "ret_3",
+    "importance": 0.11731900823205253
+  },
+  {
+    "feature": "std_5",
+    "importance": 0.11602393276029131
+  },
+  {
+    "feature": "ma_10",
+    "importance": 0.0980797953936953
+  },
+  {
+    "feature": "ma_5",
+    "importance": 0.09546643186008337
+  },
+  {
+    "feature": "close",
+    "importance": 0.09311067570261779
+  }
+]

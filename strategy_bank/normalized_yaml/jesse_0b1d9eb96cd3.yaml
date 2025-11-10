@@ -1,0 +1,11 @@
+id: jesse_0b1d9eb96cd3
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/services/logger.py
+name: logger
+family: event_driven
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

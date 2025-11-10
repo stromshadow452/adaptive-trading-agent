@@ -1,0 +1,11 @@
+id: jesse_a962203f7741
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/gauss.py
+name: gauss
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

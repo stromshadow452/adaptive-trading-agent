@@ -1,0 +1,11 @@
+id: finrl_meta_f976417a10f5
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/examples/run_rl_portfolio_optimization.py
+name: run_rl_portfolio_optimization
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

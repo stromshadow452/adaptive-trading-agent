@@ -1,0 +1,11 @@
+id: finrl_7dc6d519dd17
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/train.py
+name: train
+family: ml_rl
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,94 @@
+applied_at: '2025-10-21T12:57:02.682255Z'
+fixes:
+  apply_results:
+  - instr: &id001
+      by_pct: 0.5
+      file: config\decision.yaml
+      note: reduce risk per trade by 50% when Sharpe below threshold
+      op: scale_down
+      param: risk_per_trade
+    result:
+    - by_pct: 0.5
+      file: config\decision.yaml
+      new: 0.005
+      old: 0.01
+      op: scale_down
+      param: risk_per_trade
+      status: applied
+    rule: low_sharpe
+  - instr: &id002
+      by_pct: 0.25
+      file: config\train.yaml
+      note: increase training / evaluation to get more robust models
+      op: increase
+      param: train_steps
+    result:
+    - file: config\train.yaml
+      status: missing_file
+    rule: low_sharpe
+  - instr: &id003
+      by_pct: 0.6
+      file: config\decision.yaml
+      note: reduce max concurrent position size
+      op: scale_down
+      param: max_position
+    result:
+    - by_pct: 0.6
+      file: config\decision.yaml
+      new: null
+      old: null
+      op: scale_down
+      param: max_position
+      status: applied
+    rule: low_profit_factor
+  - instr: &id004
+      note: mark low-performing strategies for review
+      op: flag_strategies
+      why: low_pf
+    result:
+    - op: flag_strategies
+      status: suggested
+      why: low_pf
+    rule: low_profit_factor
+  - instr: &id005
+      by_pct: 0.2
+      file: config\decision.yaml
+      note: raise entry threshold to be more selective
+      op: increase
+      param: min_score_to_enter
+    result:
+    - by_pct: 0.2
+      file: config\decision.yaml
+      new: null
+      old: null
+      op: increase
+      param: min_score_to_enter
+      status: applied
+    rule: low_winrate
+  - instr: &id006
+      metric: sharpe
+      note: use meta-selector to prefer higher sharpe strategies
+      op: prioritize_strategies_by
+    result:
+    - metric: sharpe
+      op: prioritize
+      status: suggested
+    rule: low_winrate
+  generated_at: '2025-10-21T12:57:02.663589Z'
+  rules:
+  - reason: mean_sharpe=None < 1.0
+    rule: low_sharpe
+    suggest:
+    - *id001
+    - *id002
+  - reason: profit_factor_mean=None < 1.5
+    rule: low_profit_factor
+    suggest:
+    - *id003
+    - *id004
+  - reason: mean_winrate=None < 0.55
+    rule: low_winrate
+    suggest:
+    - *id005
+    - *id006
+source_summary: reports\aggregate\aggregate_summary.json

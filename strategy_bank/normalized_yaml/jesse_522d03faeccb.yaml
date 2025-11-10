@@ -1,0 +1,11 @@
+id: jesse_522d03faeccb
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/linearreg_intercept.py
+name: linearreg_intercept
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

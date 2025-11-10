@@ -1,0 +1,11 @@
+id: jesse_ff5f87a19022
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/bop.py
+name: bop
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

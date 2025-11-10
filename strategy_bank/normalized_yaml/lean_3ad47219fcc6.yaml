@@ -1,0 +1,11 @@
+id: lean_3ad47219fcc6
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/LongAndShortButterflyCallStrategiesAlgorithm.py
+name: LongAndShortButterflyCallStrategiesAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

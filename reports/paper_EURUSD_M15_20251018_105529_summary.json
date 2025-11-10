@@ -1,0 +1,13 @@
+{
+  "equity_csv": "reports\\paper_EURUSD_M15_20251018_105529_equity.csv",
+  "trades_csv": "reports\\paper_EURUSD_M15_20251018_105529_trades.csv",
+  "action_histogram": {
+    "0": 4140,
+    "1": 1449,
+    "2": 589
+  },
+  "flat_pct": 67.0,
+  "long_pct": 23.5,
+  "short_pct": 9.5,
+  "exposure_pct": 33.0
+}

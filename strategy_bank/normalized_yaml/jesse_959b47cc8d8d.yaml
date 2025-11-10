@@ -1,0 +1,11 @@
+id: jesse_959b47cc8d8d
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/trange.py
+name: trange
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

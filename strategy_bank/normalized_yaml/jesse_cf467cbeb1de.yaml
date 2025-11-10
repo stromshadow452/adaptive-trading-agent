@@ -1,0 +1,11 @@
+id: jesse_cf467cbeb1de
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/dema.py
+name: dema
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

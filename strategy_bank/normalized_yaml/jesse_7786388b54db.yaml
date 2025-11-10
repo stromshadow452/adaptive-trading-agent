@@ -1,0 +1,11 @@
+id: jesse_7786388b54db
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/import_candles_mode/drivers/Hyperliquid/HyperliquidPerpetualTestnet.py
+name: HyperliquidPerpetualTestnet
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

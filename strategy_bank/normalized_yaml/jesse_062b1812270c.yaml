@@ -1,0 +1,11 @@
+id: jesse_062b1812270c
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/import_candles_mode/drivers/Binance/BinancePerpetualFuturesTestnet.py
+name: BinancePerpetualFuturesTestnet
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

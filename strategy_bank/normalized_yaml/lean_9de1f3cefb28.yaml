@@ -1,0 +1,11 @@
+id: lean_9de1f3cefb28
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CompositeIndicatorWorksAsExpectedRegressionAlgorithm.py
+name: CompositeIndicatorWorksAsExpectedRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

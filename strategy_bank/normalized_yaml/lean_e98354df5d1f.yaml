@@ -1,0 +1,11 @@
+id: lean_e98354df5d1f
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Portfolio/MaximumSharpeRatioPortfolioOptimizer.py
+name: MaximumSharpeRatioPortfolioOptimizer
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

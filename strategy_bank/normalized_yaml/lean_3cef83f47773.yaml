@@ -1,0 +1,11 @@
+id: lean_3cef83f47773
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/TensorFlowNeuralNetworkAlgorithm.py
+name: TensorFlowNeuralNetworkAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

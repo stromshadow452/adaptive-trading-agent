@@ -1,0 +1,11 @@
+id: jesse_26ce80bc928b
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/tests/test_order.py
+name: test_order
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

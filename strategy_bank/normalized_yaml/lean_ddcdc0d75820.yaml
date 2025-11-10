@@ -1,0 +1,11 @@
+id: lean_ddcdc0d75820
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Portfolio/SectorWeightingPortfolioConstructionModel.py
+name: SectorWeightingPortfolioConstructionModel
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

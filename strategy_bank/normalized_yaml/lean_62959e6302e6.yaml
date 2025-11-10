@@ -1,0 +1,11 @@
+id: lean_62959e6302e6
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Portfolio/EqualWeightingPortfolioConstructionModel.py
+name: EqualWeightingPortfolioConstructionModel
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

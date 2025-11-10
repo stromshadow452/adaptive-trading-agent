@@ -1,0 +1,11 @@
+id: jesse_05184bae415f
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/store/state_completed_trades.py
+name: state_completed_trades
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

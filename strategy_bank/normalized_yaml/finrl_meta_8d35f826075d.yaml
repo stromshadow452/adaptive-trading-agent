@@ -1,0 +1,11 @@
+id: finrl_meta_8d35f826075d
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_future_trading/wt4elegantrl/wtpy/CodeHelper.py
+name: CodeHelper
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

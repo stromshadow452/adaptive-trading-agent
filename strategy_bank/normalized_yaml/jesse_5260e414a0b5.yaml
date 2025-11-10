@@ -1,0 +1,11 @@
+id: jesse_5260e414a0b5
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/tests/test_metrics.py
+name: test_metrics
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

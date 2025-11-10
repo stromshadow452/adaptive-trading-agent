@@ -1,0 +1,11 @@
+id: lean_bfb40bf1102a
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Tests/TestData/generate_reference_data_from_talib.py
+name: generate_reference_data_from_talib
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: backtesting_py_c8ec6d2e4f13
+source_vendor: backtesting_py
+file: strategy_bank/external_raw/backtesting_py/doc/examples/Strategies Library.py
+name: Strategies Library
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

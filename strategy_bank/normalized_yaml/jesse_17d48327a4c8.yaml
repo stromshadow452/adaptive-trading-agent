@@ -1,0 +1,11 @@
+id: jesse_17d48327a4c8
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/tests/test_isolated_backtest.py
+name: test_isolated_backtest
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

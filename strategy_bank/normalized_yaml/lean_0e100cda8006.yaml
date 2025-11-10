@@ -1,0 +1,11 @@
+id: lean_0e100cda8006
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/ConstituentsQC500GeneratorAlgorithm.py
+name: ConstituentsQC500GeneratorAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

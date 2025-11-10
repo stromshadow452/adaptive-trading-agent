@@ -1,0 +1,11 @@
+id: jesse_a481bccab20e
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/tests/test_dynamic_numpy_array.py
+name: test_dynamic_numpy_array
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

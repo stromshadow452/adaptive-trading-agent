@@ -1,0 +1,11 @@
+id: lean_4893c92d6e06
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/UniverseOnlyRegressionAlgorithm.py
+name: UniverseOnlyRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

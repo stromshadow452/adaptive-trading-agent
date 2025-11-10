@@ -1,0 +1,11 @@
+id: lean_05a5bddb9da1
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/LimitIfTouchedAsyncRegressionAlgorithm.py
+name: LimitIfTouchedAsyncRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

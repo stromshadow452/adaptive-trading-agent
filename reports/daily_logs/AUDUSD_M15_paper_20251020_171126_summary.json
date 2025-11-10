@@ -1,0 +1,8 @@
+{
+  "pair": "AUDUSD",
+  "tf": "M15",
+  "sharpe": -0.04633196941101571,
+  "total_return": -0.7835869521847264,
+  "bars": 556353,
+  "source_equity_csv": "reports\\daily_logs\\AUDUSD_M15_paper_20251020_171126_equity.csv"
+}

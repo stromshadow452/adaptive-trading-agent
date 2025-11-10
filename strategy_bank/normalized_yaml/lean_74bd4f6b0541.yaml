@@ -1,0 +1,11 @@
+id: lean_74bd4f6b0541
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CustomBenchmarkAlgorithm.py
+name: CustomBenchmarkAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

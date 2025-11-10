@@ -1,0 +1,16 @@
+﻿"ts","mode","symbol","tf","side","price","size","sl","tp","sl_type","status","notes","close_ts"
+"2025-10-28T18:18:11.6400921Z","paper","EURUSD","M15","sell","1.159703","0.050000","","","","CLOSED","reconstructed_from_log;no_plan_match;closed_manual","2025-10-29T00:12:34.5949503+05:30"
+"2025-10-28T18:31:31.141714Z","paper","EURUSD","M15","sell","1.15970276","0.05000000","1.16842895","1.14661348","atr","CLOSED","EURUSD-1761676291141;closed_manual;reopened_manual;closed_manual","2025-10-29T15:56:06.7069342+05:30"
+"2025-10-28T19:01:20.823577Z","paper","EURUSD","M15","sell","1.15970276","0.05000000","1.16842895","1.14661348","atr","CLOSED","EURUSD-1761678080823;closed_manual","2025-10-29T15:56:06.7069342+05:30"
+"2025-10-28T19:01:25.496007Z","paper","AUDUSD","M15","sell","1.17803917","0.00713995","","","atr","OPEN","AUDUSD-1761678085495","E:\adaptive-trading-agent (2) (1)\adaptive-trading-agent (2)\reports\daily\AUDUSD_M15_plan_20251024T121259Z.json"
+"2025-10-28T19:01:25.594336Z","paper","AUDUSD","M15","sell","1.17803917","0.00713995","","","atr","OPEN","AUDUSD-1761678085594","E:\adaptive-trading-agent (2) (1)\adaptive-trading-agent (2)\reports\daily\AUDUSD_M15_plan_20251024T121918Z.json"
+"2025-10-28T19:01:26.665465Z","paper","BTCUSD","M15","sell","1.19256802","0.00713995","","","atr","OPEN","BTCUSD-1761678086665","E:\adaptive-trading-agent (2) (1)\adaptive-trading-agent (2)\reports\daily\BTCUSD_M15_plan_20251024T121259Z.json"
+"2025-10-28T19:01:26.758907Z","paper","BTCUSD","M15","sell","1.19256802","0.00713995","","","atr","OPEN","BTCUSD-1761678086758","E:\adaptive-trading-agent (2) (1)\adaptive-trading-agent (2)\reports\daily\BTCUSD_M15_plan_20251024T121918Z.json"
+"2025-10-28T19:01:27.795909Z","paper","GBPUSD","M15","sell","1.10880169","0.00713995","","","atr","OPEN","GBPUSD-1761678087795","E:\adaptive-trading-agent (2) (1)\adaptive-trading-agent (2)\reports\daily\GBPUSD_M15_plan_20251024T121259Z.json"
+"2025-10-28T19:01:27.917235Z","paper","GBPUSD","M15","sell","1.10880169","0.00713995","","","atr","OPEN","GBPUSD-1761678087917","E:\adaptive-trading-agent (2) (1)\adaptive-trading-agent (2)\reports\daily\GBPUSD_M15_plan_20251024T121918Z.json"
+"2025-10-29T09:09:35.235813Z","paper","ETHUSD","M15","sell","1.18535370","0.05000000","1.19433702","1.17187871","atr","OPEN","ETHUSD-1761728975235","tmp_plans\ETHUSD_M15_plan_20251029T085219Z.json"
+"2025-10-29T09:09:35.236272Z","paper","USDJPY","M15","sell","1.13385143","0.05000000","1.14244444","1.12096192","atr","OPEN","USDJPY-1761728975236","tmp_plans\USDJPY_M15_plan_20251029T085219Z.json"
+"2025-10-29T10:16:12.143659Z","paper","ETHUSD","M15","sell","1.18535370","0.05000000","1.19433702","1.17187871","atr","OPEN","ETHUSD-1761732972143","tmp_plans\ETHUSD_M15_plan_20251029T085219Z.json"
+"2025-10-29T10:16:12.143985Z","paper","USDJPY","M15","sell","1.13385143","0.05000000","1.14244444","1.12096192","atr","OPEN","USDJPY-1761732972143","tmp_plans\USDJPY_M15_plan_20251029T085219Z.json"
+2025-10-29T10:26:11.554755Z,paper,EURUSD,M15,sell,1.12763910,0.05000000,1.13618502,1.11482021,atr,OPEN,EURUSD-1761733571554,tmp_plans\EURUSD_M15_plan_20251029T085219Z.json,,
+2025-10-29T10:26:15.861567Z,paper,EURUSD,M15,sell,1.12763910,0.05000000,1.13618502,1.11482021,atr,OPEN,EURUSD-1761733575861,tmp_plans\EURUSD_M15_plan_20251029T085219Z.json,,

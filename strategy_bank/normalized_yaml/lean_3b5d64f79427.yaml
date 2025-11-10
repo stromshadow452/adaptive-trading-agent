@@ -1,0 +1,11 @@
+id: lean_3b5d64f79427
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/IndexOptionShortCallOTMExpiryRegressionAlgorithm.py
+name: IndexOptionShortCallOTMExpiryRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

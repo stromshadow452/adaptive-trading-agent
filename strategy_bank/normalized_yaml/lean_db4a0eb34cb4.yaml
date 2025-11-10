@@ -1,0 +1,11 @@
+id: lean_db4a0eb34cb4
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/RegressionChannelAlgorithm.py
+name: RegressionChannelAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

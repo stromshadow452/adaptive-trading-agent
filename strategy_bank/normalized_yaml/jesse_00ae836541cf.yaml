@@ -1,0 +1,11 @@
+id: jesse_00ae836541cf
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/ift_rsi.py
+name: ift_rsi
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

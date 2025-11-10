@@ -1,0 +1,11 @@
+id: lean_759a980b7d37
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/IndexOptionCallButterflyAlgorithm.py
+name: IndexOptionCallButterflyAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

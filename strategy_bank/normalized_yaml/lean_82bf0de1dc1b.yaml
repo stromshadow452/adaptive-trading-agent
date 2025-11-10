@@ -1,0 +1,11 @@
+id: lean_82bf0de1dc1b
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/TimeInForceAlgorithm.py
+name: TimeInForceAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

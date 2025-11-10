@@ -1,0 +1,11 @@
+id: finrl_6b4a3472358f
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/meta/paper_trading/alpaca.py
+name: alpaca
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

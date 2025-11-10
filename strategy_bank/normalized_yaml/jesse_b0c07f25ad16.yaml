@@ -1,0 +1,11 @@
+id: jesse_b0c07f25ad16
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/research/monte_carlo/common.py
+name: common
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

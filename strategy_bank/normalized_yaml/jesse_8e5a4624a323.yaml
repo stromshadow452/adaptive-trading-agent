@@ -1,0 +1,11 @@
+id: jesse_8e5a4624a323
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/models/SpotExchange.py
+name: SpotExchange
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

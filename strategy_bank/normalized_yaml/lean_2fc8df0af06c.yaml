@@ -1,0 +1,11 @@
+id: lean_2fc8df0af06c
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/StandardDeviationExecutionModelRegressionAlgorithm.py
+name: StandardDeviationExecutionModelRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

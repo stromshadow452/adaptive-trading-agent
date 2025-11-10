@@ -1,0 +1,11 @@
+id: lean_176ca78e133e
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/OptionUniverseFilterOptionsDataRegressionAlgorithm.py
+name: OptionUniverseFilterOptionsDataRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: lean_516e1935b3bd
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/FutureOptionMultipleContractsInDifferentContractMonthsWithSameUnderlyingFutureRegressionAlgorithm.py
+name: FutureOptionMultipleContractsInDifferentContractMonthsWithSameUnderlyingFutureRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

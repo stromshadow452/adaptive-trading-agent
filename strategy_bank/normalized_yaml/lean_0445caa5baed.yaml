@@ -1,0 +1,11 @@
+id: lean_0445caa5baed
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Research/start.py
+name: start
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

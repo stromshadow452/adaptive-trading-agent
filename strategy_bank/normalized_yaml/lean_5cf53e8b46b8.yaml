@@ -1,0 +1,11 @@
+id: lean_5cf53e8b46b8
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CallbackCommandRegressionAlgorithm.py
+name: CallbackCommandRegressionAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

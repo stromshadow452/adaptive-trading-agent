@@ -1,0 +1,11 @@
+id: lean_82b599632cfc
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Common/Orders/Slippage/VolumeShareSlippageModel.py
+name: VolumeShareSlippageModel
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

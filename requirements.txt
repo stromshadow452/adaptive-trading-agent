@@ -1,0 +1,80 @@
+# ===== CORE =====
+numpy>=2.1
+pandas>=2.3,<2.4
+scipy>=1.16
+scikit-learn>=1.7
+matplotlib>=3.10
+seaborn>=0.13
+
+# ===== FEATURE ENGINEERING =====
+ta>=0.11.0
+yfinance>=0.2.65
+requests>=2.32.0
+pytz>=2025.1
+arch>=7.2.0
+statsmodels>=0.14.5
+pykalman>=0.10.0
+joblib>=1.5.0
+tqdm>=4.66
+
+# ===== MACHINE LEARNING =====
+# PyTorch is already installed separately:
+# pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+xgboost>=3.0.3
+lightgbm>=4.4.0
+# tensorflow  # optional; prefer WSL/Linux
+
+# ===== REINFORCEMENT LEARNING =====
+stable-baselines3>=2.6.0
+gymnasium>=1.1.0
+tensorboard>=2.18.0
+# finrl>=0.3.6
+# ray[rllib]>=2.9.3
+
+# ===== MARKET DATA & API =====
+ccxt>=4.5.7
+MetaTrader5>=5.0.5260
+polygon-api-client>=1.15.4
+alpaca-py>=0.20.0
+forex-python>=1.9.2
+# do NOT pin websockets here; let deps resolve to >=13,<15 automatically
+
+# ===== BACKTESTING & EVALUATION =====
+backtrader>=1.9.78.123
+vectorbt>=0.28.1
+bt>=1.1.2
+quantstats==0.0.77          # or: quantstats-reloaded==0.1.0
+pyfolio-reloaded>=0.9.9
+
+# ===== VISUALIZATION =====
+plotly>=6.3.1
+dash>=3.2.0
+streamlit>=1.50.0
+mplfinance>=0.12.10b0
+bokeh>=3.8.0
+
+# ===== CONFIG & UTILITIES =====
+pyyaml>=6.0.1
+loguru>=0.7.2
+rich>=13.7.0
+python-dotenv>=1.1.0
+schedule>=1.2.0
+
+# ===== API / AUTOMATION =====
+fastapi>=0.118.3
+uvicorn>=0.37.0
+requests-cache>=1.2.1
+pydantic>=2.12.0
+paramiko>=4.0.0
+
+# ===== ADVANCED RESEARCH =====
+optuna>=4.5.0
+# pytorch-lightning>=2.1.2  # enable only if needed (depends on torch)
+transformers>=4.57.0
+mlflow>=3.4.0
+
+# ===== DEVELOPMENT & TESTING =====
+pytest>=8.4.2
+black>=25.9.0
+flake8>=7.3.0
+pre-commit>=4.3.0

@@ -1,0 +1,11 @@
+id: finrl_4d058ef067fb
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/meta/data_processors/__init__.py
+name: __init__
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

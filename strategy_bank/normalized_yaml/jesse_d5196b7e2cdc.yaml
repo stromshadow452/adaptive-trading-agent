@@ -1,0 +1,11 @@
+id: jesse_d5196b7e2cdc
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/import_candles_mode/drivers/interface.py
+name: interface
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

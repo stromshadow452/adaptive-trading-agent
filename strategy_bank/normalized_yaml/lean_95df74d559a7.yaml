@@ -1,0 +1,11 @@
+id: lean_95df74d559a7
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CustomDataUniverseAlgorithm.py
+name: CustomDataUniverseAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

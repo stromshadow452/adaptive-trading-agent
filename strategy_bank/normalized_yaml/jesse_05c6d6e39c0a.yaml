@@ -1,0 +1,11 @@
+id: jesse_05c6d6e39c0a
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/dm.py
+name: dm
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

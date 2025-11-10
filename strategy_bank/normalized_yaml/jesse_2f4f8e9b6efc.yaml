@@ -1,0 +1,11 @@
+id: jesse_2f4f8e9b6efc
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/stochf.py
+name: stochf
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

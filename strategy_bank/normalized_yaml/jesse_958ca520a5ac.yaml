@@ -1,0 +1,11 @@
+id: jesse_958ca520a5ac
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/vpci.py
+name: vpci
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

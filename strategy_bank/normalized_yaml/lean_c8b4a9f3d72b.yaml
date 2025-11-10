@@ -1,0 +1,11 @@
+id: lean_c8b4a9f3d72b
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Portfolio/MinimumVariancePortfolioOptimizer.py
+name: MinimumVariancePortfolioOptimizer
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: lean_d5b60d26b22d
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/QuitAfterInitializationRegressionAlgorithm.py
+name: QuitAfterInitializationRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

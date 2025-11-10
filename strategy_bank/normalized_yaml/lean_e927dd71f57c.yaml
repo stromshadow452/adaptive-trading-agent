@@ -1,0 +1,11 @@
+id: lean_e927dd71f57c
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm/Alphas/NullAlphaModel.py
+name: NullAlphaModel
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

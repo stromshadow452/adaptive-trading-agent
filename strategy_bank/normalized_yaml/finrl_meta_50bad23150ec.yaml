@@ -1,0 +1,11 @@
+id: finrl_meta_50bad23150ec
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/unit_tests/test_binance.py
+name: test_binance
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: lean_447cb990bfe6
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/SetHoldingsAsyncRegressionAlgorithm.py
+name: SetHoldingsAsyncRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

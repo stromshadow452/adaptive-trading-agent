@@ -1,0 +1,23 @@
+{
+  "id": "run_20251027T130624Z",
+  "start": "2025-10-27T13:06:24.329404Z",
+  "mode": "exec",
+  "autoretrain": true,
+  "steps": [
+    {
+      "name": "screener",
+      "start": "2025-10-27T13:06:24.329416Z",
+      "status": "ok",
+      "end": "2025-10-27T13:06:25.085568Z"
+    },
+    {
+      "name": "paper_deploy",
+      "start": "2025-10-27T13:06:25.085588Z",
+      "status": "failed",
+      "rc": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"E:\\adaptive-trading-agent (2) (1)\\adaptive-trading-agent (2)\\tools\\paper_deploy.py\", line 11, in <module>\n    from src.data_loader import read_csv\nModuleNotFoundError: No module named 'src'\n"
+    }
+  ],
+  "dry_run": false,
+  "end": "2025-10-27T13:06:25.501352Z"
+}

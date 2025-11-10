@@ -1,0 +1,11 @@
+id: lean_14b7952a0793
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CustomDataTypeHistoryAlgorithm.py
+name: CustomDataTypeHistoryAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

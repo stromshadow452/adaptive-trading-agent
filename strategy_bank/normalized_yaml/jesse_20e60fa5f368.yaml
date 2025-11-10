@@ -1,0 +1,11 @@
+id: jesse_20e60fa5f368
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/ad.py
+name: ad
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

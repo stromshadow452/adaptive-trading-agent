@@ -1,0 +1,11 @@
+id: lean_f32a6d540150
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/DynamicSecurityDataRegressionAlgorithm.py
+name: DynamicSecurityDataRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

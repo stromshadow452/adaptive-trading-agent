@@ -1,0 +1,11 @@
+id: lean_1adf05ad8fd5
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/BasicTemplateFuturesWithExtendedMarketHourlyAlgorithm.py
+name: BasicTemplateFuturesWithExtendedMarketHourlyAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

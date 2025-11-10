@@ -1,0 +1,11 @@
+id: finrl_meta_080226ac13af
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_future_trading/env_future_trading_wt.py
+name: env_future_trading_wt
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

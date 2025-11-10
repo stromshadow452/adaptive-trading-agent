@@ -1,0 +1,11 @@
+id: lean_f1ecbb9f82d0
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/LiveFeaturesAlgorithm.py
+name: LiveFeaturesAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

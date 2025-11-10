@@ -1,0 +1,11 @@
+id: lean_fc95732b100c
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/PandasDataFrameHistoryAlgorithm.py
+name: PandasDataFrameHistoryAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

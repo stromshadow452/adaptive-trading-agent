@@ -1,0 +1,40 @@
+{
+  "id": "run_20251028T144348Z",
+  "start": "2025-10-28T14:43:48.092273Z",
+  "mode": "dry_run",
+  "autoretrain": false,
+  "steps": [
+    {
+      "name": "screener",
+      "start": "2025-10-28T14:43:48.092281Z",
+      "status": "ok",
+      "end": "2025-10-28T14:43:48.092981Z"
+    },
+    {
+      "name": "paper_deploy",
+      "start": "2025-10-28T14:43:48.092990Z",
+      "status": "ok",
+      "end": "2025-10-28T14:43:48.093386Z"
+    },
+    {
+      "name": "generate_summary",
+      "start": "2025-10-28T14:43:48.093395Z",
+      "status": "ok",
+      "end": "2025-10-28T14:43:48.093959Z"
+    },
+    {
+      "name": "decision_engine",
+      "start": "2025-10-28T14:43:48.093965Z",
+      "status": "ok",
+      "end": "2025-10-28T14:43:48.094358Z"
+    },
+    {
+      "name": "finrl_adapter",
+      "start": "2025-10-28T14:43:48.094365Z",
+      "status": "ok",
+      "end": "2025-10-28T14:43:48.094639Z"
+    }
+  ],
+  "dry_run": true,
+  "end": "2025-10-28T14:43:48.094646Z"
+}

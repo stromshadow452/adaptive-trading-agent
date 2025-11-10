@@ -1,0 +1,11 @@
+id: lean_e6296241a35b
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/AddOptionUniverseSelectionModelRegressionAlgorithm.py
+name: AddOptionUniverseSelectionModelRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

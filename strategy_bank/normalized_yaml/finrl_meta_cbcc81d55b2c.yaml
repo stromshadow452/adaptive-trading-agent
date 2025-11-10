@@ -1,0 +1,11 @@
+id: finrl_meta_cbcc81d55b2c
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_future_trading/ELegantRL_FutureTradingEnv_new_gym.py
+name: ELegantRL_FutureTradingEnv_new_gym
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

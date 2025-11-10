@@ -1,0 +1,11 @@
+id: lean_608636eaa247
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/Alphas/ContingentClaimsAnalysisDefaultPredictionAlpha.py
+name: ContingentClaimsAnalysisDefaultPredictionAlpha
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

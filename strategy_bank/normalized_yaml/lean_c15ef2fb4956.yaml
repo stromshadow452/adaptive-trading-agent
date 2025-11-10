@@ -1,0 +1,11 @@
+id: lean_c15ef2fb4956
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/Alphas/MortgageRateVolatilityAlpha.py
+name: MortgageRateVolatilityAlpha
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

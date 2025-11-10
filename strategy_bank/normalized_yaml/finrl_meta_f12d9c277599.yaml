@@ -1,0 +1,11 @@
+id: finrl_meta_f12d9c277599
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_future_trading/wt4elegantrl/wtpy/wrapper/PlatformHelper.py
+name: PlatformHelper
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

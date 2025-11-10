@@ -1,0 +1,11 @@
+id: jesse_767a8dbb9df8
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/research/monte_carlo/candle_pipelines/moving_block_bootstrap.py
+name: moving_block_bootstrap
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

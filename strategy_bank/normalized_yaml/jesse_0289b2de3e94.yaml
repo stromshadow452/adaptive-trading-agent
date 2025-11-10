@@ -1,0 +1,11 @@
+id: jesse_0289b2de3e94
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/tests/test_conflicting_orders.py
+name: test_conflicting_orders
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: jesse_3fd64bf1544b
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/rocr100.py
+name: rocr100
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

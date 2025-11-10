@@ -1,0 +1,11 @@
+id: finrl_meta_ba61369931ef
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_stock_trading/env_stock_papertrading_rllib.py
+name: env_stock_papertrading_rllib
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

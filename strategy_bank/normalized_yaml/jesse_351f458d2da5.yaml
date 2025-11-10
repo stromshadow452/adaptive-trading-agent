@@ -1,0 +1,11 @@
+id: jesse_351f458d2da5
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/strategies/TestCanCancelEntryOrdersAfterOpenPositionLong1/__init__.py
+name: __init__
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: lean_233799b0d4b6
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/FutureOptionDailyRegressionAlgorithm.py
+name: FutureOptionDailyRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

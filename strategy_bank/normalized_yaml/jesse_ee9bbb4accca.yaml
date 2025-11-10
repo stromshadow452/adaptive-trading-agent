@@ -1,0 +1,11 @@
+id: jesse_ee9bbb4accca
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/beta.py
+name: beta
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

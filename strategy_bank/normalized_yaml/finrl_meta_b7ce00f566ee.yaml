@@ -1,0 +1,11 @@
+id: finrl_meta_b7ce00f566ee
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/data_processors/tushare.py
+name: tushare
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

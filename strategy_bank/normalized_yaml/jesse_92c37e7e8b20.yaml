@@ -1,0 +1,11 @@
+id: jesse_92c37e7e8b20
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/optimize_mode/__init__.py
+name: __init__
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

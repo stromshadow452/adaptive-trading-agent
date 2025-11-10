@@ -1,0 +1,11 @@
+id: lean_2fcdde322c4c
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/LongAndShortStraddleStrategiesAlgorithm.py
+name: LongAndShortStraddleStrategiesAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

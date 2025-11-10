@@ -1,0 +1,11 @@
+id: lean_2fba51ca458b
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CustomPartialFillModelAlgorithm.py
+name: CustomPartialFillModelAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

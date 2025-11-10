@@ -1,0 +1,11 @@
+id: lean_1018ae378b24
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/PytorchNeuralNetworkAlgorithm.py
+name: PytorchNeuralNetworkAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

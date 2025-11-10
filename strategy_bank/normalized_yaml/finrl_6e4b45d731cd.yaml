@@ -1,0 +1,11 @@
+id: finrl_6e4b45d731cd
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/meta/env_stock_trading/env_stocktrading_stoploss.py
+name: env_stocktrading_stoploss
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

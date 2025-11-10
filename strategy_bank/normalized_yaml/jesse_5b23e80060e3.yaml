@@ -1,0 +1,11 @@
+id: jesse_5b23e80060e3
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/tests/data/test_candles_indicators.py
+name: test_candles_indicators
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

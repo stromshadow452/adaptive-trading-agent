@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-10-24T12:19:33.781580+00:00",
+  "plan_file": "reports\\daily\\ETHUSD_M15_plan_20251024T121918Z.json",
+  "symbol": "ETHUSD",
+  "tf": "M15",
+  "side": "buy",
+  "size": 0,
+  "price": 0.0,
+  "sl": null,
+  "tp": null,
+  "meta": [],
+  "reason": "",
+  "status": "filled_paper"
+}

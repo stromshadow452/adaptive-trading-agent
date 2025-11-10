@@ -1,0 +1,11 @@
+id: finrl_9a2565c1569e
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/meta/env_portfolio_allocation/env_portfolio.py
+name: env_portfolio
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

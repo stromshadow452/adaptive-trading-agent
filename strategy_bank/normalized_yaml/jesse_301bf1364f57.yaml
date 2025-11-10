@@ -1,0 +1,11 @@
+id: jesse_301bf1364f57
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/mwdx.py
+name: mwdx
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

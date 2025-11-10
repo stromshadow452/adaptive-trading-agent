@@ -1,0 +1,11 @@
+id: lean_d770afde6f3a
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Tests/RegressionAlgorithms/Test_AlgorithmPythonWrapper.py
+name: Test_AlgorithmPythonWrapper
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

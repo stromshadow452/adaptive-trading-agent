@@ -1,0 +1,11 @@
+id: jesse_223167d4cff8
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/alma.py
+name: alma
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

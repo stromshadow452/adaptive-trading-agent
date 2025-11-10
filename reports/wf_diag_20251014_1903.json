@@ -1,0 +1,10 @@
+{
+  "wf_summary": "E:\\adaptive-trading-agent (2) (1)\\adaptive-trading-agent (2)\\reports\\wf_summary_20251014_1903.csv",
+  "shortlist": "E:\\adaptive-trading-agent (2) (1)\\adaptive-trading-agent (2)\\reports\\shortlist_20251014_1903.csv",
+  "stats": {
+    "ret_mean": -2.7235515657124956,
+    "sharpe_mean": -2.3501185704519454,
+    "dd_mean_abs": 4.912080577921947,
+    "trades_mean": 1.5
+  }
+}

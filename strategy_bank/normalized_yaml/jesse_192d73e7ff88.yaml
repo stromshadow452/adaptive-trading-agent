@@ -1,0 +1,11 @@
+id: jesse_192d73e7ff88
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/info.py
+name: info
+family: ml_rl
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

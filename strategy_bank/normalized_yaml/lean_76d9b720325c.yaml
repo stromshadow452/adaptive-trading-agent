@@ -1,0 +1,11 @@
+id: lean_76d9b720325c
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Portfolio/MeanReversionPortfolioConstructionModel.py
+name: MeanReversionPortfolioConstructionModel
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

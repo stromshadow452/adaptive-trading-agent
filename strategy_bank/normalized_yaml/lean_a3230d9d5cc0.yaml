@@ -1,0 +1,11 @@
+id: lean_a3230d9d5cc0
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/MaximumSectorExposureRiskManagementModelFrameworkRegressionAlgorithm.py
+name: MaximumSectorExposureRiskManagementModelFrameworkRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: jesse_eef679ff2f86
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/macd.py
+name: macd
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

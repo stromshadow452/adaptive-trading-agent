@@ -1,0 +1,11 @@
+id: lean_ebf21ad50ec2
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CustomChartingAlgorithm.py
+name: CustomChartingAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

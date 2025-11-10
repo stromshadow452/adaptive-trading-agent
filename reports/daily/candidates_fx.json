@@ -1,0 +1,7 @@
+[
+  {"symbol": "EURUSD", "tf": "M15"},
+  {"symbol": "GBPUSD", "tf": "M15"},
+  {"symbol": "USDJPY", "tf": "M15"},
+  {"symbol": "USDCAD", "tf": "M15"},
+  {"symbol": "EURGBP", "tf": "M15"}
+]

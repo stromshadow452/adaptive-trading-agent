@@ -1,0 +1,11 @@
+id: jesse_f6d929c3a5a8
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/services/strategy_handler/__init__.py
+name: __init__
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

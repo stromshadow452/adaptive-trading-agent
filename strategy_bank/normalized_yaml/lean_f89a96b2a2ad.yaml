@@ -1,0 +1,11 @@
+id: lean_f89a96b2a2ad
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Portfolio/RiskParityPortfolioOptimizer.py
+name: RiskParityPortfolioOptimizer
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

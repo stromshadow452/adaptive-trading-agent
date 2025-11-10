@@ -1,0 +1,11 @@
+id: jesse_1b80323fc440
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/donchian.py
+name: donchian
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

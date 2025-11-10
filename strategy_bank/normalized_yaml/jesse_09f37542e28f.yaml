@@ -1,0 +1,11 @@
+id: jesse_09f37542e28f
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/smma.py
+name: smma
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

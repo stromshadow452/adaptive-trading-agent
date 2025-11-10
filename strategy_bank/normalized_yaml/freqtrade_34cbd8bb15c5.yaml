@@ -1,0 +1,11 @@
+id: freqtrade_34cbd8bb15c5
+source_vendor: freqtrade
+file: strategy_bank/external_raw/freqtrade/user_data/strategies/mabStra.py
+name: mabStra
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

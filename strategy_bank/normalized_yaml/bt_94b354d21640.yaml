@@ -1,0 +1,11 @@
+id: bt_94b354d21640
+source_vendor: bt
+file: strategy_bank/external_raw/bt/setup.py
+name: setup
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

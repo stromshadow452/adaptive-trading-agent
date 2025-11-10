@@ -1,0 +1,11 @@
+id: finrl_a17811600f91
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/config.py
+name: config
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

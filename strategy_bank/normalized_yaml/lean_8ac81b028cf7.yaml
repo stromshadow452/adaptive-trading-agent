@@ -1,0 +1,11 @@
+id: lean_8ac81b028cf7
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/HistoryTickRegressionAlgorithm.py
+name: HistoryTickRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

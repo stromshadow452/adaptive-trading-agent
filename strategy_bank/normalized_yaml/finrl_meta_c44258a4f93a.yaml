@@ -1,0 +1,11 @@
+id: finrl_meta_c44258a4f93a
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_execution_optimizing/order_execution_qlib/workflow_by_code.py
+name: workflow_by_code
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

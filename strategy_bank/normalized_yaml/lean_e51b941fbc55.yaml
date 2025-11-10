@@ -1,0 +1,11 @@
+id: lean_e51b941fbc55
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/AddFutureUniverseSelectionModelRegressionAlgorithm.py
+name: AddFutureUniverseSelectionModelRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

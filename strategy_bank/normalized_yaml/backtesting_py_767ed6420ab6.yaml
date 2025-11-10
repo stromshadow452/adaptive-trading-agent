@@ -1,0 +1,11 @@
+id: backtesting_py_767ed6420ab6
+source_vendor: backtesting_py
+file: strategy_bank/external_raw/backtesting_py/doc/examples/Multiple Time Frames.py
+name: Multiple Time Frames
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

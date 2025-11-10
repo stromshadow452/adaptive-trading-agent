@@ -1,0 +1,11 @@
+id: jesse_704667865194
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/trima.py
+name: trima
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

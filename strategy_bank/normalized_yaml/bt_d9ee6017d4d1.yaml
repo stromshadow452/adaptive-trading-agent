@@ -1,0 +1,11 @@
+id: bt_d9ee6017d4d1
+source_vendor: bt
+file: strategy_bank/external_raw/bt/bt/backtest.py
+name: backtest
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: jesse_67a8590d699c
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/controllers/config_controller.py
+name: config_controller
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

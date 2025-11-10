@@ -1,0 +1,11 @@
+id: lean_e8808ea55d51
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/ClassicRangeConsolidatorAlgorithm.py
+name: ClassicRangeConsolidatorAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

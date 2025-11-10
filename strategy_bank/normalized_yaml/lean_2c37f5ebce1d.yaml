@@ -1,0 +1,11 @@
+id: lean_2c37f5ebce1d
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Portfolio/RiskParityPortfolioConstructionModel.py
+name: RiskParityPortfolioConstructionModel
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

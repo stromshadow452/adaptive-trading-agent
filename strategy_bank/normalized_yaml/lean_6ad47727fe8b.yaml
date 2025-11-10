@@ -1,0 +1,11 @@
+id: lean_6ad47727fe8b
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/FinancialAdvisorDemoAlgorithm.py
+name: FinancialAdvisorDemoAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

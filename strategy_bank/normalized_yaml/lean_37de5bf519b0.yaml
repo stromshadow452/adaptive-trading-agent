@@ -1,0 +1,11 @@
+id: lean_37de5bf519b0
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/LiquidETFUniverseFrameworkAlgorithm.py
+name: LiquidETFUniverseFrameworkAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

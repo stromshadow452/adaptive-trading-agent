@@ -1,0 +1,11 @@
+id: bt_dfbafbc65341
+source_vendor: bt
+file: strategy_bank/external_raw/bt/docs/source/_themes/klink/klink/demo.py
+name: demo
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

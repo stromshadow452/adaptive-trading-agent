@@ -1,0 +1,11 @@
+id: jesse_6752426465f8
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/models/Trade.py
+name: Trade
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

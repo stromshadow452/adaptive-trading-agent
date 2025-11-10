@@ -1,0 +1,45 @@
+{
+  "symbol": "ETHUSD",
+  "tf": "M15",
+  "generated_at": "2025-10-24T12:12:59.676560+00:00",
+  "candidate": {
+    "pair": "ETHUSD",
+    "tf": "M15",
+    "close": 1.127739294954037,
+    "price": 1.127739294954037,
+    "score": -1.4279890304346838,
+    "tech_score": -1.4279890304346838,
+    "tech_sharpe": 0.0,
+    "tech_trades": 0.0,
+    "adx": 24.266553147683243,
+    "atr": 0.00553606865474564,
+    "vol_ratio": 0.03286455694469169,
+    "impact": 0.0,
+    "impact_score": 0.0,
+    "surprise_norm": 0.0,
+    "fund_score": 0.0,
+    "within_1h_event": false,
+    "session": "LONDON"
+  },
+  "meta_w": 0.5,
+  "finrl_present": false,
+  "decision": {
+    "enter": true,
+    "side": "sell",
+    "final_score": -1.0709917728260128,
+    "size": 0.00713994515217342,
+    "sl": 0.01107213730949128,
+    "tp": 0.02214427461898256,
+    "sl_type": "atr",
+    "reason": {
+      "screener_score": -1.4279890304346838,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.5
+    }
+  },
+  "notes": [
+    "Hybrid decision engine (meta selector + screener + finrl optional)",
+    "Use 'enter' flag to send order (executor should check risk gates again)."
+  ]
+}

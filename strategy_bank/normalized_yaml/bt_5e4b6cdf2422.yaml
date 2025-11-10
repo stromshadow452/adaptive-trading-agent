@@ -1,0 +1,11 @@
+id: bt_5e4b6cdf2422
+source_vendor: bt
+file: strategy_bank/external_raw/bt/examples/pairs_trading.py
+name: pairs_trading
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

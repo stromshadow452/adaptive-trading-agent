@@ -1,0 +1,11 @@
+id: lean_4089ef9825dd
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/DropboxUniverseSelectionAlgorithm.py
+name: DropboxUniverseSelectionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

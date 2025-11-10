@@ -1,0 +1,11 @@
+id: jesse_5e3a4086015d
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/controllers/system_controller.py
+name: system_controller
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

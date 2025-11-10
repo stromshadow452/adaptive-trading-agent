@@ -1,0 +1,11 @@
+id: jesse_d135a960f8ae
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/store/state_tickers.py
+name: state_tickers
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

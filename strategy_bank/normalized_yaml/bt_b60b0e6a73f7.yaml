@@ -1,0 +1,11 @@
+id: bt_b60b0e6a73f7
+source_vendor: bt
+file: strategy_bank/external_raw/bt/tests/__init__.py
+name: __init__
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: lean_e88506c0018a
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CustomDataIndicatorExtensionsAlgorithm.py
+name: CustomDataIndicatorExtensionsAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,12 @@
+{
+  "generated_at": "2025-10-25T06:38:45.305796Z",
+  "source_summary": "reports\\aggregate\\aggregate_summary.json",
+  "rules": [
+    {
+      "action": "increase_tp_rr",
+      "delta": 0.1,
+      "cap": 3.0,
+      "reason": "Winrate < 50%; slightly increase RR to improve expectancy."
+    }
+  ]
+}

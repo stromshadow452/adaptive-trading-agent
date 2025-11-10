@@ -1,0 +1,11 @@
+id: jesse_e814a1f3fa3f
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/import_candles_mode/drivers/Bybit/BybitUSDCPerpetualTestnet.py
+name: BybitUSDCPerpetualTestnet
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

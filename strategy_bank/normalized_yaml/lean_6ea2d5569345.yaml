@@ -1,0 +1,11 @@
+id: lean_6ea2d5569345
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CoarseFineAsyncUniverseRegressionAlgorithm.py
+name: CoarseFineAsyncUniverseRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

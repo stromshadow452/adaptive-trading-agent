@@ -1,0 +1,11 @@
+id: bt_6f5c5a6e5330
+source_vendor: bt
+file: strategy_bank/external_raw/bt/tests/test_core.py
+name: test_core
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

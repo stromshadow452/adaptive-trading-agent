@@ -1,0 +1,11 @@
+id: jesse_f74bd3b14b03
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/linearreg_slope.py
+name: linearreg_slope
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

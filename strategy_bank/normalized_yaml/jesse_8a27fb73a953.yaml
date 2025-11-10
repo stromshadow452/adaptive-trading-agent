@@ -1,0 +1,11 @@
+id: jesse_8a27fb73a953
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/tests/test_state_candle.py
+name: test_state_candle
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: bt_35c72a1c19bc
+source_vendor: bt
+file: strategy_bank/external_raw/bt/tests/bench.py
+name: bench
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

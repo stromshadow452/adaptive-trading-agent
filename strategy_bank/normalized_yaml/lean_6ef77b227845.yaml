@@ -1,0 +1,11 @@
+id: lean_6ef77b227845
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/OptionPriceModelForSupportedEuropeanOptionTimeSpanWarmupRegressionAlgorithm.py
+name: OptionPriceModelForSupportedEuropeanOptionTimeSpanWarmupRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

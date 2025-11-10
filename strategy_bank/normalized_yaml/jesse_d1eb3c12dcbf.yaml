@@ -1,0 +1,11 @@
+id: jesse_d1eb3c12dcbf
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/models/FuturesExchange.py
+name: FuturesExchange
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

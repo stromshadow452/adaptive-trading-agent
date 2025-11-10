@@ -1,0 +1,11 @@
+id: finrl_meta_cf43c380175b
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_execution_optimizing/order_execution_qlib/highfreq/highfreq_ops.py
+name: highfreq_ops
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

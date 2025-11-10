@@ -1,0 +1,11 @@
+id: finrl_93c6f0b761bb
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/unit_tests/preprocessors/test_groupby_scaler.py
+name: test_groupby_scaler
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

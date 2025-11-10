@@ -1,0 +1,11 @@
+id: lean_a3a62dfa224b
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CompositeRiskManagementModelFrameworkAlgorithm.py
+name: CompositeRiskManagementModelFrameworkAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

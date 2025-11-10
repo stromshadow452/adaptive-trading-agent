@@ -1,0 +1,11 @@
+id: finrl_56b17ff86bdc
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/meta/data_processors/processor_ccxt.py
+name: processor_ccxt
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

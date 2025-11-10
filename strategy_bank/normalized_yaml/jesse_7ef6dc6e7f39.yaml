@@ -1,0 +1,11 @@
+id: jesse_7ef6dc6e7f39
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/cg.py
+name: cg
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

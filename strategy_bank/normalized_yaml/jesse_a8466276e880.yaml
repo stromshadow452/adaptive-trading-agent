@@ -1,0 +1,11 @@
+id: jesse_a8466276e880
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/adx.py
+name: adx
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

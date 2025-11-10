@@ -1,0 +1,11 @@
+id: jesse_e187e90a6cf1
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/store/state_orderbook.py
+name: state_orderbook
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

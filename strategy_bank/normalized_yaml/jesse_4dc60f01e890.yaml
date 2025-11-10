@@ -1,0 +1,11 @@
+id: jesse_4dc60f01e890
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/nvi.py
+name: nvi
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

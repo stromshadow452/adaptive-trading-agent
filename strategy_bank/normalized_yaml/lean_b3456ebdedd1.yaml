@@ -1,0 +1,11 @@
+id: lean_b3456ebdedd1
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/FutureUniverseHistoryRegressionAlgorithm.py
+name: FutureUniverseHistoryRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

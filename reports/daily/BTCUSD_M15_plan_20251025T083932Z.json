@@ -1,0 +1,64 @@
+{
+  "symbol": "BTCUSD",
+  "tf": "M15",
+  "generated_at": "2025-10-25T08:39:32.791945Z",
+  "candidate": {
+    "pair": "BTCUSD",
+    "tf": "M15",
+    "close": 1.1498832651170616,
+    "price": 1.1498832651170616,
+    "score": -1.415796778945011,
+    "tech_score": -1.415796778945011,
+    "tech_sharpe": 0.0,
+    "tech_trades": 0.0,
+    "adx": 25.479555670550667,
+    "atr": 0.005809670477671125,
+    "vol_ratio": 0.6301908617698091,
+    "impact": 0.0,
+    "impact_score": 0.0,
+    "surprise_norm": 0.0,
+    "fund_score": 0.0,
+    "within_1h_event": false,
+    "session": "LONDON"
+  },
+  "meta_w": 0.5,
+  "finrl_present": false,
+  "enter": true,
+  "side": "sell",
+  "size": 0.05,
+  "price": 1.1498832651170616,
+  "atr": 0.005809670477671125,
+  "sl": 1.1556929355947327,
+  "tp": 1.1382639241617194,
+  "sl_type": "atr",
+  "final_score": -1.0618475842087582,
+  "reason": {
+    "screener_score": -1.415796778945011,
+    "meta_w": 0.5,
+    "finrl_boost": 0.0,
+    "min_entry": 0.3,
+    "min_confidence": 0.0,
+    "explain": "score_neg -1.062"
+  },
+  "decision": {
+    "enter": true,
+    "side": "sell",
+    "final_score": -1.0618475842087582,
+    "size": 0.05,
+    "sl": 1.1556929355947327,
+    "tp": 1.1382639241617194,
+    "sl_type": "atr",
+    "reason": {
+      "screener_score": -1.415796778945011,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.3,
+      "min_confidence": 0.0,
+      "explain": "score_neg -1.062"
+    }
+  },
+  "notes": [
+    "Hybrid decision engine (meta selector + screener + optional FinRL presence boost).",
+    "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+  ]
+}

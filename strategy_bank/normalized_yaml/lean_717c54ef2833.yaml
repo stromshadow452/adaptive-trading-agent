@@ -1,0 +1,11 @@
+id: lean_717c54ef2833
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Execution/VolumeWeightedAveragePriceExecutionModel.py
+name: VolumeWeightedAveragePriceExecutionModel
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

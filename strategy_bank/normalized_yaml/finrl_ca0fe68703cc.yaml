@@ -1,0 +1,11 @@
+id: finrl_ca0fe68703cc
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/meta/data_processors/processor_wrds.py
+name: processor_wrds
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

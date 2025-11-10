@@ -1,0 +1,11 @@
+id: lean_2d46b1d716f9
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Portfolio/AccumulativeInsightPortfolioConstructionModel.py
+name: AccumulativeInsightPortfolioConstructionModel
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

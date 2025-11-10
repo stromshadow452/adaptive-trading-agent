@@ -1,0 +1,3 @@
+﻿"ts","mode","symbol","tf","side","price","size","sl","tp","sl_type","status","notes","close_ts"
+"2025-10-28T18:18:11.6400921Z","paper","EURUSD","M15","sell","1.159703","0.050000","","","","CLOSED","reconstructed_from_log;no_plan_match;closed_manual","2025-10-29T00:12:34.5949503+05:30"
+"2025-10-28T18:31:31.141714Z","paper","EURUSD","M15","sell","1.15970276","0.05000000","1.16842895","1.14661348","atr","CLOSED","EURUSD-1761676291141;closed_manual","2025-10-29T00:14:42.7953546+05:30"

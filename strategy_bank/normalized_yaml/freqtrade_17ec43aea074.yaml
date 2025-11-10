@@ -1,0 +1,11 @@
+id: freqtrade_17ec43aea074
+source_vendor: freqtrade
+file: strategy_bank/external_raw/freqtrade/user_data/strategies/GodStra.py
+name: GodStra
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

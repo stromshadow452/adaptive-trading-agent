@@ -1,0 +1,11 @@
+id: lean_4b8d07dc3434
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CustomSettlementModelRegressionAlgorithm.py
+name: CustomSettlementModelRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

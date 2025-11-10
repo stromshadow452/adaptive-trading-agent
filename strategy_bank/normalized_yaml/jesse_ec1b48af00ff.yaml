@@ -1,0 +1,11 @@
+id: jesse_ec1b48af00ff
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/import_candles_mode/drivers/Bybit/BybitMain.py
+name: BybitMain
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

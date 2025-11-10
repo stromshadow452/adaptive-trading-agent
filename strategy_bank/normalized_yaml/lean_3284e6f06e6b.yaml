@@ -1,0 +1,11 @@
+id: lean_3284e6f06e6b
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/OnWarmupFinishedRegressionAlgorithm.py
+name: OnWarmupFinishedRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

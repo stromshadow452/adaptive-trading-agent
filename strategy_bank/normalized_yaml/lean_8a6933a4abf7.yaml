@@ -1,0 +1,11 @@
+id: lean_8a6933a4abf7
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/TrailingStopRiskFrameworkRegressionAlgorithm.py
+name: TrailingStopRiskFrameworkRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: jesse_0c4ea666d0bd
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/vpwma.py
+name: vpwma
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

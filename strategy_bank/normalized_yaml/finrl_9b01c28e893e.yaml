@@ -1,0 +1,11 @@
+id: finrl_9b01c28e893e
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/meta/preprocessor/example_of_shioaji_api.py
+name: example_of_shioaji_api
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

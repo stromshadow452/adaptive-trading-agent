@@ -1,0 +1,11 @@
+id: jesse_44e2c70a4089
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/tests/test_state_ticker.py
+name: test_state_ticker
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

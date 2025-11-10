@@ -1,0 +1,11 @@
+id: freqtrade_65515a189b3c
+source_vendor: freqtrade
+file: strategy_bank/external_raw/freqtrade/user_data/strategies/berlinguyinca/CCIStrategy.py
+name: CCIStrategy
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

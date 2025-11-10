@@ -1,0 +1,11 @@
+id: jesse_128ef8479573
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/import_candles_mode/drivers/Hyperliquid/HyperliquidPerpetualMain.py
+name: HyperliquidPerpetualMain
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

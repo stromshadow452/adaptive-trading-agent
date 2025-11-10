@@ -1,0 +1,11 @@
+id: jesse_6753cc96cda0
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/models/Option.py
+name: Option
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

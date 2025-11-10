@@ -1,0 +1,11 @@
+id: finrl_meta_99f4f54952c8
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/data_processors/yahoofinance.py
+name: yahoofinance
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

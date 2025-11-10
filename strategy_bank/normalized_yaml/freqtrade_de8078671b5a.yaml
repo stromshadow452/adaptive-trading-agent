@@ -1,0 +1,11 @@
+id: freqtrade_de8078671b5a
+source_vendor: freqtrade
+file: strategy_bank/external_raw/freqtrade/user_data/strategies/futures/VolatilitySystem.py
+name: VolatilitySystem
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

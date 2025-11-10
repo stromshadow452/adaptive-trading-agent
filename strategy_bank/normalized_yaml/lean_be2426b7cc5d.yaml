@@ -1,0 +1,11 @@
+id: lean_be2426b7cc5d
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/FundamentalCustomSelectionTimeRegressionAlgorithm.py
+name: FundamentalCustomSelectionTimeRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

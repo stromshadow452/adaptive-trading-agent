@@ -1,0 +1,11 @@
+id: jesse_59d4dadcb2bb
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/kurtosis.py
+name: kurtosis
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

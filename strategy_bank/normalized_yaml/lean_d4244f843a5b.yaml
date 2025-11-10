@@ -1,0 +1,11 @@
+id: lean_d4244f843a5b
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/FilterUniverseRegressionAlgorithm.py
+name: FilterUniverseRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

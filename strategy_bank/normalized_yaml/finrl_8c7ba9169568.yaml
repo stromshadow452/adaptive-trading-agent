@@ -1,0 +1,11 @@
+id: finrl_8c7ba9169568
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/test.py
+name: test
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

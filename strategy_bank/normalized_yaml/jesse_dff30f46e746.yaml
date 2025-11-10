@@ -1,0 +1,11 @@
+id: jesse_dff30f46e746
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/services/tradingview.py
+name: tradingview
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

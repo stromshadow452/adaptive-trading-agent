@@ -1,0 +1,11 @@
+id: lean_97c600c8be91
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/DisplacedMovingAverageRibbon.py
+name: DisplacedMovingAverageRibbon
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: lean_fab9485368ab
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Tests/Research/RegressionScripts/custom_data.py
+name: custom_data
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

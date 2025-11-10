@@ -1,0 +1,11 @@
+id: jesse_2ce2da85422f
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/research/candles.py
+name: candles
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

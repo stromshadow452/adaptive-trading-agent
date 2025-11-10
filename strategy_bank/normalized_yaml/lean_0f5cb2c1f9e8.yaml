@@ -1,0 +1,11 @@
+id: lean_0f5cb2c1f9e8
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/OptionIndicatorsRegressionAlgorithm.py
+name: OptionIndicatorsRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

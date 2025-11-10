@@ -1,0 +1,11 @@
+id: jesse_014b5be2b989
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/hurst_exponent.py
+name: hurst_exponent
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

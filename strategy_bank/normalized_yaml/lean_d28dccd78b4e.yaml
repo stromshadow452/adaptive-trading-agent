@@ -1,0 +1,11 @@
+id: lean_d28dccd78b4e
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/PortfolioRebalanceOnCustomFuncRegressionAlgorithm.py
+name: PortfolioRebalanceOnCustomFuncRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

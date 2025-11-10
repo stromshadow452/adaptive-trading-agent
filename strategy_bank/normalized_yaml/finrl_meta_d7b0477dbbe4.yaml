@@ -1,0 +1,11 @@
+id: finrl_meta_d7b0477dbbe4
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_crypto_trading/create_crypto_env.py
+name: create_crypto_env
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,40 @@
+# config/screener.yaml
+pairs:
+  - EURUSD
+  - GBPUSD
+  - USDJPY
+  - AUDUSD
+  - BTCUSD
+  - ETHUSD
+  - AAPL
+  - SPY
+
+timeframes:
+  intraday: M15
+  swing: H4
+
+top_k: 5
+
+raw_root: data/raw
+
+intraday_rules:
+  - name: ema_cross
+    weight: 2.0
+  - name: rsi_range
+    lo: 40
+    hi: 65
+    weight: 1.0
+  - name: vol_ok
+    atr_ratio: 0.02
+    weight: 1.0
+
+swing_rules:
+  - name: ema_cross
+    weight: 2.0
+  - name: rsi_range
+    lo: 30
+    hi: 70
+    weight: 1.0
+  - name: vol_ok
+    atr_ratio: 0.03
+    weight: 1.0

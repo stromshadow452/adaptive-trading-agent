@@ -1,0 +1,11 @@
+id: lean_c19c8fd5a1bf
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/SetHoldingsRegressionAlgorithm.py
+name: SetHoldingsRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

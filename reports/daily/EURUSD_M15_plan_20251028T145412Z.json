@@ -1,0 +1,76 @@
+{
+  "symbol": "EURUSD",
+  "tf": "M15",
+  "generated_at": "2025-10-28T14:54:12.392509Z",
+  "candidate": {
+    "pair": "EURUSD",
+    "tf": "M15",
+    "close": 1.1276390959940235,
+    "price": 1.1276390959940235,
+    "score": -1.4157967789449755,
+    "tech_score": -1.4157967789449755,
+    "tech_sharpe": 0.0,
+    "tech_trades": 0.0,
+    "adx": 25.479555670550678,
+    "atr": 0.00569728403239029,
+    "vol_ratio": 0.6301908617698091,
+    "impact": 0.0,
+    "impact_score": 0.0,
+    "surprise_norm": 0.0,
+    "fund_score": 0.0,
+    "within_1h_event": false,
+    "session": "LONDON"
+  },
+  "meta_w": 0.5,
+  "finrl_present": false,
+  "two_layer_enabled": false,
+  "enter": true,
+  "side": "sell",
+  "size": 0.05,
+  "price": 1.1276390959940235,
+  "atr": 0.00569728403239029,
+  "sl": 1.1361850220426088,
+  "tp": 1.1148202069211453,
+  "sl_type": "atr",
+  "final_score": -1.0,
+  "reason": {
+    "screener_score": -1.4157967789449755,
+    "meta_w": 0.5,
+    "finrl_boost": 0.0,
+    "min_entry": 0.2,
+    "min_confidence": 0.0,
+    "explain": "score_neg -1.062",
+    "mtf": {
+      "reason": "no_confirms",
+      "primary": "sell",
+      "pri_score": -1.4157967789449755
+    }
+  },
+  "layer_signals": null,
+  "notes": [
+    "Single-layer (hybrid heuristic) path",
+    "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+  ],
+  "decision": {
+    "enter": true,
+    "side": "sell",
+    "final_score": -1.0618475842087316,
+    "size": 0.05,
+    "sl": 1.1361850220426088,
+    "tp": 1.1148202069211453,
+    "sl_type": "atr",
+    "reason": {
+      "screener_score": -1.4157967789449755,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "score_neg -1.062",
+      "mtf": {
+        "reason": "no_confirms",
+        "primary": "sell",
+        "pri_score": -1.4157967789449755
+      }
+    }
+  }
+}

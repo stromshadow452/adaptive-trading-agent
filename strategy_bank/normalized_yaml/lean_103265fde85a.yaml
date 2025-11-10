@@ -1,0 +1,11 @@
+id: lean_103265fde85a
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/BasicTemplateFuturesFrameworkAlgorithm.py
+name: BasicTemplateFuturesFrameworkAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

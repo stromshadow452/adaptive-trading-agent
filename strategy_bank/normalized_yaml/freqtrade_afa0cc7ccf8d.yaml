@@ -1,0 +1,11 @@
+id: freqtrade_afa0cc7ccf8d
+source_vendor: freqtrade
+file: strategy_bank/external_raw/freqtrade/user_data/strategies/berlinguyinca/Freqtrade_backtest_validation_freqtrade1.py
+name: Freqtrade_backtest_validation_freqtrade1
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

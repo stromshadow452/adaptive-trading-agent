@@ -1,0 +1,11 @@
+id: jesse_517fc9dc289b
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/research/monte_carlo/candle_pipelines/base_candles.py
+name: base_candles
+family: ml_rl
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: lean_04e55bcacbc1
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/ExecutionModelOrderEventsRegressionAlgorithm.py
+name: ExecutionModelOrderEventsRegressionAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

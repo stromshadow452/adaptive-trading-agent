@@ -1,0 +1,32 @@
+{
+  "pair": "AUDUSD",
+  "tf": "M15",
+  "timestamp": "2025-10-20T17:23:45.818335Z",
+  "final_score": 0.32666666666666666,
+  "action": "hold",
+  "size_pct": 0.01,
+  "entry": 0.6433,
+  "sl": null,
+  "tp": null,
+  "reasons": [
+    "meta_w=0.16",
+    "final_score=0.33",
+    "low_trade_count_warn"
+  ],
+  "meta_weight": 0.16333333333333333,
+  "raw_candidate": {
+    "pair": "AUDUSD",
+    "tf": "M15",
+    "tech_score": 2.0,
+    "fund_score": 0.0,
+    "impact_score": 0.0,
+    "surprise_norm": 0.0,
+    "adx": 0.0,
+    "atr": 0.0,
+    "vol_ratio": 0.0,
+    "tech_sharpe": 0.0,
+    "tech_trades": 0.0,
+    "close": 0.6433,
+    "within_1h_event": false
+  }
+}

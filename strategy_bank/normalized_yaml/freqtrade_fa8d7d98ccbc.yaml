@@ -1,0 +1,11 @@
+id: freqtrade_fa8d7d98ccbc
+source_vendor: freqtrade
+file: strategy_bank/external_raw/freqtrade/user_data/strategies/UniversalMACD.py
+name: UniversalMACD
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

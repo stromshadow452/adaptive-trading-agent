@@ -1,0 +1,11 @@
+id: lean_9d208860e15b
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/SecurityCustomPropertiesAlgorithm.py
+name: SecurityCustomPropertiesAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

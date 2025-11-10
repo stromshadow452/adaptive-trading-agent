@@ -1,0 +1,11 @@
+id: lean_fab16f3f5952
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/BasicTemplateOptionsConsolidationAlgorithm.py
+name: BasicTemplateOptionsConsolidationAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

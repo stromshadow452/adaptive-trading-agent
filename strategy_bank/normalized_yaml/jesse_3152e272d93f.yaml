@@ -1,0 +1,11 @@
+id: jesse_3152e272d93f
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/import_candles_mode/drivers/Binance/BinanceSpot.py
+name: BinanceSpot
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: finrl_75a16843c1ea
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/meta/data_processors/processor_quantconnect.py
+name: processor_quantconnect
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

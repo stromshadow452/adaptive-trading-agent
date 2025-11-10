@@ -1,0 +1,11 @@
+id: lean_fffd461455d4
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/BasicTemplateFutureRolloverAlgorithm.py
+name: BasicTemplateFutureRolloverAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

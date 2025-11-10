@@ -1,0 +1,11 @@
+id: finrl_meta_e44bced12348
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_future_trading/wt4elegantrl/wtpy/ProductMgr.py
+name: ProductMgr
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

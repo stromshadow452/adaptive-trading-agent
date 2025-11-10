@@ -1,0 +1,11 @@
+id: jesse_d4f926de733c
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/factories/candle_factory.py
+name: candle_factory
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

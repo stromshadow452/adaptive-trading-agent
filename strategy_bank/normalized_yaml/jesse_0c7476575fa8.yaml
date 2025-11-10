@@ -1,0 +1,11 @@
+id: jesse_0c7476575fa8
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/models/Exchange.py
+name: Exchange
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

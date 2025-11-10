@@ -1,0 +1,11 @@
+id: lean_6c1e4facf103
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/HistoryAlgorithm.py
+name: HistoryAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

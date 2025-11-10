@@ -1,0 +1,11 @@
+id: jesse_070191f9fd4f
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/import_candles_mode/drivers/Hyperliquid/HyperliquidPerpetual.py
+name: HyperliquidPerpetual
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

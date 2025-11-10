@@ -1,0 +1,11 @@
+id: lean_8fc262a9434c
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/OnWarmupFinishedNoWarmup.py
+name: OnWarmupFinishedNoWarmup
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: jesse_f1d72c80e69e
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/ema.py
+name: ema
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

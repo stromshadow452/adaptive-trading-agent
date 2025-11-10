@@ -1,0 +1,11 @@
+id: lean_831d4ced328f
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/TickHistoryRequestWithoutTickSubscriptionRegressionAlgorithm.py
+name: TickHistoryRequestWithoutTickSubscriptionRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

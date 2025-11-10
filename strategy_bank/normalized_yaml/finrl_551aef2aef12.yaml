@@ -1,0 +1,11 @@
+id: finrl_551aef2aef12
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/agents/stablebaselines3/hyperparams_opt.py
+name: hyperparams_opt
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

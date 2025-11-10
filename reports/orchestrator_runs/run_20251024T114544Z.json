@@ -1,0 +1,30 @@
+{
+  "id": "run_20251024T114544Z",
+  "start": "2025-10-24T11:45:44.527790Z",
+  "steps": [
+    {
+      "step": "screener",
+      "status": "ok"
+    },
+    {
+      "step": "paper_deploy",
+      "status": "ok",
+      "candidates": "reports\\screener\\20251024_intraday.json"
+    },
+    {
+      "step": "generate_summary",
+      "status": "ok"
+    },
+    {
+      "step": "train_meta_selector",
+      "status": "ok"
+    },
+    {
+      "step": "decision_engine",
+      "status": "ok"
+    }
+  ],
+  "dry_run": false,
+  "end": "2025-10-24T11:46:19.884885Z",
+  "status": "done"
+}

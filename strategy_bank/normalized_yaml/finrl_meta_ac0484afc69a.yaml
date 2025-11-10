@@ -1,0 +1,11 @@
+id: finrl_meta_ac0484afc69a
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/factors/factors.py
+name: factors
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

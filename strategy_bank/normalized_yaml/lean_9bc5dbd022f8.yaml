@@ -1,0 +1,11 @@
+id: lean_9bc5dbd022f8
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/ConsolidateHourBarsIntoDailyBarsRegressionAlgorithm.py
+name: ConsolidateHourBarsIntoDailyBarsRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

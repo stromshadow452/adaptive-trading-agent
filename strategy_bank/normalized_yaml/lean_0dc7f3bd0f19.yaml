@@ -1,0 +1,11 @@
+id: lean_0dc7f3bd0f19
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm/Execution/NullExecutionModel.py
+name: NullExecutionModel
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

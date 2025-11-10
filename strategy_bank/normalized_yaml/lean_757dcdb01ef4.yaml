@@ -1,0 +1,11 @@
+id: lean_757dcdb01ef4
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/ShortableProviderOrdersRejectedRegressionAlgorithm.py
+name: ShortableProviderOrdersRejectedRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

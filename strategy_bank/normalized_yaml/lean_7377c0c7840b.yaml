@@ -1,0 +1,11 @@
+id: lean_7377c0c7840b
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Selection/OptionUniverseSelectionModel.py
+name: OptionUniverseSelectionModel
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

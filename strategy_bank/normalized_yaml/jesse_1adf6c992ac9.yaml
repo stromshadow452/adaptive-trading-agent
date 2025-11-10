@@ -1,0 +1,11 @@
+id: jesse_1adf6c992ac9
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/tests/test_completed_trade.py
+name: test_completed_trade
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

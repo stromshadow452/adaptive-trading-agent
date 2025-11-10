@@ -1,0 +1,11 @@
+id: lean_ebe7f4a82f20
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CoarseFineFundamentalRegressionAlgorithm.py
+name: CoarseFineFundamentalRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

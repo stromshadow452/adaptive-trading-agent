@@ -1,0 +1,11 @@
+id: lean_9a95ba133450
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Execution/StandardDeviationExecutionModel.py
+name: StandardDeviationExecutionModel
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: lean_9796e3e5714f
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/BasicTemplateIntrinioEconomicData.py
+name: BasicTemplateIntrinioEconomicData
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

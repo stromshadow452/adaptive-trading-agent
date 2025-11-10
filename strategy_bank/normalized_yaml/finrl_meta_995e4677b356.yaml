@@ -1,0 +1,11 @@
+id: finrl_meta_995e4677b356
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/unit_tests/test_quandl.py
+name: test_quandl
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

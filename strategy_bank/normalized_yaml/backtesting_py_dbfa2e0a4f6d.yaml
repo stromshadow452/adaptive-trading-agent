@@ -1,0 +1,11 @@
+id: backtesting_py_dbfa2e0a4f6d
+source_vendor: backtesting_py
+file: strategy_bank/external_raw/backtesting_py/backtesting/_stats.py
+name: _stats
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

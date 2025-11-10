@@ -1,0 +1,11 @@
+id: jesse_fd425accfcd1
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/ttm_squeeze.py
+name: ttm_squeeze
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

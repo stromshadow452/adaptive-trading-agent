@@ -1,0 +1,11 @@
+id: lean_b42a9fbae309
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/FuturesExtendedMarketHoursRegressionAlgorithm.py
+name: FuturesExtendedMarketHoursRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

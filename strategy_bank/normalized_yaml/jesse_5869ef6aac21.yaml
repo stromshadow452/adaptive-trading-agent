@@ -1,0 +1,11 @@
+id: jesse_5869ef6aac21
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/research/backtest.py
+name: backtest
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

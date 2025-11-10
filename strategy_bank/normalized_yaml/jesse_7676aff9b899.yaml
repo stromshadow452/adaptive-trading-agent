@@ -1,0 +1,11 @@
+id: jesse_7676aff9b899
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/high_pass.py
+name: high_pass
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: jesse_3eef56049ffb
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/rsi.py
+name: rsi
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

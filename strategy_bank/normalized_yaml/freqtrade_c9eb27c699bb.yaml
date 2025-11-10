@@ -1,0 +1,11 @@
+id: freqtrade_c9eb27c699bb
+source_vendor: freqtrade
+file: strategy_bank/external_raw/freqtrade/user_data/strategies/berlinguyinca/BbandRsi.py
+name: BbandRsi
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

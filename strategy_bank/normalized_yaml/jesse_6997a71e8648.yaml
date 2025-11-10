@@ -1,0 +1,11 @@
+id: jesse_6997a71e8648
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/zscore.py
+name: zscore
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

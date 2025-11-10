@@ -1,0 +1,11 @@
+id: jesse_24b50012f522
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/wilders.py
+name: wilders
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: jesse_b8df43c6efd2
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/research/monte_carlo/monte_carlo_candles.py
+name: monte_carlo_candles
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

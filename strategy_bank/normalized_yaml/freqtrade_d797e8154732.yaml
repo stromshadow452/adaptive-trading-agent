@@ -1,0 +1,11 @@
+id: freqtrade_d797e8154732
+source_vendor: freqtrade
+file: strategy_bank/external_raw/freqtrade/user_data/strategies/MultiMa.py
+name: MultiMa
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

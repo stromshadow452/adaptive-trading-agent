@@ -1,0 +1,11 @@
+id: lean_7b0527fee35c
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/MarketOnOpenOnCloseAlgorithm.py
+name: MarketOnOpenOnCloseAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

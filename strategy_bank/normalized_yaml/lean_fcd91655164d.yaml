@@ -1,0 +1,11 @@
+id: lean_fcd91655164d
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/PortfolioRebalanceOnDateRulesRegressionAlgorithm.py
+name: PortfolioRebalanceOnDateRulesRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

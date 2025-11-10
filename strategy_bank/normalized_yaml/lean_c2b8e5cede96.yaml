@@ -1,0 +1,11 @@
+id: lean_c2b8e5cede96
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/IndexOptionModelsConsistencyRegressionAlgorithm.py
+name: IndexOptionModelsConsistencyRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: lean_069a8b2c8d70
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/IndexOptionCallOTMExpiryRegressionAlgorithm.py
+name: IndexOptionCallOTMExpiryRegressionAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: lean_cd6474f90af2
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/Benchmarks/EmptyEquityAndOptions400Benchmark.py
+name: EmptyEquityAndOptions400Benchmark
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

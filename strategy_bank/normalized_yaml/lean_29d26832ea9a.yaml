@@ -1,0 +1,11 @@
+id: lean_29d26832ea9a
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/IndustryStandardSecurityIdentifiersRegressionAlgorithm.py
+name: IndustryStandardSecurityIdentifiersRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

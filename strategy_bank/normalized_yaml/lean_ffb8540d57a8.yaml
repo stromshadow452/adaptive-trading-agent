@@ -1,0 +1,11 @@
+id: lean_ffb8540d57a8
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/SetEquityDataNormalizationModeOnAddEquity.py
+name: SetEquityDataNormalizationModeOnAddEquity
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

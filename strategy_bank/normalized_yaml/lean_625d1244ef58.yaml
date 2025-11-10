@@ -1,0 +1,11 @@
+id: lean_625d1244ef58
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/SecuritySessionRegressionAlgorithm.py
+name: SecuritySessionRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

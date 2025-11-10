@@ -1,0 +1,11 @@
+id: jesse_20afb4b52d48
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/srwma.py
+name: srwma
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

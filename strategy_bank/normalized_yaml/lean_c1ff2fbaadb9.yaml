@@ -1,0 +1,11 @@
+id: lean_c1ff2fbaadb9
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/AddOptionContractExpiresRegressionAlgorithm.py
+name: AddOptionContractExpiresRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

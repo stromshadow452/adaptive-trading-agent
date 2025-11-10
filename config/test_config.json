@@ -1,0 +1,6 @@
+{
+  "screener": {"max_symbols": 3, "timeframes": ["M15"]},
+  "paper_deploy": {"top": 3, "equity": 10000},
+  "finrl": {"enabled": false},
+  "autoretrain": false
+}

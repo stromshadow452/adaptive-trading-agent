@@ -1,0 +1,13 @@
+{
+  "max_same_side": 3,             
+  "max_total_positions": 6,       
+  "max_net_exposure": 0.40,       
+  "max_bucket_per_side": {        
+    "fx": 2,
+    "crypto": 2,
+    "equity": 2
+  },
+  "max_drawdown_stop": 0.05,      
+  "per_symbol_limit": 1,
+  "description": "Balanced risk: 6 total, 3 per side, 40% max net exposure, 2 per bucket."
+}

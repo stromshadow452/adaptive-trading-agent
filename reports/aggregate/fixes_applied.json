@@ -1,0 +1,172 @@
+{
+  "generated_at": "2025-10-21T12:57:02.663589Z",
+  "rules": [
+    {
+      "rule": "low_sharpe",
+      "reason": "mean_sharpe=None < 1.0",
+      "suggest": [
+        {
+          "file": "config\\decision.yaml",
+          "param": "risk_per_trade",
+          "op": "scale_down",
+          "by_pct": 0.5,
+          "note": "reduce risk per trade by 50% when Sharpe below threshold"
+        },
+        {
+          "file": "config\\train.yaml",
+          "param": "train_steps",
+          "op": "increase",
+          "by_pct": 0.25,
+          "note": "increase training / evaluation to get more robust models"
+        }
+      ]
+    },
+    {
+      "rule": "low_profit_factor",
+      "reason": "profit_factor_mean=None < 1.5",
+      "suggest": [
+        {
+          "file": "config\\decision.yaml",
+          "param": "max_position",
+          "op": "scale_down",
+          "by_pct": 0.6,
+          "note": "reduce max concurrent position size"
+        },
+        {
+          "op": "flag_strategies",
+          "why": "low_pf",
+          "note": "mark low-performing strategies for review"
+        }
+      ]
+    },
+    {
+      "rule": "low_winrate",
+      "reason": "mean_winrate=None < 0.55",
+      "suggest": [
+        {
+          "file": "config\\decision.yaml",
+          "param": "min_score_to_enter",
+          "op": "increase",
+          "by_pct": 0.2,
+          "note": "raise entry threshold to be more selective"
+        },
+        {
+          "op": "prioritize_strategies_by",
+          "metric": "sharpe",
+          "note": "use meta-selector to prefer higher sharpe strategies"
+        }
+      ]
+    }
+  ],
+  "apply_results": [
+    {
+      "rule": "low_sharpe",
+      "instr": {
+        "file": "config\\decision.yaml",
+        "param": "risk_per_trade",
+        "op": "scale_down",
+        "by_pct": 0.5,
+        "note": "reduce risk per trade by 50% when Sharpe below threshold"
+      },
+      "result": [
+        {
+          "status": "applied",
+          "file": "config\\decision.yaml",
+          "param": "risk_per_trade",
+          "old": 0.01,
+          "new": 0.005,
+          "op": "scale_down",
+          "by_pct": 0.5
+        }
+      ]
+    },
+    {
+      "rule": "low_sharpe",
+      "instr": {
+        "file": "config\\train.yaml",
+        "param": "train_steps",
+        "op": "increase",
+        "by_pct": 0.25,
+        "note": "increase training / evaluation to get more robust models"
+      },
+      "result": [
+        {
+          "status": "missing_file",
+          "file": "config\\train.yaml"
+        }
+      ]
+    },
+    {
+      "rule": "low_profit_factor",
+      "instr": {
+        "file": "config\\decision.yaml",
+        "param": "max_position",
+        "op": "scale_down",
+        "by_pct": 0.6,
+        "note": "reduce max concurrent position size"
+      },
+      "result": [
+        {
+          "status": "applied",
+          "file": "config\\decision.yaml",
+          "param": "max_position",
+          "old": null,
+          "new": null,
+          "op": "scale_down",
+          "by_pct": 0.6
+        }
+      ]
+    },
+    {
+      "rule": "low_profit_factor",
+      "instr": {
+        "op": "flag_strategies",
+        "why": "low_pf",
+        "note": "mark low-performing strategies for review"
+      },
+      "result": [
+        {
+          "status": "suggested",
+          "op": "flag_strategies",
+          "why": "low_pf"
+        }
+      ]
+    },
+    {
+      "rule": "low_winrate",
+      "instr": {
+        "file": "config\\decision.yaml",
+        "param": "min_score_to_enter",
+        "op": "increase",
+        "by_pct": 0.2,
+        "note": "raise entry threshold to be more selective"
+      },
+      "result": [
+        {
+          "status": "applied",
+          "file": "config\\decision.yaml",
+          "param": "min_score_to_enter",
+          "old": null,
+          "new": null,
+          "op": "increase",
+          "by_pct": 0.2
+        }
+      ]
+    },
+    {
+      "rule": "low_winrate",
+      "instr": {
+        "op": "prioritize_strategies_by",
+        "metric": "sharpe",
+        "note": "use meta-selector to prefer higher sharpe strategies"
+      },
+      "result": [
+        {
+          "status": "suggested",
+          "op": "prioritize",
+          "metric": "sharpe"
+        }
+      ]
+    }
+  ]
+}

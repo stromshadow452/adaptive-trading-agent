@@ -1,0 +1,11 @@
+id: lean_8a98dc8bd3f1
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CrunchDAOSignalExportDemonstrationAlgorithm.py
+name: CrunchDAOSignalExportDemonstrationAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

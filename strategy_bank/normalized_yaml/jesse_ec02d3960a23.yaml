@@ -1,0 +1,11 @@
+id: jesse_ec02d3960a23
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/kvo.py
+name: kvo
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

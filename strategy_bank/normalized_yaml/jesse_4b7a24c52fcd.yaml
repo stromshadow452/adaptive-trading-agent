@@ -1,0 +1,11 @@
+id: jesse_4b7a24c52fcd
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/services/web.py
+name: web
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

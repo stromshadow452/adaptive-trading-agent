@@ -1,0 +1,11 @@
+id: freqtrade_cd48d13c3b0c
+source_vendor: freqtrade
+file: strategy_bank/external_raw/freqtrade/user_data/strategies/berlinguyinca/MultiRSI.py
+name: MultiRSI
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: finrl_meta_3428c646df44
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/data_processors/fx.py
+name: fx
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

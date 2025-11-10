@@ -1,0 +1,11 @@
+id: finrl_0716e387bbc6
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/agents/elegantrl/models.py
+name: models
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

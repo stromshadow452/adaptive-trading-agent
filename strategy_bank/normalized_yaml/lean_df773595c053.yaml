@@ -1,0 +1,11 @@
+id: lean_df773595c053
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CoarseFineOptionUniverseChainRegressionAlgorithm.py
+name: CoarseFineOptionUniverseChainRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: jesse_7222eada31b3
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/mean_ad.py
+name: mean_ad
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

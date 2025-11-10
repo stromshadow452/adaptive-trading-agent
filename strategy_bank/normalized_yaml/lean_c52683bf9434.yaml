@@ -1,0 +1,11 @@
+id: lean_c52683bf9434
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/NumeraiSignalExportDemonstrationAlgorithm.py
+name: NumeraiSignalExportDemonstrationAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

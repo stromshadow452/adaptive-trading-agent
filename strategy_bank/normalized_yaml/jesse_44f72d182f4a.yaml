@@ -1,0 +1,11 @@
+id: jesse_44f72d182f4a
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/support_resistance_with_break.py
+name: support_resistance_with_break
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

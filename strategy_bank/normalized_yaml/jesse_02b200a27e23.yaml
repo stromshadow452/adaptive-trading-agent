@@ -1,0 +1,11 @@
+id: jesse_02b200a27e23
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/rsmk.py
+name: rsmk
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

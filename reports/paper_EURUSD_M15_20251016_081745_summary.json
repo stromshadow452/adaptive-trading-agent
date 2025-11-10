@@ -1,0 +1,22 @@
+{
+  "symbol": "EURUSD",
+  "tf": "M15",
+  "start": "2025-06-01",
+  "end": "2025-08-31",
+  "initial_equity": 100000.0,
+  "cost_bps": 1.0,
+  "deterministic": false,
+  "epsilon": 0.05,
+  "bars": 6178,
+  "action_counts": {
+    "0": 3500,
+    "1": 1438,
+    "2": 1240
+  },
+  "flat_pct": 0.5665263839430237,
+  "long_pct": 0.2327614114600194,
+  "short_pct": 0.20071220459695693,
+  "exposure_pct": 0.4334736160569764,
+  "equity_csv": "reports\\paper_EURUSD_M15_20251016_081745_equity.csv",
+  "trades_csv": "reports\\paper_EURUSD_M15_20251016_081745_trades.csv"
+}

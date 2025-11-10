@@ -1,0 +1,11 @@
+id: lean_2cc73225e976
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/FutureOptionShortCallITMExpiryRegressionAlgorithm.py
+name: FutureOptionShortCallITMExpiryRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

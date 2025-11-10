@@ -1,0 +1,11 @@
+id: lean_e9912d7d0656
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/MacdAlphaModelFrameworkRegressionAlgorithm.py
+name: MacdAlphaModelFrameworkRegressionAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

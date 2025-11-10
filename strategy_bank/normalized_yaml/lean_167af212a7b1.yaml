@@ -1,0 +1,11 @@
+id: lean_167af212a7b1
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CustomDataNIFTYAlgorithm.py
+name: CustomDataNIFTYAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

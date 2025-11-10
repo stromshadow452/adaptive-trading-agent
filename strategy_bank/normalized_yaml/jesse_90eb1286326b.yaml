@@ -1,0 +1,11 @@
+id: jesse_90eb1286326b
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/sinwma.py
+name: sinwma
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

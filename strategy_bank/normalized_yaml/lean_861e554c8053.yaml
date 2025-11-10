@@ -1,0 +1,11 @@
+id: lean_861e554c8053
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/BrokerageModelAlgorithm.py
+name: BrokerageModelAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

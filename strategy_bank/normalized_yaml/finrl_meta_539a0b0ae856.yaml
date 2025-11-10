@@ -1,0 +1,11 @@
+id: finrl_meta_539a0b0ae856
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_future_trading/wt4elegantrl/elegantrl/env.py
+name: env
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

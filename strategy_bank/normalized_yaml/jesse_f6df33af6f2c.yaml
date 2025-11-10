@@ -1,0 +1,11 @@
+id: jesse_f6df33af6f2c
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/devstop.py
+name: devstop
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

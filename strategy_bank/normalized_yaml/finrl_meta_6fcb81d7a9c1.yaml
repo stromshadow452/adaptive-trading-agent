@@ -1,0 +1,11 @@
+id: finrl_meta_6fcb81d7a9c1
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/agents/elegantrl_models.py
+name: elegantrl_models
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

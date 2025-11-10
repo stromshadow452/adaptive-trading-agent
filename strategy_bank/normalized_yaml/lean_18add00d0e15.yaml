@@ -1,0 +1,11 @@
+id: lean_18add00d0e15
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/OnEndOfDayRegressionAlgorithm.py
+name: OnEndOfDayRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

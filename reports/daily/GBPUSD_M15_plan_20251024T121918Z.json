@@ -1,0 +1,47 @@
+{
+  "symbol": "GBPUSD",
+  "tf": "M15",
+  "generated_at": "2025-10-24T12:19:18.367133+00:00",
+  "candidate": {
+    "pair": "GBPUSD",
+    "tf": "M15",
+    "close": 1.1088016915114502,
+    "price": 1.1088016915114502,
+    "score": -1.4279890304346206,
+    "tech_score": -1.4279890304346206,
+    "tech_sharpe": 0.0,
+    "tech_trades": 0.0,
+    "adx": 24.266553147683535,
+    "atr": 0.005443104018961823,
+    "vol_ratio": 0.03286455694469169,
+    "impact": 0.0,
+    "impact_score": 0.0,
+    "surprise_norm": 0.0,
+    "fund_score": 0.0,
+    "within_1h_event": false,
+    "session": "LONDON"
+  },
+  "meta_w": 0.5,
+  "finrl_present": false,
+  "decision": {
+    "enter": true,
+    "side": "sell",
+    "final_score": -1.0709917728259655,
+    "size": 0.007139945152173103,
+    "sl": 0.010886208037923647,
+    "tp": 0.021772416075847293,
+    "sl_type": "atr",
+    "reason": {
+      "screener_score": -1.4279890304346206,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.5
+    },
+    "price": 1.1088016915114502
+  },
+  "notes": [
+    "Hybrid decision engine (meta selector + screener + finrl optional)",
+    "Use 'enter' flag to send order (executor should check risk gates again)."
+  ],
+  "price": 1.1088016915114502
+}

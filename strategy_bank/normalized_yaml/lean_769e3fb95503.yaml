@@ -1,0 +1,11 @@
+id: lean_769e3fb95503
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/VolumeRenkoConsolidatorAlgorithm.py
+name: VolumeRenkoConsolidatorAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

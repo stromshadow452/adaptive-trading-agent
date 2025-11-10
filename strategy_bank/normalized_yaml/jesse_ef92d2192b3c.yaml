@@ -1,0 +1,11 @@
+id: jesse_ef92d2192b3c
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/store/state_logs.py
+name: state_logs
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

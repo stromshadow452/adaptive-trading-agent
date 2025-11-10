@@ -1,0 +1,11 @@
+id: backtesting_py_0a044326a736
+source_vendor: backtesting_py
+file: strategy_bank/external_raw/backtesting_py/doc/scripts/logo.py
+name: logo
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

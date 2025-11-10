@@ -1,0 +1,11 @@
+id: lean_056ba9d8e301
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/AddFutureOptionContractDataStreamingRegressionAlgorithm.py
+name: AddFutureOptionContractDataStreamingRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

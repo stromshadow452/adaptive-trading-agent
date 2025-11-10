@@ -1,0 +1,11 @@
+id: jesse_200a76395d69
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/pma.py
+name: pma
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: jesse_7b161f17198f
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/natr.py
+name: natr
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

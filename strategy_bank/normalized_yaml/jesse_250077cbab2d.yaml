@@ -1,0 +1,11 @@
+id: jesse_250077cbab2d
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/constants.py
+name: constants
+family: ml_rl
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

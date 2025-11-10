@@ -1,0 +1,45 @@
+[
+  {
+    "pair": "AUDUSD",
+    "tf": "H4",
+    "score": 4.0,
+    "reasons": [
+      "ema8>ema21",
+      "rsi_in_30-70",
+      "vol_ok"
+    ],
+    "close": 0.6433
+  },
+  {
+    "pair": "GBPUSD",
+    "tf": "H4",
+    "score": 4.0,
+    "reasons": [
+      "ema8>ema21",
+      "rsi_in_30-70",
+      "vol_ok"
+    ],
+    "close": 1.35174
+  },
+  {
+    "pair": "USDJPY",
+    "tf": "H4",
+    "score": 4.0,
+    "reasons": [
+      "ema8>ema21",
+      "rsi_in_30-70",
+      "vol_ok"
+    ],
+    "close": 148.749
+  },
+  {
+    "pair": "EURUSD",
+    "tf": "H4",
+    "score": 2.0,
+    "reasons": [
+      "rsi_in_30-70",
+      "vol_ok"
+    ],
+    "close": 1.16326
+  }
+]

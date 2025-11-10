@@ -1,0 +1,11 @@
+id: jesse_91e978dffd0b
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/notification_api_keys.py
+name: notification_api_keys
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

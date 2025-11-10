@@ -1,0 +1,11 @@
+id: finrl_16bdd4c6209e
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/meta/data_processors/processor_joinquant.py
+name: processor_joinquant
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

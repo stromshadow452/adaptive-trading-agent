@@ -1,0 +1,11 @@
+id: jesse_e48dfb2ad9f1
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/midpoint.py
+name: midpoint
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

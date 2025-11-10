@@ -1,0 +1,11 @@
+id: lean_ce994a8f364d
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CustomConsolidatorRegressionAlgorithm.py
+name: CustomConsolidatorRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

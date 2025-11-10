@@ -1,0 +1,11 @@
+id: jesse_cf002f23c0a8
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/hwma.py
+name: hwma
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: finrl_meta_b27b1ce2b5e7
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_execution_optimizing/order_execution_qlib/trade/action/base.py
+name: base
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

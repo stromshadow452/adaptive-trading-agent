@@ -1,0 +1,11 @@
+id: jesse_1c4823405941
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/pfe.py
+name: pfe
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

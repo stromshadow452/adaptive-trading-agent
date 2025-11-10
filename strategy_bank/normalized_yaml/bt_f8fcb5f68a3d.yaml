@@ -1,0 +1,11 @@
+id: bt_f8fcb5f68a3d
+source_vendor: bt
+file: strategy_bank/external_raw/bt/examples/buy_and_hold.py
+name: buy_and_hold
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

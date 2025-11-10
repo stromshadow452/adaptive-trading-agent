@@ -1,0 +1,11 @@
+id: lean_c41511ef8ca3
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CustomModelsPEP8Algorithm.py
+name: CustomModelsPEP8Algorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

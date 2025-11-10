@@ -1,0 +1,11 @@
+id: lean_b314f473ddb5
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/EmaCrossUniverseSelectionFrameworkAlgorithm.py
+name: EmaCrossUniverseSelectionFrameworkAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: lean_77c9f9d331b2
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/BasicTemplateSPXWeeklyIndexOptionsAlgorithm.py
+name: BasicTemplateSPXWeeklyIndexOptionsAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

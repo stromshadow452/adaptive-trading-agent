@@ -1,0 +1,11 @@
+id: bt_6efe10ea86b5
+source_vendor: bt
+file: strategy_bank/external_raw/bt/docs/source/_themes/klink/setup.py
+name: setup
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

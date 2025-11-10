@@ -1,0 +1,11 @@
+id: lean_cdb95de2cabc
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Alphas/HistoricalReturnsAlphaModel.py
+name: HistoricalReturnsAlphaModel
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

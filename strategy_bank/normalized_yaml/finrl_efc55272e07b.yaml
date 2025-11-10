@@ -1,0 +1,11 @@
+id: finrl_efc55272e07b
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/meta/preprocessor/preprocessors.py
+name: preprocessors
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

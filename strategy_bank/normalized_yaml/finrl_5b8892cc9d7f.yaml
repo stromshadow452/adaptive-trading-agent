@@ -1,0 +1,11 @@
+id: finrl_5b8892cc9d7f
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/examples/FinRL_PaperTrading_Demo_refactored.py
+name: FinRL_PaperTrading_Demo_refactored
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,3602 @@
+[
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.18134,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.834854Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.18134,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.834885Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.18134,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.834893Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 1.308,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.846373Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 1.308,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.846380Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 1.308,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.846382Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.2458,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.857089Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.2458,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.857102Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.2458,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.857104Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.594,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.873611Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.594,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.873624Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.594,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.873628Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8451,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.889366Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8451,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.889376Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8451,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.889378Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8268,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.901172Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8268,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.901178Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8268,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.901180Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.18134,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.908590Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.18134,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.908600Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.18134,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.908604Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 1.308,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.915286Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 1.308,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.915294Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 1.308,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.915298Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.2458,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.920970Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.2458,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.920979Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.2458,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.920989Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.594,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.926203Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.594,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.926212Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.594,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.926216Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8451,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.934411Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8451,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.934419Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8451,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.934421Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.832,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.940949Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.832,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.940959Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.832,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.940963Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.18134,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.949331Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.18134,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.949338Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.18134,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.949340Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 1.308,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.959653Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 1.308,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.959665Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 1.308,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.959668Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.2458,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.968589Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.2458,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.968598Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.2458,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.968602Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.594,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.977262Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.594,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.977270Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.594,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.977272Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8451,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.984685Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8451,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.984691Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8451,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.984694Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.832,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.992192Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.832,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.992201Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.832,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.992204Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.18134,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.998292Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.18134,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.998302Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.18134,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:45.998306Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 1.308,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.007288Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 1.308,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.007307Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 1.308,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.007312Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.2458,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.014717Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.2458,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.014727Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.2458,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.014729Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.594,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.023313Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.594,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.023323Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.594,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.023333Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8451,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.034638Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8451,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.034647Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8451,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.034649Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.832,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.042824Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.832,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.042839Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.832,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.042843Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.18134,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.056387Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.18134,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.056402Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.18134,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.056405Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 1.308,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.081452Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 1.308,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.081466Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 1.308,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.081470Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.2458,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.106121Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.2458,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.106136Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.2458,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.106139Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.594,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.129863Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.594,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.129876Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.594,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.129879Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8451,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.154075Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8451,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.154090Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8451,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.154092Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8268,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.175517Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8268,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.175531Z"
+  },
+  {
+    "symbol": "ADA-USDT",
+    "price": 0.8268,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.175533Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 37.3588,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.186628Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 37.3588,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.186641Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 37.3588,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.186643Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 511.4,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.201547Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 511.4,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.201561Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 511.4,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.201563Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 246.3,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.215763Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 246.3,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.215777Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 246.3,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.215779Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 311.8,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.230606Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 311.8,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.230619Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 311.8,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.230622Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 702.3,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.245407Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 702.3,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.245421Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 702.3,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.245430Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 849.69,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.259514Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 849.69,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.259527Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 849.69,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.259529Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 37.3588,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.269779Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 37.3588,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.269796Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 37.3588,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.269800Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 511.4,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.279486Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 511.4,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.279498Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 511.4,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.279501Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 246.3,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.289155Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 246.3,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.289166Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 246.3,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.289170Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 311.8,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.297495Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 311.8,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.297514Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 311.8,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.297516Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 702.3,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.308321Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 702.3,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.308336Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 702.3,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.308340Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 850.78,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.316571Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 850.78,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.316582Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 850.78,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.316586Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 37.3588,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.325367Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 37.3588,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.325380Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 37.3588,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.325383Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 511.4,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.336696Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 511.4,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.336705Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 511.4,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.336707Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 246.3,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.347886Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 246.3,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.347895Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 246.3,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.347897Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 311.8,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.357657Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 311.8,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.357666Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 311.8,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.357668Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 702.3,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.367328Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 702.3,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.367337Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 702.3,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.367339Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 850.78,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.383109Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 850.78,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.383123Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 850.78,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.383131Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 37.3588,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.391010Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 37.3588,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.391021Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 37.3588,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.391025Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 511.4,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.401081Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 511.4,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.401097Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 511.4,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.401102Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 246.3,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.409808Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 246.3,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.409820Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 246.3,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.409824Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 311.8,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.418411Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 311.8,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.418420Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 311.8,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.418422Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 702.3,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.427497Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 702.3,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.427508Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 702.3,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.427513Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 850.78,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.435794Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 850.78,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.435803Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 850.78,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.435805Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 37.3588,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.448340Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 37.3588,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.448353Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 37.3588,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.448355Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 511.4,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.474396Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 511.4,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.474409Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 511.4,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.474412Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 246.3,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.497872Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 246.3,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.497886Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 246.3,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.497889Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 311.8,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.523351Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 311.8,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.523366Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 311.8,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.523372Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 702.3,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.547102Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 702.3,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.547116Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 702.3,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.547118Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 849.69,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.568057Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 849.69,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.568071Z"
+  },
+  {
+    "symbol": "BNB-USDT",
+    "price": 849.69,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.568073Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 28923.63,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.579105Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 28923.63,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.579117Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 28923.63,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.579126Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 46216.93,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.595404Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 46216.93,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.595418Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 46216.93,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.595420Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 16542.4,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.611796Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 16542.4,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.611810Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 16542.4,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.611812Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 42283.58,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.628790Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 42283.58,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.628798Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 42283.58,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.628800Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 93576.0,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.644052Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 93576.0,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.644061Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 93576.0,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.644063Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 111056.01,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.654938Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 111056.01,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.654953Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 111056.01,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.654955Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 28923.63,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.663646Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 28923.63,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.663660Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 28923.63,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.663664Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 46216.93,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.671911Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 46216.93,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.671922Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 46216.93,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.671924Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 16542.4,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.680244Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 16542.4,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.680256Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 16542.4,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.680258Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 42283.58,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.688222Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 42283.58,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.688231Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 42283.58,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.688233Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 93576.0,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.696554Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 93576.0,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.696565Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 93576.0,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.696569Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 111136.92,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.705098Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 111136.92,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.705119Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 111136.92,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.705124Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 28923.63,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.714773Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 28923.63,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.714781Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 28923.63,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.714784Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 46216.93,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.724888Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 46216.93,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.724900Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 46216.93,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.724907Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 16542.4,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.733938Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 16542.4,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.733951Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 16542.4,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.733953Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 42283.58,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.744666Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 42283.58,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.744679Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 42283.58,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.744682Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 93576.0,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.756700Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 93576.0,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.756713Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 93576.0,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.756715Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 111163.37,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.768292Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 111163.37,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.768304Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 111163.37,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.768308Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 28923.63,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.777602Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 28923.63,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.777616Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 28923.63,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.777619Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 46216.93,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.786697Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 46216.93,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.786708Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 46216.93,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.786710Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 16542.4,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.797355Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 16542.4,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.797372Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 16542.4,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.797376Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 42283.58,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.807494Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 42283.58,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.807505Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 42283.58,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.807507Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 93576.0,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.818991Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 93576.0,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.819007Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 93576.0,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.819011Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 111150.97,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.826984Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 111150.97,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.826996Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 111150.97,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.826998Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 28923.63,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.842071Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 28923.63,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.842078Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 28923.63,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.842080Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 46216.93,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.865056Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 46216.93,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.865069Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 46216.93,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.865072Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 16542.4,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.888441Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 16542.4,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.888449Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 16542.4,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.888459Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 42283.58,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.909481Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 42283.58,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.909489Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 42283.58,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.909491Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 93576.0,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.932291Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 93576.0,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.932327Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 93576.0,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.932330Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 111056.01,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.952570Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 111056.01,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.952581Z"
+  },
+  {
+    "symbol": "BTC-USDT",
+    "price": 111056.01,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.952584Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 736.42,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.960522Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 736.42,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.960529Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 736.42,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.960531Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3676.23,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.974834Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3676.23,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.974846Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3676.23,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.974848Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 1196.13,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.987809Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 1196.13,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.987817Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 1196.13,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.987819Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 2281.87,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.999333Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 2281.87,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.999341Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 2281.87,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:46.999343Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3337.78,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.012799Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3337.78,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.012809Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3337.78,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.012812Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 4298.38,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.024914Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 4298.38,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.024927Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 4298.38,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.024929Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 736.42,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.032438Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 736.42,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.032447Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 736.42,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.032450Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3676.23,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.040316Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3676.23,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.040327Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3676.23,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.040331Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 1196.13,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.046803Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 1196.13,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.046817Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 1196.13,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.046823Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 2281.87,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.053348Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 2281.87,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.053355Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 2281.87,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.053360Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3337.78,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.062165Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3337.78,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.062179Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3337.78,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.062183Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 4304.56,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.068482Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 4304.56,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.068491Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 4304.56,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.068495Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 736.42,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.075351Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 736.42,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.075360Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 736.42,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.075364Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3676.23,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.083613Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3676.23,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.083620Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3676.23,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.083622Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 1196.13,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.091172Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 1196.13,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.091179Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 1196.13,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.091181Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 2281.87,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.098353Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 2281.87,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.098361Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 2281.87,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.098363Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3337.78,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.105407Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3337.78,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.105415Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3337.78,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.105417Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 4304.55,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.112858Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 4304.55,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.112866Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 4304.55,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.112868Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 736.42,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.118967Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 736.42,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.118983Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 736.42,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.118987Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3676.23,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.127354Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3676.23,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.127366Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3676.23,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.127371Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 1196.13,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.134703Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 1196.13,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.134710Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 1196.13,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.134712Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 2281.87,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.141284Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 2281.87,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.141294Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 2281.87,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.141298Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3337.78,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.151252Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3337.78,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.151267Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3337.78,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.151282Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 4304.55,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.158509Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 4304.55,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.158520Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 4304.55,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.158524Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 736.42,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.169214Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 736.42,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.169221Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 736.42,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.169223Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3676.23,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.190639Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3676.23,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.190646Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3676.23,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.190649Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 1196.13,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.211411Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 1196.13,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.211418Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 1196.13,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.211420Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 2281.87,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.234170Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 2281.87,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.234177Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 2281.87,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.234182Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3337.78,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.255127Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3337.78,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.255134Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 3337.78,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.255136Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 4298.38,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.271348Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 4298.38,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.271356Z"
+  },
+  {
+    "symbol": "ETH-USDT",
+    "price": 4298.38,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.271359Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 1.5073,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.279775Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 1.5073,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.279782Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 1.5073,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.279785Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 169.99,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.291875Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 169.99,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.291883Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 169.99,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.291885Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 9.97,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.304148Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 9.97,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.304156Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 9.97,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.304158Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 101.72,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.315912Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 101.72,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.315919Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 101.72,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.315921Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 189.31,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.328060Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 189.31,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.328067Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 189.31,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.328069Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 203.02,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.336916Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 203.02,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.336923Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 203.02,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.336927Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 1.5073,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.343230Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 1.5073,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.343238Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 1.5073,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.343241Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 169.99,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.349806Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 169.99,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.349818Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 169.99,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.349824Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 9.97,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.356465Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 9.97,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.356479Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 9.97,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.356483Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 101.72,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.363563Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 101.72,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.363572Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 101.72,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.363576Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 189.31,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.369456Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 189.31,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.369465Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 189.31,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.369469Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 204.33,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.374366Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 204.33,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.374374Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 204.33,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.374377Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 1.5073,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.380203Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 1.5073,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.380211Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 1.5073,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.380214Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 169.99,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.388764Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 169.99,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.388771Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 169.99,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.388774Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 9.97,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.395502Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 9.97,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.395508Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 9.97,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.395510Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 101.72,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.404045Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 101.72,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.404053Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 101.72,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.404055Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 189.31,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.411710Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 189.31,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.411716Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 189.31,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.411718Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 204.33,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.420664Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 204.33,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.420675Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 204.33,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.420677Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 1.5073,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.427363Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 1.5073,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.427372Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 1.5073,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.427380Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 169.99,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.434075Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 169.99,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.434084Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 169.99,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.434088Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 9.97,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.440490Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 9.97,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.440498Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 9.97,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.440502Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 101.72,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.445971Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 101.72,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.445977Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 101.72,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.445979Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 189.31,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.453309Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 189.31,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.453318Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 189.31,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.453322Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 204.32,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.459531Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 204.32,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.459540Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 204.32,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.459544Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 1.5073,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.470702Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 1.5073,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.470709Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 1.5073,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.470711Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 169.99,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.491242Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 169.99,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.491250Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 169.99,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.491252Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 9.97,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.510991Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 9.97,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.510999Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 9.97,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.511001Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 101.72,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.530283Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 101.72,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.530290Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 101.72,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.530292Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 189.31,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.550731Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 189.31,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.550739Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 189.31,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.550741Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 203.02,
+    "tf": "M5",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.566459Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 203.02,
+    "tf": "M15",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.566466Z"
+  },
+  {
+    "symbol": "SOL-USDT",
+    "price": 203.02,
+    "tf": "H1",
+    "source": ".\\data\\raw\\crypto",
+    "kind": "crypto",
+    "timestamp": "2025-10-27T18:04:47.566468Z"
+  }
+]

@@ -1,0 +1,11 @@
+id: lean_dae4ec192941
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Selection/QC500UniverseSelectionModel.py
+name: QC500UniverseSelectionModel
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

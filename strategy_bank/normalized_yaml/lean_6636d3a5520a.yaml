@@ -1,0 +1,11 @@
+id: lean_6636d3a5520a
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/BasicSetAccountCurrencyAlgorithm.py
+name: BasicSetAccountCurrencyAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

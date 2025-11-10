@@ -1,0 +1,11 @@
+id: jesse_93a39d09f379
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/models/DailyBalance.py
+name: DailyBalance
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

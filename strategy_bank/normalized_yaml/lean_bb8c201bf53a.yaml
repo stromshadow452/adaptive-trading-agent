@@ -1,0 +1,11 @@
+id: lean_bb8c201bf53a
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/WarmupHistoryAlgorithm.py
+name: WarmupHistoryAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

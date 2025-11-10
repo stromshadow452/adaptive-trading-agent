@@ -1,0 +1,11 @@
+id: jesse_bd9e5c850c58
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/fosc.py
+name: fosc
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

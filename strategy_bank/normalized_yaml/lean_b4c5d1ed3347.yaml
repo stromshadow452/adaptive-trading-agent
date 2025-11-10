@@ -1,0 +1,11 @@
+id: lean_b4c5d1ed3347
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Common/AlgorithmImports.py
+name: AlgorithmImports
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

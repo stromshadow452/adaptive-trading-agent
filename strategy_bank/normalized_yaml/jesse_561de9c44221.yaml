@@ -1,0 +1,11 @@
+id: jesse_561de9c44221
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/services/installer.py
+name: installer
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

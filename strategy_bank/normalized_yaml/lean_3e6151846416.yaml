@@ -1,0 +1,11 @@
+id: lean_3e6151846416
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/MarketOnCloseOrderBufferRegressionAlgorithm.py
+name: MarketOnCloseOrderBufferRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

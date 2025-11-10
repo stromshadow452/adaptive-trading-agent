@@ -1,0 +1,11 @@
+id: jesse_2ada647b4267
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/ui.py
+name: ui
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

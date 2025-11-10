@@ -1,0 +1,11 @@
+id: jesse_2499fb273a89
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/tests/test_broker.py
+name: test_broker
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

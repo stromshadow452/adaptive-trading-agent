@@ -1,0 +1,11 @@
+id: jesse_353a3549e768
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/controllers/websocket_controller.py
+name: websocket_controller
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

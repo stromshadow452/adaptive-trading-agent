@@ -1,0 +1,11 @@
+id: jesse_453d85edd7d5
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/research/import_candles.py
+name: import_candles
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

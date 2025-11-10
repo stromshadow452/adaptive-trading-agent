@@ -1,0 +1,11 @@
+id: lean_f1187fef9d02
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/IndexOptionCallITMExpiryRegressionAlgorithm.py
+name: IndexOptionCallITMExpiryRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

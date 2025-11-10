@@ -1,0 +1,11 @@
+id: lean_2abb69f4825b
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/NullOptionAssignmentRegressionAlgorithm.py
+name: NullOptionAssignmentRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

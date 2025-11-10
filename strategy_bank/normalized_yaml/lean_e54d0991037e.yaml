@@ -1,0 +1,11 @@
+id: lean_e54d0991037e
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Tests/Python/PandasTests/PandasMapperTests.py
+name: PandasMapperTests
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

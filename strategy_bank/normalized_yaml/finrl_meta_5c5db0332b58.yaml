@@ -1,0 +1,11 @@
+id: finrl_meta_5c5db0332b58
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_execution_optimizing/order_execution_qlib/trade/collector.py
+name: collector
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

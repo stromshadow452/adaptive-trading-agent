@@ -1,0 +1,11 @@
+id: jesse_8ce2dfe1e49f
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/tests/test_position.py
+name: test_position
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

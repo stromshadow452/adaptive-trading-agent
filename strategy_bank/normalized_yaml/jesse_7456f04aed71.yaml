@@ -1,0 +1,11 @@
+id: jesse_7456f04aed71
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/import_candles_mode/drivers/Bitfinex/bitfinex_utils.py
+name: bitfinex_utils
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

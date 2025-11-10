@@ -1,0 +1,11 @@
+id: lean_3c69e246b8a8
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/BasicTemplateCfdAlgorithm.py
+name: BasicTemplateCfdAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

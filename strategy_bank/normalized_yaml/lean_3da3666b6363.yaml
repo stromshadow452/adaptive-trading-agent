@@ -1,0 +1,11 @@
+id: lean_3da3666b6363
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Common/PandasMapper.py
+name: PandasMapper
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

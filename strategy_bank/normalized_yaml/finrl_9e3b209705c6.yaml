@@ -1,0 +1,11 @@
+id: finrl_9e3b209705c6
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/agents/stablebaselines3/models.py
+name: models
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: freqtrade_b9a458f3b51d
+source_vendor: freqtrade
+file: strategy_bank/external_raw/freqtrade/user_data/strategies/PowerTower.py
+name: PowerTower
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

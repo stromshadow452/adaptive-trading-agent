@@ -1,0 +1,11 @@
+id: finrl_meta_cd6265b4e514
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/data_processor.py
+name: data_processor
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

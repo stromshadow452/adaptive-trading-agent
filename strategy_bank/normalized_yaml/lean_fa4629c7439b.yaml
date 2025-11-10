@@ -1,0 +1,11 @@
+id: lean_fa4629c7439b
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/OptionPriceModelForUnsupportedEuropeanOptionRegressionAlgorithm.py
+name: OptionPriceModelForUnsupportedEuropeanOptionRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

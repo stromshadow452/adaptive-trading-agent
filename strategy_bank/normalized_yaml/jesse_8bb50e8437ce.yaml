@@ -1,0 +1,11 @@
+id: jesse_8bb50e8437ce
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/chande.py
+name: chande
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

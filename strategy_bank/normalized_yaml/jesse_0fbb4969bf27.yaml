@@ -1,0 +1,11 @@
+id: jesse_0fbb4969bf27
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/models/Log.py
+name: Log
+family: ml_rl
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

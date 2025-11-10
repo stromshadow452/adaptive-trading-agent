@@ -1,0 +1,11 @@
+id: jesse_e389fa427f6a
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/strategies/Test01/__init__.py
+name: __init__
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

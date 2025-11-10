@@ -1,0 +1,532 @@
+{
+  "candidates": [
+    {
+      "symbol": "ADAUSD",
+      "price": 0.8268,
+      "tf": "M5",
+      "kind": "crypto",
+      "csv_path": ".\\data\\raw\\crypto\\ADA-USDT_5m_2025.csv",
+      "timestamp": "2025-10-27T18:27:21.455964Z"
+    },
+    {
+      "symbol": "ADAUSD",
+      "price": 0.8268,
+      "tf": "M15",
+      "kind": "crypto",
+      "csv_path": ".\\data\\raw\\crypto\\ADA-USDT_5m_2025.csv",
+      "timestamp": "2025-10-27T18:27:21.455990Z"
+    },
+    {
+      "symbol": "ADAUSD",
+      "price": 0.8268,
+      "tf": "H1",
+      "kind": "crypto",
+      "csv_path": ".\\data\\raw\\crypto\\ADA-USDT_5m_2025.csv",
+      "timestamp": "2025-10-27T18:27:21.455993Z"
+    },
+    {
+      "symbol": "BNBUSD",
+      "price": 849.69,
+      "tf": "M5",
+      "kind": "crypto",
+      "csv_path": ".\\data\\raw\\crypto\\BNB-USDT_5m_2025.csv",
+      "timestamp": "2025-10-27T18:27:21.464986Z"
+    },
+    {
+      "symbol": "BNBUSD",
+      "price": 849.69,
+      "tf": "M15",
+      "kind": "crypto",
+      "csv_path": ".\\data\\raw\\crypto\\BNB-USDT_5m_2025.csv",
+      "timestamp": "2025-10-27T18:27:21.465001Z"
+    },
+    {
+      "symbol": "BNBUSD",
+      "price": 849.69,
+      "tf": "H1",
+      "kind": "crypto",
+      "csv_path": ".\\data\\raw\\crypto\\BNB-USDT_5m_2025.csv",
+      "timestamp": "2025-10-27T18:27:21.465003Z"
+    },
+    {
+      "symbol": "BTCUSD",
+      "price": 111056.01,
+      "tf": "M5",
+      "kind": "crypto",
+      "csv_path": ".\\data\\raw\\crypto\\BTC-USDT_5m_2025.csv",
+      "timestamp": "2025-10-27T18:27:21.474759Z"
+    },
+    {
+      "symbol": "BTCUSD",
+      "price": 111056.01,
+      "tf": "M15",
+      "kind": "crypto",
+      "csv_path": ".\\data\\raw\\crypto\\BTC-USDT_5m_2025.csv",
+      "timestamp": "2025-10-27T18:27:21.474777Z"
+    },
+    {
+      "symbol": "BTCUSD",
+      "price": 111056.01,
+      "tf": "H1",
+      "kind": "crypto",
+      "csv_path": ".\\data\\raw\\crypto\\BTC-USDT_5m_2025.csv",
+      "timestamp": "2025-10-27T18:27:21.474779Z"
+    },
+    {
+      "symbol": "ETHUSD",
+      "price": 4298.38,
+      "tf": "M5",
+      "kind": "crypto",
+      "csv_path": ".\\data\\raw\\crypto\\ETH-USDT_5m_2025.csv",
+      "timestamp": "2025-10-27T18:27:21.484345Z"
+    },
+    {
+      "symbol": "ETHUSD",
+      "price": 4298.38,
+      "tf": "M15",
+      "kind": "crypto",
+      "csv_path": ".\\data\\raw\\crypto\\ETH-USDT_5m_2025.csv",
+      "timestamp": "2025-10-27T18:27:21.484362Z"
+    },
+    {
+      "symbol": "ETHUSD",
+      "price": 4298.38,
+      "tf": "H1",
+      "kind": "crypto",
+      "csv_path": ".\\data\\raw\\crypto\\ETH-USDT_5m_2025.csv",
+      "timestamp": "2025-10-27T18:27:21.484366Z"
+    },
+    {
+      "symbol": "SOLUSD",
+      "price": 203.02,
+      "tf": "M5",
+      "kind": "crypto",
+      "csv_path": ".\\data\\raw\\crypto\\SOL-USDT_5m_2025.csv",
+      "timestamp": "2025-10-27T18:27:21.493136Z"
+    },
+    {
+      "symbol": "SOLUSD",
+      "price": 203.02,
+      "tf": "M15",
+      "kind": "crypto",
+      "csv_path": ".\\data\\raw\\crypto\\SOL-USDT_5m_2025.csv",
+      "timestamp": "2025-10-27T18:27:21.493144Z"
+    },
+    {
+      "symbol": "SOLUSD",
+      "price": 203.02,
+      "tf": "H1",
+      "kind": "crypto",
+      "csv_path": ".\\data\\raw\\crypto\\SOL-USDT_5m_2025.csv",
+      "timestamp": "2025-10-27T18:27:21.493146Z"
+    },
+    {
+      "symbol": "EURGBP",
+      "price": 0.8663,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURGBP_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.505584Z"
+    },
+    {
+      "symbol": "EURGBP",
+      "price": 0.8663,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURGBP_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.505597Z"
+    },
+    {
+      "symbol": "EURGBP",
+      "price": 0.8663,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURGBP_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.505600Z"
+    },
+    {
+      "symbol": "EURUSD",
+      "price": 1.16825,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.514188Z"
+    },
+    {
+      "symbol": "EURUSD",
+      "price": 1.16825,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.514204Z"
+    },
+    {
+      "symbol": "EURUSD",
+      "price": 1.16825,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.514208Z"
+    },
+    {
+      "symbol": "GBPUSD",
+      "price": 1.2201,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.521749Z"
+    },
+    {
+      "symbol": "GBPUSD",
+      "price": 1.2201,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.521759Z"
+    },
+    {
+      "symbol": "GBPUSD",
+      "price": 1.2201,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.521762Z"
+    },
+    {
+      "symbol": "USDCAD",
+      "price": 1.3567,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\USDCAD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.532954Z"
+    },
+    {
+      "symbol": "USDCAD",
+      "price": 1.3567,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\USDCAD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.532976Z"
+    },
+    {
+      "symbol": "USDCAD",
+      "price": 1.3567,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\USDCAD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.532980Z"
+    },
+    {
+      "symbol": "USDJPY",
+      "price": 149.34,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\USDJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.541127Z"
+    },
+    {
+      "symbol": "USDJPY",
+      "price": 149.34,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\USDJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.541135Z"
+    },
+    {
+      "symbol": "USDJPY",
+      "price": 149.34,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\USDJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.541137Z"
+    },
+    {
+      "symbol": "AUDJPY",
+      "price": 96.07,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\AUDJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.548411Z"
+    },
+    {
+      "symbol": "AUDJPY",
+      "price": 96.07,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\AUDJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.548418Z"
+    },
+    {
+      "symbol": "AUDJPY",
+      "price": 96.07,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\AUDJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.548421Z"
+    },
+    {
+      "symbol": "AUDUSD",
+      "price": 0.6433,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\AUDUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.555784Z"
+    },
+    {
+      "symbol": "AUDUSD",
+      "price": 0.6433,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\AUDUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.555790Z"
+    },
+    {
+      "symbol": "AUDUSD",
+      "price": 0.6433,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\AUDUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.555792Z"
+    },
+    {
+      "symbol": "CHFJPY",
+      "price": 163.17,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\CHFJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.562705Z"
+    },
+    {
+      "symbol": "CHFJPY",
+      "price": 163.17,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\CHFJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.562712Z"
+    },
+    {
+      "symbol": "CHFJPY",
+      "price": 163.17,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\CHFJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.562714Z"
+    },
+    {
+      "symbol": "EURCAD",
+      "price": 1.4344,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURCAD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.591380Z"
+    },
+    {
+      "symbol": "EURCAD",
+      "price": 1.4344,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURCAD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.591389Z"
+    },
+    {
+      "symbol": "EURCAD",
+      "price": 1.4344,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURCAD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.591391Z"
+    },
+    {
+      "symbol": "EURCHF",
+      "price": 0.9674,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.600934Z"
+    },
+    {
+      "symbol": "EURCHF",
+      "price": 0.9674,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.600945Z"
+    },
+    {
+      "symbol": "EURCHF",
+      "price": 0.9674,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.600948Z"
+    },
+    {
+      "symbol": "EURJPY",
+      "price": 157.9,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.608460Z"
+    },
+    {
+      "symbol": "EURJPY",
+      "price": 157.9,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.608467Z"
+    },
+    {
+      "symbol": "EURJPY",
+      "price": 157.9,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.608469Z"
+    },
+    {
+      "symbol": "GBPCHF",
+      "price": 1.1164,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.615246Z"
+    },
+    {
+      "symbol": "GBPCHF",
+      "price": 1.1164,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.615255Z"
+    },
+    {
+      "symbol": "GBPCHF",
+      "price": 1.1164,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.615259Z"
+    },
+    {
+      "symbol": "GBPJPY",
+      "price": 182.22,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.623668Z"
+    },
+    {
+      "symbol": "GBPJPY",
+      "price": 182.22,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.623679Z"
+    },
+    {
+      "symbol": "GBPJPY",
+      "price": 182.22,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.623683Z"
+    },
+    {
+      "symbol": "NZDJPY",
+      "price": 89.56,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\NZDJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.631098Z"
+    },
+    {
+      "symbol": "NZDJPY",
+      "price": 89.56,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\NZDJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.631104Z"
+    },
+    {
+      "symbol": "NZDJPY",
+      "price": 89.56,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\NZDJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.631106Z"
+    },
+    {
+      "symbol": "NZDUSD",
+      "price": 0.5997,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\NZDUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.638009Z"
+    },
+    {
+      "symbol": "NZDUSD",
+      "price": 0.5997,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\NZDUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.638017Z"
+    },
+    {
+      "symbol": "NZDUSD",
+      "price": 0.5997,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\NZDUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.638019Z"
+    },
+    {
+      "symbol": "USDCHF",
+      "price": 0.915,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\USDCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.645640Z"
+    },
+    {
+      "symbol": "USDCHF",
+      "price": 0.915,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\USDCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.645646Z"
+    },
+    {
+      "symbol": "USDCHF",
+      "price": 0.915,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\USDCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.645649Z"
+    },
+    {
+      "symbol": "XAGUSD",
+      "price": 22.17,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\XAGUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.652281Z"
+    },
+    {
+      "symbol": "XAGUSD",
+      "price": 22.17,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\XAGUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.652290Z"
+    },
+    {
+      "symbol": "XAGUSD",
+      "price": 22.17,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\XAGUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.652294Z"
+    }
+  ]
+}

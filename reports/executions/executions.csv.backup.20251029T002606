@@ -1,0 +1,9 @@
+﻿"ts","mode","symbol","tf","side","price","size","sl","tp","sl_type","status","notes","close_ts"
+"2025-10-28T18:31:31.141714Z","paper","EURUSD","M15","sell","1.15970276","0.05000000","1.16842895","1.14661348","atr","OPEN","EURUSD-1761676291141;closed_manual;reopened_manual",""
+2025-10-28T18:54:08.748117Z,paper,EURUSD,M15,sell,1.15970276,0.05000000,1.16842895,1.14661348,atr,OPEN,EURUSD-1761677648748,reports/daily/EURUSD_M15_plan_20251028T144648Z.json
+2025-10-28T18:54:08.918068Z,paper,AUDUSD,M15,sell,1.17803917,0.00713995,,,atr,OPEN,AUDUSD-1761677648918,E:\adaptive-trading-agent (2) (1)\adaptive-trading-agent (2)\reports\daily\AUDUSD_M15_plan_20251024T121259Z.json
+2025-10-28T18:54:09.011217Z,paper,AUDUSD,M15,sell,1.17803917,0.00713995,,,atr,OPEN,AUDUSD-1761677649011,E:\adaptive-trading-agent (2) (1)\adaptive-trading-agent (2)\reports\daily\AUDUSD_M15_plan_20251024T121918Z.json
+2025-10-28T18:54:10.122766Z,paper,BTCUSD,M15,sell,1.19256802,0.00713995,,,atr,OPEN,BTCUSD-1761677650122,E:\adaptive-trading-agent (2) (1)\adaptive-trading-agent (2)\reports\daily\BTCUSD_M15_plan_20251024T121259Z.json
+2025-10-28T18:54:10.228426Z,paper,BTCUSD,M15,sell,1.19256802,0.00713995,,,atr,OPEN,BTCUSD-1761677650228,E:\adaptive-trading-agent (2) (1)\adaptive-trading-agent (2)\reports\daily\BTCUSD_M15_plan_20251024T121918Z.json
+2025-10-28T18:54:11.173194Z,paper,GBPUSD,M15,sell,1.10880169,0.00713995,,,atr,OPEN,GBPUSD-1761677651173,E:\adaptive-trading-agent (2) (1)\adaptive-trading-agent (2)\reports\daily\GBPUSD_M15_plan_20251024T121259Z.json
+2025-10-28T18:54:11.268179Z,paper,GBPUSD,M15,sell,1.10880169,0.00713995,,,atr,OPEN,GBPUSD-1761677651268,E:\adaptive-trading-agent (2) (1)\adaptive-trading-agent (2)\reports\daily\GBPUSD_M15_plan_20251024T121918Z.json

@@ -1,0 +1,11 @@
+id: lean_8260c1bf2176
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/AutoRegressiveIntegratedMovingAverageRegressionAlgorithm.py
+name: AutoRegressiveIntegratedMovingAverageRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

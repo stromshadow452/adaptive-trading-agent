@@ -1,0 +1,11 @@
+id: freqtrade_62210c8badcc
+source_vendor: freqtrade
+file: strategy_bank/external_raw/freqtrade/user_data/strategies/BreakEven.py
+name: BreakEven
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

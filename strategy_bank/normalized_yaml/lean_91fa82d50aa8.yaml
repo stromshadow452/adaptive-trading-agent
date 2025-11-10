@@ -1,0 +1,11 @@
+id: lean_91fa82d50aa8
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Selection/FundamentalUniverseSelectionModel.py
+name: FundamentalUniverseSelectionModel
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

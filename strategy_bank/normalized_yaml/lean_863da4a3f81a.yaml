@@ -1,0 +1,11 @@
+id: lean_863da4a3f81a
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CustomBuyingPowerModelAlgorithm.py
+name: CustomBuyingPowerModelAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

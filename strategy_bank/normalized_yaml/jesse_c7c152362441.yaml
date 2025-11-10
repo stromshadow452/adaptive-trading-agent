@@ -1,0 +1,11 @@
+id: jesse_c7c152362441
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/bandpass.py
+name: bandpass
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

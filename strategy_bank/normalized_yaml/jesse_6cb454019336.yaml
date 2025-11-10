@@ -1,0 +1,11 @@
+id: jesse_6cb454019336
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/import_candles_mode/drivers/Gate/GateSpotMain.py
+name: GateSpotMain
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: lean_a78a26e71065
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/FuturesAndFuturesOptionsExpiryTimeAndLiquidationRegressionAlgorithm.py
+name: FuturesAndFuturesOptionsExpiryTimeAndLiquidationRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

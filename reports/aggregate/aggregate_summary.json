@@ -1,0 +1,24 @@
+{
+  "winrate": {
+    "value": 0.5,
+    "ok": true
+  },
+  "profit_factor": {
+    "value": 0.00972762645914249,
+    "ok": false
+  },
+  "sharpe": {
+    "value": -0.4745410844236639,
+    "ok": false
+  },
+  "max_drawdown": {
+    "value": 0.005049963827955852,
+    "ok": false
+  },
+  "counts": {
+    "trades": 20,
+    "wins": 10,
+    "losses": 10,
+    "raw_trades": 0
+  }
+}

@@ -1,0 +1,11 @@
+id: jesse_4aff483cb50f
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/services/transformers.py
+name: transformers
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

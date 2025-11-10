@@ -1,0 +1,11 @@
+id: finrl_0b2ee2751333
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/plot.py
+name: plot
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

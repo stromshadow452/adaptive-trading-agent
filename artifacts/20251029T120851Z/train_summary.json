@@ -1,0 +1,23 @@
+{
+  "created_at": "20251029T120851Z",
+  "num_rows": 223498,
+  "model": {
+    "created_at": "2025-10-29T12:08:49.735567Z",
+    "n_features": 5,
+    "feature_names": [
+      "ret1",
+      "ma5_ma20_diff",
+      "vol5",
+      "atr_proxy",
+      "range"
+    ],
+    "n_estimators": 200,
+    "horizon": 5,
+    "thr": 0.001,
+    "auc_test": null
+  },
+  "artifacts": [
+    "feature_importances.json",
+    "predictions_by_row.csv"
+  ]
+}

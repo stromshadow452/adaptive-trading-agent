@@ -1,0 +1,11 @@
+id: jesse_3fa77c68f11b
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/cwma.py
+name: cwma
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

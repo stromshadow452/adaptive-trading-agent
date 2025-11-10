@@ -1,0 +1,11 @@
+id: lean_e37828eee7ab
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CustomSecurityInitializerAlgorithm.py
+name: CustomSecurityInitializerAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

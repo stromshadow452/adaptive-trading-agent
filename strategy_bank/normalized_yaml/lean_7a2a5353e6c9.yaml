@@ -1,0 +1,11 @@
+id: lean_7a2a5353e6c9
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/TwoLegCurrencyConversionRegressionAlgorithm.py
+name: TwoLegCurrencyConversionRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

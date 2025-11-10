@@ -1,0 +1,11 @@
+id: jesse_8c0f9a9bff3c
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/strategies/TestLogMethodInStrategyClass/__init__.py
+name: __init__
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

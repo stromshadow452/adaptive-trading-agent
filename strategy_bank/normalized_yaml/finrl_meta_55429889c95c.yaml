@@ -1,0 +1,11 @@
+id: finrl_meta_55429889c95c
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/unit_tests/test_baostock.py
+name: test_baostock
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

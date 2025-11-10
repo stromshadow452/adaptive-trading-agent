@@ -1,0 +1,11 @@
+id: jesse_65cc1584fac1
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/factories/__init__.py
+name: __init__
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

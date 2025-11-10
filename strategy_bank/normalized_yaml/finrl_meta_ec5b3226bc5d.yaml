@@ -1,0 +1,11 @@
+id: finrl_meta_ec5b3226bc5d
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/unit_tests/test_yahoofinance.py
+name: test_yahoofinance
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

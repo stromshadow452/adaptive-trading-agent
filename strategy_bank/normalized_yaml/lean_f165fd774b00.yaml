@@ -1,0 +1,11 @@
+id: lean_f165fd774b00
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/KerasNeuralNetworkAlgorithm.py
+name: KerasNeuralNetworkAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

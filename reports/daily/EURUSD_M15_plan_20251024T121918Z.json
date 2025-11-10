@@ -1,0 +1,45 @@
+{
+  "symbol": "EURUSD",
+  "tf": "M15",
+  "generated_at": "2025-10-24T12:19:18.366492+00:00",
+  "candidate": {
+    "pair": "EURUSD",
+    "tf": "M15",
+    "close": 1.1177193989526686,
+    "price": 1.1177193989526686,
+    "score": -1.4279890304346115,
+    "tech_score": -1.4279890304346115,
+    "tech_sharpe": 0.0,
+    "tech_trades": 0.0,
+    "adx": 24.266553147682938,
+    "atr": 0.005486881016764829,
+    "vol_ratio": 0.03286455694469169,
+    "impact": 0.0,
+    "impact_score": 0.0,
+    "surprise_norm": 0.0,
+    "fund_score": 0.0,
+    "within_1h_event": false,
+    "session": "LONDON"
+  },
+  "meta_w": 0.5,
+  "finrl_present": false,
+  "decision": {
+    "enter": true,
+    "side": "sell",
+    "final_score": -1.0709917728259586,
+    "size": 0.007139945152173057,
+    "sl": 0.010973762033529658,
+    "tp": 0.021947524067059316,
+    "sl_type": "atr",
+    "reason": {
+      "screener_score": -1.4279890304346115,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.5
+    }
+  },
+  "notes": [
+    "Hybrid decision engine (meta selector + screener + finrl optional)",
+    "Use 'enter' flag to send order (executor should check risk gates again)."
+  ]
+}

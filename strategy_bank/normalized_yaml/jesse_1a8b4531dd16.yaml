@@ -1,0 +1,11 @@
+id: jesse_1a8b4531dd16
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/import_candles_mode/drivers/Binance/BinanceMain.py
+name: BinanceMain
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

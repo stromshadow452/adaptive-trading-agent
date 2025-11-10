@@ -1,0 +1,11 @@
+id: jesse_72786123a7e5
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/import_candles_mode/drivers/Apex/omni_files/zklink_sdk-pc.py
+name: zklink_sdk-pc
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

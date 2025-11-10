@@ -1,0 +1,11 @@
+id: finrl_meta_63e1caf70392
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_execution_optimizing/order_execution_qlib/trade/logger/single_logger.py
+name: single_logger
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

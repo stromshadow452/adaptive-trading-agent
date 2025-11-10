@@ -1,0 +1,11 @@
+id: bt_57e1048c9fc7
+source_vendor: bt
+file: strategy_bank/external_raw/bt/docs/source/_themes/klink/docs/source/conf.py
+name: conf
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

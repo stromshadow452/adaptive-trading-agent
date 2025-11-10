@@ -1,0 +1,11 @@
+id: lean_1a023baf19f5
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Tests/RegressionAlgorithms/Test_MethodOverload.py
+name: Test_MethodOverload
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,21 @@
+{
+  "timestamp": "2025-10-24T11:51:25.075719+00:00",
+  "plan_file": "reports\\daily\\GBPUSD_H4_plan_20251020T183136.899306Z.json",
+  "symbol": "GBPUSD",
+  "tf": "H4",
+  "side": "hold",
+  "size": 0,
+  "price": 0.0,
+  "sl": null,
+  "tp": null,
+  "meta": [
+    "meta_w=0.00",
+    "final_score=0.00",
+    "strategy=none",
+    "fit=0.00",
+    "boost=1.00",
+    "low_trade_count_warn"
+  ],
+  "reason": "",
+  "status": "filled_paper"
+}

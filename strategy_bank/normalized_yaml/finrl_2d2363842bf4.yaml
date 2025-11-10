@@ -1,0 +1,11 @@
+id: finrl_2d2363842bf4
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/meta/preprocessor/tusharedownloader.py
+name: tusharedownloader
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

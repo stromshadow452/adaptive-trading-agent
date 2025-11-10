@@ -1,0 +1,11 @@
+id: finrl_meta_a52d2b77d5be
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_execution_optimizing/order_execution_qlib/trade/network/opd.py
+name: opd
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

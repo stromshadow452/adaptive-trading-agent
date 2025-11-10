@@ -1,0 +1,32 @@
+{
+  "timestamp": "2025-10-18T10:57:28.706718Z",
+  "inputs": {
+    "equity_csv": "E:\\adaptive-trading-agent (2) (1)\\adaptive-trading-agent (2)\\reports\\paper_EURUSD_M15_20251018_105529_equity.csv",
+    "trades_csv": "E:\\adaptive-trading-agent (2) (1)\\adaptive-trading-agent (2)\\reports\\paper_EURUSD_M15_20251018_105529_trades.csv"
+  },
+  "metrics": {
+    "days": 0,
+    "sharpe": 0.0,
+    "max_drawdown": 0.0,
+    "turnover": 0.0,
+    "win_rate": 0.16251213985108448,
+    "exposure": 0.0
+  },
+  "thresholds": {
+    "min_sharpe": 0.8,
+    "max_drawdown": -0.2,
+    "max_turnover": 20.0,
+    "min_winrate": 0.3,
+    "max_exposure": 0.6,
+    "min_days": 60
+  },
+  "checks": {
+    "days_ok": false,
+    "sharpe_ok": false,
+    "dd_ok": true,
+    "turnover_ok": true,
+    "winrate_ok": false,
+    "exposure_ok": true
+  },
+  "result": "FAIL"
+}

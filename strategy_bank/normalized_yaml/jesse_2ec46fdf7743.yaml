@@ -1,0 +1,11 @@
+id: jesse_2ec46fdf7743
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/controllers/exchange_controller.py
+name: exchange_controller
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

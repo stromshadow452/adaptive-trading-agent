@@ -1,0 +1,11 @@
+id: lean_8e283664bf00
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/ObjectStoreExampleAlgorithm.py
+name: ObjectStoreExampleAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

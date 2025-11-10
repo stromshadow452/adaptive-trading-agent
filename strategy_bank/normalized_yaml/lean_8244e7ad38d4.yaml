@@ -1,0 +1,11 @@
+id: lean_8244e7ad38d4
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/Benchmarks/IndicatorRibbonBenchmark.py
+name: IndicatorRibbonBenchmark
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: lean_15f2ada408b7
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/MarketImpactSlippageModelRegressionAlgorithm.py
+name: MarketImpactSlippageModelRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

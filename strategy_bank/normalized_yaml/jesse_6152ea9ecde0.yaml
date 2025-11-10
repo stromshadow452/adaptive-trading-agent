@@ -1,0 +1,11 @@
+id: jesse_6152ea9ecde0
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/research/monte_carlo/candle_pipelines/gaussian_resampler.py
+name: gaussian_resampler
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

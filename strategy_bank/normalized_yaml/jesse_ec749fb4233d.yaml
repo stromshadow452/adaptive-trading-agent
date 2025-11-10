@@ -1,0 +1,11 @@
+id: jesse_ec749fb4233d
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/frama.py
+name: frama
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

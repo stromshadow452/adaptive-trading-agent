@@ -1,0 +1,11 @@
+id: finrl_c25acf731468
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/config_private.py
+name: config_private
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

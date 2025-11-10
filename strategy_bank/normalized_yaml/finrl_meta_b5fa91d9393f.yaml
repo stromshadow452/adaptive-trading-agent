@@ -1,0 +1,11 @@
+id: finrl_meta_b5fa91d9393f
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_future_trading/wt4elegantrl/dataset_from_storage.py
+name: dataset_from_storage
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

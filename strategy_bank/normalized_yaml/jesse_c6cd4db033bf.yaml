@@ -1,0 +1,11 @@
+id: jesse_c6cd4db033bf
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/strategies/TestDataRoutes1/__init__.py
+name: __init__
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

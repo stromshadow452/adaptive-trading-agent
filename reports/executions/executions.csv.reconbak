@@ -1,0 +1,4 @@
+﻿ts,mode,symbol,tf,side,price,size,sl,tp,sl_type,status,notes
+2025-10-28T18:12:36.8496493Z,paper,EURUSD,M15,sell,1.159703,0.050000,,,,OPEN,reconstructed_from_log
+2025-10-28T18:12:53.1966983Z,paper,EURUSD,M15,sell,1.159703,0.050000,,,,OPEN,reconstructed_from_log
+2025-10-28T18:18:11.6400921Z,paper,EURUSD,M15,sell,1.159703,0.050000,,,,OPEN,reconstructed_from_log

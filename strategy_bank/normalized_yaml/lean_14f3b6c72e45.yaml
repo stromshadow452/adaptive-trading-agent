@@ -1,0 +1,11 @@
+id: lean_14f3b6c72e45
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/DescendingCustomDataObjectStoreRegressionAlgorithm.py
+name: DescendingCustomDataObjectStoreRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

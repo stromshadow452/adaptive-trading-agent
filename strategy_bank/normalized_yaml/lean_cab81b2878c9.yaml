@@ -1,0 +1,11 @@
+id: lean_cab81b2878c9
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CompositeAlphaModelFrameworkAlgorithm.py
+name: CompositeAlphaModelFrameworkAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

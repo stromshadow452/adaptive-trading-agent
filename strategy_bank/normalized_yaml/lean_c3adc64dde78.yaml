@@ -1,0 +1,11 @@
+id: lean_c3adc64dde78
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/BasicTemplateIndexOptionsAlgorithm.py
+name: BasicTemplateIndexOptionsAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

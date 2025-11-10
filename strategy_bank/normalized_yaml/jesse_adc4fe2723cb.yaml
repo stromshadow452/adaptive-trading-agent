@@ -1,0 +1,11 @@
+id: jesse_adc4fe2723cb
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/supersmoother_3_pole.py
+name: supersmoother_3_pole
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

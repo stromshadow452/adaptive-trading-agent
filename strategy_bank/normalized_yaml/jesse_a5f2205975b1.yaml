@@ -1,0 +1,11 @@
+id: jesse_a5f2205975b1
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/controllers/live_controller.py
+name: live_controller
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

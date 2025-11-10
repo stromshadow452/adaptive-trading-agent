@@ -1,0 +1,11 @@
+id: lean_06476a3911c1
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/ETFConstituentUniverseCompositeDelistingRegressionAlgorithm.py
+name: ETFConstituentUniverseCompositeDelistingRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

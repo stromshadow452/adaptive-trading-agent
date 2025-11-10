@@ -1,0 +1,11 @@
+id: lean_cb6ec3e94ccd
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/main.py
+name: main
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

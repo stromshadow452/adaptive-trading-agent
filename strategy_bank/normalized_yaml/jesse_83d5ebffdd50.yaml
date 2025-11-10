@@ -1,0 +1,11 @@
+id: jesse_83d5ebffdd50
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/high_pass_2_pole.py
+name: high_pass_2_pole
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

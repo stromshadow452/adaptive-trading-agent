@@ -1,0 +1,12 @@
+[
+  {
+    "pair": "AUDUSD",
+    "tf": "M15",
+    "score": 2.0,
+    "reasons": [
+      "rsi_in_40-65",
+      "vol_ok"
+    ],
+    "close": 0.6433
+  }
+]

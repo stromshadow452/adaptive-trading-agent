@@ -1,0 +1,11 @@
+id: finrl_meta_b30f36b2a002
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_fx_trading/util/read_config.py
+name: read_config
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

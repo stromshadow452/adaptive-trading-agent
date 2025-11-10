@@ -1,0 +1,11 @@
+id: jesse_cdc63aa9335c
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/cmo.py
+name: cmo
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

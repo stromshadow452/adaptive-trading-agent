@@ -1,0 +1,11 @@
+id: lean_7ffbfbe2afd6
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/ContinuousFutureModelsConsistencyRegressionAlgorithm.py
+name: ContinuousFutureModelsConsistencyRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

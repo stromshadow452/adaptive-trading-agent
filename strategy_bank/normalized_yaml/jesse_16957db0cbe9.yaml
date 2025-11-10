@@ -1,0 +1,11 @@
+id: jesse_16957db0cbe9
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/models/Route.py
+name: Route
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

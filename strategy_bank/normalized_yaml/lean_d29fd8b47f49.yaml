@@ -1,0 +1,11 @@
+id: lean_d29fd8b47f49
+source_vendor: lean
+file: strategy_bank/external_raw/lean/run_syntax_check.py
+name: run_syntax_check
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

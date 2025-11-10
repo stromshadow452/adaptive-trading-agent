@@ -1,0 +1,55 @@
+{
+  "symbol": "ADAUSD",
+  "tf": "H1",
+  "generated_at": "2025-10-27T18:28:17.868783Z",
+  "candidate": {
+    "symbol": "ADAUSD",
+    "price": 0.8268,
+    "tf": "H1",
+    "kind": "crypto",
+    "csv_path": ".\\data\\raw\\crypto\\ADA-USDT_5m_2025.csv",
+    "timestamp": "2025-10-27T18:27:21.455993Z"
+  },
+  "meta_w": 0.5,
+  "finrl_present": false,
+  "two_layer_enabled": false,
+  "enter": false,
+  "side": "hold",
+  "size": 0.0,
+  "price": 0.8268,
+  "atr": null,
+  "sl": null,
+  "tp": null,
+  "sl_type": "none",
+  "final_score": 0.0,
+  "reason": {
+    "screener_score": 0.0,
+    "meta_w": 0.5,
+    "finrl_boost": 0.0,
+    "min_entry": 0.2,
+    "min_confidence": 0.0,
+    "explain": "below_threshold score=0.000 conf=1.000"
+  },
+  "layer_signals": null,
+  "notes": [
+    "Single-layer (hybrid heuristic) path",
+    "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+  ],
+  "decision": {
+    "enter": false,
+    "side": "hold",
+    "final_score": 0.0,
+    "size": 0.0,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000"
+    }
+  }
+}

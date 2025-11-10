@@ -1,0 +1,11 @@
+id: lean_6e033d999547
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/UpdateOrderRegressionAlgorithm.py
+name: UpdateOrderRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

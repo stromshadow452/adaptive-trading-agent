@@ -1,0 +1,11 @@
+id: jesse_05fb29abf2dd
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/optimize_mode/Optimize.py
+name: Optimize
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

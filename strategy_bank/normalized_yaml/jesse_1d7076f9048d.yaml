@@ -1,0 +1,11 @@
+id: jesse_1d7076f9048d
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/hma.py
+name: hma
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

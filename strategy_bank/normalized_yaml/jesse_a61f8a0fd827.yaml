@@ -1,0 +1,11 @@
+id: jesse_a61f8a0fd827
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/services/__init__.py
+name: __init__
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

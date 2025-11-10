@@ -1,0 +1,11 @@
+id: finrl_16c0b9757c2d
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/agents/rllib/drllibv2.py
+name: drllibv2
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

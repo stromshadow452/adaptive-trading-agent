@@ -1,0 +1,11 @@
+id: lean_a06e254a249d
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/OptionOpenInterestRegressionAlgorithm.py
+name: OptionOpenInterestRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

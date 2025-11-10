@@ -1,0 +1,11 @@
+id: lean_f6763cbc0dff
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Selection/FutureUniverseSelectionModel.py
+name: FutureUniverseSelectionModel
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

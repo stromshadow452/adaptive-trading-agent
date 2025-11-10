@@ -1,0 +1,11 @@
+id: finrl_28db0ae85467
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/meta/data_processor.py
+name: data_processor
+family: ml_rl
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

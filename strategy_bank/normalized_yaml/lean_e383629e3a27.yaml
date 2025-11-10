@@ -1,0 +1,11 @@
+id: lean_e383629e3a27
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/Collective2SignalExportDemonstrationAlgorithm.py
+name: Collective2SignalExportDemonstrationAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

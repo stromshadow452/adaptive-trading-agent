@@ -1,0 +1,11 @@
+id: jesse_571d9c31b0f8
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/apo.py
+name: apo
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

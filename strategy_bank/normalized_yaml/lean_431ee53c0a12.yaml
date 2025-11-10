@@ -1,0 +1,11 @@
+id: lean_431ee53c0a12
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/UniverseSelectionDefinitionsAlgorithm.py
+name: UniverseSelectionDefinitionsAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

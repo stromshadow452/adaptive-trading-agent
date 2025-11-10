@@ -1,0 +1,11 @@
+id: lean_9a7433b5a75f
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/OptionExerciseAssignRegressionAlgorithm.py
+name: OptionExerciseAssignRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: finrl_6c863a9aaca6
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/agents/stablebaselines3/tune_sb3.py
+name: tune_sb3
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

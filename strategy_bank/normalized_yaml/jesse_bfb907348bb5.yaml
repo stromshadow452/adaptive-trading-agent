@@ -1,0 +1,11 @@
+id: jesse_bfb907348bb5
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/services/report.py
+name: report
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

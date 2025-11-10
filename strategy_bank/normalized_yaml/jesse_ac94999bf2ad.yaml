@@ -1,0 +1,11 @@
+id: jesse_ac94999bf2ad
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/mass.py
+name: mass
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: jesse_22ce609789da
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/store/state_candles.py
+name: state_candles
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

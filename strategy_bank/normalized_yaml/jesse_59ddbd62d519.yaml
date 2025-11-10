@@ -1,0 +1,11 @@
+id: jesse_59ddbd62d519
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/tests/data/test_candles_0.py
+name: test_candles_0
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

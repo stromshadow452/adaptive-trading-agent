@@ -1,0 +1,11 @@
+id: jesse_bfc5140d856c
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/obv.py
+name: obv
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

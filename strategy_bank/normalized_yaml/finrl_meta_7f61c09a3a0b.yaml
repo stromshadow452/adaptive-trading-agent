@@ -1,0 +1,11 @@
+id: finrl_meta_7f61c09a3a0b
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_execution_optimizing/order_execution_qlib/trade/network/ppo.py
+name: ppo
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

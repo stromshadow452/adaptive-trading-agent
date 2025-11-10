@@ -1,0 +1,67 @@
+name: Sentiment Brain CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-and-benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest
+
+      - name: Run unit tests
+        run: |
+          python -m pytest -q sentiment_brain.py
+
+      - name: Run benchmark
+        run: |
+          python sentiment_brain.py --benchmark > bench.json
+          cat bench.json
+
+      - name: Validate benchmark SLA (p95 <= 5.0 ms)
+        run: |
+          python - <<'PY'
+          import json, sys
+          data = json.load(open('bench.json'))
+          p95 = data["latency_ms"]["p95"] if "latency_ms" in data else data.get("p95", 9999)
+          print("p95:", p95)
+          assert p95 <= 5.0, f"SLA breach: p95={p95}ms > 5.0ms"
+          PY
+
+      - name: Run shadow test
+        run: |
+          python sentiment_brain.py --shadow > shadow.json
+          cat shadow.json
+
+      - name: Validate deterministic check
+        run: |
+          python - <<'PY'
+          import json
+          data = json.load(open('shadow.json'))
+          ok = bool(data.get("deterministic_check"))
+          print("deterministic_check:", ok)
+          assert ok, "deterministic_check is not True"
+          PY
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sentiment-brain-results
+          path: |
+            bench.json
+            shadow.json
+

@@ -1,0 +1,11 @@
+id: lean_7e530dd28d91
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/TiingoPriceAlgorithm.py
+name: TiingoPriceAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

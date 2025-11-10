@@ -1,0 +1,11 @@
+id: lean_beee5d2d7f79
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/ContinuousFutureRegressionAlgorithm.py
+name: ContinuousFutureRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

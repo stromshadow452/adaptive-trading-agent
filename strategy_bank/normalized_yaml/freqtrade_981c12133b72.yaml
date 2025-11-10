@@ -1,0 +1,11 @@
+id: freqtrade_981c12133b72
+source_vendor: freqtrade
+file: strategy_bank/external_raw/freqtrade/user_data/strategies/berlinguyinca/Low_BB.py
+name: Low_BB
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

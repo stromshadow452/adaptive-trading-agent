@@ -1,0 +1,11 @@
+id: lean_fe32a6889a8e
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/IndicatorWarmupAlgorithm.py
+name: IndicatorWarmupAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

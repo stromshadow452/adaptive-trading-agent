@@ -1,0 +1,11 @@
+id: jesse_1fab33eaabe3
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/models/Position.py
+name: Position
+family: event_driven
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: finrl_meta_0cc3b40d9616
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_future_trading/wt4elegantrl/wtpy/monitor/WtBtMon.py
+name: WtBtMon
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: jesse_35d67a7f0ba5
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/sar.py
+name: sar
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

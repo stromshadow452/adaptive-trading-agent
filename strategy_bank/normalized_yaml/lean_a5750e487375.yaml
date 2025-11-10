@@ -1,0 +1,11 @@
+id: lean_a5750e487375
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/IndexOptionPutOTMExpiryRegressionAlgorithm.py
+name: IndexOptionPutOTMExpiryRegressionAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

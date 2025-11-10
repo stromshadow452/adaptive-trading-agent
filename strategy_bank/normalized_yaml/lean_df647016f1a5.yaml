@@ -1,0 +1,11 @@
+id: lean_df647016f1a5
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/VolumeShareSlippageModelAlgorithm.py
+name: VolumeShareSlippageModelAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

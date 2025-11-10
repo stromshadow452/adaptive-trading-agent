@@ -1,0 +1,11 @@
+id: lean_3fc2738f6fd6
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CustomSecurityDataFilterRegressionAlgorithm.py
+name: CustomSecurityDataFilterRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

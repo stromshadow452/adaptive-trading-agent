@@ -1,0 +1,8 @@
+{
+  "pair": "USDJPY",
+  "tf": "H4",
+  "sharpe": 0.29134065772251233,
+  "total_return": 0.1240997722219348,
+  "bars": 2601,
+  "source_equity_csv": "reports\\daily_logs\\USDJPY_H4_paper_20251020_171137_equity.csv"
+}

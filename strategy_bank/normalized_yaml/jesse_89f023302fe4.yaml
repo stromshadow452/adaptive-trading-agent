@@ -1,0 +1,11 @@
+id: jesse_89f023302fe4
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/models/OptimizationSession.py
+name: OptimizationSession
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

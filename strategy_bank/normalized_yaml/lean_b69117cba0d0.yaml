@@ -1,0 +1,11 @@
+id: lean_b69117cba0d0
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/ConsolidateDifferentTickTypesRegressionAlgorithm.py
+name: ConsolidateDifferentTickTypesRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

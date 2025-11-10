@@ -1,0 +1,1019 @@
+{
+  "approved": [
+    {
+      "symbol": "EURGBP",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 0.86697,
+      "sl": 0.8583003,
+      "tp": 0.8843094,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "EURGBP",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 0.86697,
+      "sl": 0.8583003,
+      "tp": 0.8843094,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "EURGBP",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 0.86697,
+      "sl": 0.8583003,
+      "tp": 0.8843094,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "EURGBP",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 0.86697,
+      "sl": 0.8583003,
+      "tp": 0.8843094,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "EURGBP",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 0.86697,
+      "sl": 0.8583003,
+      "tp": 0.8843094,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "EURGBP",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 0.86697,
+      "sl": 0.8583003,
+      "tp": 0.8843094,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "EURGBP",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 0.86697,
+      "sl": 0.8583003,
+      "tp": 0.8843094,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "EURUSD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.1038350000000001,
+      "sl": 1.0927966500000001,
+      "tp": 1.1259117,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "EURUSD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.1038350000000001,
+      "sl": 1.0927966500000001,
+      "tp": 1.1259117,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "EURUSD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.1038350000000001,
+      "sl": 1.0927966500000001,
+      "tp": 1.1259117,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "EURUSD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.1038350000000001,
+      "sl": 1.0927966500000001,
+      "tp": 1.1259117,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "EURUSD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.1038350000000001,
+      "sl": 1.0927966500000001,
+      "tp": 1.1259117,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "EURUSD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.1038350000000001,
+      "sl": 1.0927966500000001,
+      "tp": 1.1259117,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "EURUSD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.1038350000000001,
+      "sl": 1.0927966500000001,
+      "tp": 1.1259117,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "GBPUSD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.273155,
+      "sl": 1.26042345,
+      "tp": 1.2986181,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "GBPUSD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.273155,
+      "sl": 1.26042345,
+      "tp": 1.2986181,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "GBPUSD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.273155,
+      "sl": 1.26042345,
+      "tp": 1.2986181,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "GBPUSD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.273155,
+      "sl": 1.26042345,
+      "tp": 1.2986181,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "GBPUSD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.273155,
+      "sl": 1.26042345,
+      "tp": 1.2986181,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "GBPUSD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.273155,
+      "sl": 1.26042345,
+      "tp": 1.2986181,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "GBPUSD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.273155,
+      "sl": 1.26042345,
+      "tp": 1.2986181,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "USDCAD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.32501,
+      "sl": 1.3117599,
+      "tp": 1.3515102,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "USDCAD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.32501,
+      "sl": 1.3117599,
+      "tp": 1.3515102,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "USDCAD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.32501,
+      "sl": 1.3117599,
+      "tp": 1.3515102,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "USDCAD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.32501,
+      "sl": 1.3117599,
+      "tp": 1.3515102,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "USDCAD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.32501,
+      "sl": 1.3117599,
+      "tp": 1.3515102,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "USDCAD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.32501,
+      "sl": 1.3117599,
+      "tp": 1.3515102,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "USDCAD",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 1.32501,
+      "sl": 1.3117599,
+      "tp": 1.3515102,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "USDJPY",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 106.9265,
+      "sl": 105.857235,
+      "tp": 109.06503000000001,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "USDJPY",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 106.9265,
+      "sl": 105.857235,
+      "tp": 109.06503000000001,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "USDJPY",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 106.9265,
+      "sl": 105.857235,
+      "tp": 109.06503000000001,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "USDJPY",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 106.9265,
+      "sl": 105.857235,
+      "tp": 109.06503000000001,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "USDJPY",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 106.9265,
+      "sl": 105.857235,
+      "tp": 109.06503000000001,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "USDJPY",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 106.9265,
+      "sl": 105.857235,
+      "tp": 109.06503000000001,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    },
+    {
+      "symbol": "USDJPY",
+      "tf": "M15",
+      "side": "buy",
+      "size": 0.05,
+      "price": 106.9265,
+      "sl": 105.857235,
+      "tp": 109.06503000000001,
+      "final_score": 0.05,
+      "meta_w": 0.5,
+      "finrl_present": false,
+      "notes": [
+        "Single-layer (hybrid heuristic) path",
+        "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+      ],
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "no_confirms",
+          "primary": "buy",
+          "pri_score": 0.0
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+id: lean_1e7de7b7e71a
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/BasicTemplateFillForwardAlgorithm.py
+name: BasicTemplateFillForwardAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

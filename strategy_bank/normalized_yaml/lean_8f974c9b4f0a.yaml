@@ -1,0 +1,11 @@
+id: lean_8f974c9b4f0a
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Portfolio/UnconstrainedMeanVariancePortfolioOptimizer.py
+name: UnconstrainedMeanVariancePortfolioOptimizer
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

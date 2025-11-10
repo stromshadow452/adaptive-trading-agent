@@ -1,0 +1,11 @@
+id: finrl_efcab1022362
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/meta/meta_config.py
+name: meta_config
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

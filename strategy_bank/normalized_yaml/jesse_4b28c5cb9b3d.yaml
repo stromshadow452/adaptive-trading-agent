@@ -1,0 +1,11 @@
+id: jesse_4b28c5cb9b3d
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/rsx.py
+name: rsx
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

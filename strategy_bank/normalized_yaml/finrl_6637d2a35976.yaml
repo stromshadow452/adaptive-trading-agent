@@ -1,0 +1,11 @@
+id: finrl_6637d2a35976
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/meta/env_stock_trading/env_stocktrading_cashpenalty.py
+name: env_stocktrading_cashpenalty
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

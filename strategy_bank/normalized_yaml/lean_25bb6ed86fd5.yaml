@@ -1,0 +1,11 @@
+id: lean_25bb6ed86fd5
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CustomDataObjectStoreRegressionAlgorithm.py
+name: CustomDataObjectStoreRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

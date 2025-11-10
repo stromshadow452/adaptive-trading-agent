@@ -1,0 +1,11 @@
+id: freqtrade_7e7ccc61b8be
+source_vendor: freqtrade
+file: strategy_bank/external_raw/freqtrade/user_data/strategies/PatternRecognition.py
+name: PatternRecognition
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

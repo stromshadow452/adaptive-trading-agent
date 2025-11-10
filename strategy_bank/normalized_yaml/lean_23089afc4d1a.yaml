@@ -1,0 +1,11 @@
+id: lean_23089afc4d1a
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Report/ReportChartTests.py
+name: ReportChartTests
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

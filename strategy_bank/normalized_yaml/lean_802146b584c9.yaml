@@ -1,0 +1,11 @@
+id: lean_802146b584c9
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/HistoryWithDifferentContinuousContractDepthOffsetsRegressionAlgorithm.py
+name: HistoryWithDifferentContinuousContractDepthOffsetsRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

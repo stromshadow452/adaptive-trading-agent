@@ -1,0 +1,11 @@
+id: lean_96c23b69ccad
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm/Execution/ImmediateExecutionModel.py
+name: ImmediateExecutionModel
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

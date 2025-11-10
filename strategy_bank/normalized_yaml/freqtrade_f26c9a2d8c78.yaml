@@ -1,0 +1,11 @@
+id: freqtrade_f26c9a2d8c78
+source_vendor: freqtrade
+file: strategy_bank/external_raw/freqtrade/user_data/strategies/futures/FReinforcedStrategy.py
+name: FReinforcedStrategy
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: jesse_15d24d2435b6
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/lrsi.py
+name: lrsi
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

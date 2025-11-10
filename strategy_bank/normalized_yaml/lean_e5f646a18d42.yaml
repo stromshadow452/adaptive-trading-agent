@@ -1,0 +1,11 @@
+id: lean_e5f646a18d42
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/MarginCallEventsAlgorithm.py
+name: MarginCallEventsAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

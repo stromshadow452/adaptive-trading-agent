@@ -1,0 +1,11 @@
+id: jesse_8743bf959927
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/services/env.py
+name: env
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

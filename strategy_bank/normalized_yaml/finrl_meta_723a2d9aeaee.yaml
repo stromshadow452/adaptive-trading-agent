@@ -1,0 +1,11 @@
+id: finrl_meta_723a2d9aeaee
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_stock_trading/env_mintrades_stocktrading.py
+name: env_mintrades_stocktrading
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

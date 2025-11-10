@@ -1,0 +1,11 @@
+id: lean_7d1e111792c0
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Tests/TestData/generate_reference_data_from_talipp.py
+name: generate_reference_data_from_talipp
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

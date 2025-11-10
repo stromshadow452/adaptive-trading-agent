@@ -1,0 +1,11 @@
+id: freqtrade_6f2f0f5d7b2d
+source_vendor: freqtrade
+file: strategy_bank/external_raw/freqtrade/user_data/strategies/berlinguyinca/Quickie.py
+name: Quickie
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

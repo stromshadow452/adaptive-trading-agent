@@ -1,0 +1,11 @@
+id: lean_f5904d08c3cb
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/PeriodBasedHistoryRequestNotAllowedWithTickResolutionRegressionAlgorithm.py
+name: PeriodBasedHistoryRequestNotAllowedWithTickResolutionRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: jesse_e1e250567751
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/exchanges/sandbox/Sandbox.py
+name: Sandbox
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

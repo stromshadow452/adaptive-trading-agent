@@ -1,0 +1,11 @@
+id: jesse_be9489e715d3
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/store/state_orders.py
+name: state_orders
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

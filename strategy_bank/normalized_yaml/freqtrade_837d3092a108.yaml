@@ -1,0 +1,11 @@
+id: freqtrade_837d3092a108
+source_vendor: freqtrade
+file: strategy_bank/external_raw/freqtrade/user_data/strategies/berlinguyinca/ReinforcedAverageStrategy.py
+name: ReinforcedAverageStrategy
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

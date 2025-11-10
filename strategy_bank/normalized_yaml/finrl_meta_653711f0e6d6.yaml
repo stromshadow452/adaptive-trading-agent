@@ -1,0 +1,11 @@
+id: finrl_meta_653711f0e6d6
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_execution_optimizing/order_execution_qlib/trade/action/interval_rule.py
+name: interval_rule
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: lean_7f3ec072a0a2
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/FutureOptionChainFullDataRegressionAlgorithm.py
+name: FutureOptionChainFullDataRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

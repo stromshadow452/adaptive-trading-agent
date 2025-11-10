@@ -1,0 +1,11 @@
+id: jesse_e365f93949a8
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/sma.py
+name: sma
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: jesse_1f9bc25be258
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/helpers.py
+name: helpers
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

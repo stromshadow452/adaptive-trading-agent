@@ -1,0 +1,11 @@
+id: lean_a1fea27eb5b6
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Alphas/EmaCrossAlphaModel.py
+name: EmaCrossAlphaModel
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

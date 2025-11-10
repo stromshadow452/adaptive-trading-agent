@@ -1,0 +1,11 @@
+id: jesse_163db1a6614c
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/import_candles_mode/drivers/Binance/BinancePerpetualFutures.py
+name: BinancePerpetualFutures
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: lean_849756a6ba9a
+source_vendor: lean
+file: strategy_bank/external_raw/lean/run_benchmarks.py
+name: run_benchmarks
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

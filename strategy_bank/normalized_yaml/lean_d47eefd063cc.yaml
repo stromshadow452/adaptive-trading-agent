@@ -1,0 +1,11 @@
+id: lean_d47eefd063cc
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/ETFGlobalRotationAlgorithm.py
+name: ETFGlobalRotationAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

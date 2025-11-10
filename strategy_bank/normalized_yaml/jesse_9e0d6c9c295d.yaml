@@ -1,0 +1,11 @@
+id: jesse_9e0d6c9c295d
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/models/Candle.py
+name: Candle
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

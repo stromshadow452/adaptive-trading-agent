@@ -1,0 +1,11 @@
+id: lean_7f55e35091e3
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/ETFConstituentsFrameworkWithDifferentSelectionModelAlgorithm.py
+name: ETFConstituentsFrameworkWithDifferentSelectionModelAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

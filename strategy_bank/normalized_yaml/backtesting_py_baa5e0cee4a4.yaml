@@ -1,0 +1,11 @@
+id: backtesting_py_baa5e0cee4a4
+source_vendor: backtesting_py
+file: strategy_bank/external_raw/backtesting_py/setup.py
+name: setup
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

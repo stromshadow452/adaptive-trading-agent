@@ -1,0 +1,11 @@
+id: jesse_acb58be66b38
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/store/state_positions.py
+name: state_positions
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

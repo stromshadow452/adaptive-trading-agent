@@ -1,0 +1,11 @@
+id: jesse_2f1f033b24d9
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/atr.py
+name: atr
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

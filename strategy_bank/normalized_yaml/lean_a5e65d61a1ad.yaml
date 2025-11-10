@@ -1,0 +1,11 @@
+id: lean_a5e65d61a1ad
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/OptionStrategyFactoryMethodsBaseAlgorithm.py
+name: OptionStrategyFactoryMethodsBaseAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

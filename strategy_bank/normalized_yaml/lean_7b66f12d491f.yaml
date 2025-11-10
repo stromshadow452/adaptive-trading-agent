@@ -1,0 +1,11 @@
+id: lean_7b66f12d491f
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/BasicTemplateOptionEquityStrategyAlgorithm.py
+name: BasicTemplateOptionEquityStrategyAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

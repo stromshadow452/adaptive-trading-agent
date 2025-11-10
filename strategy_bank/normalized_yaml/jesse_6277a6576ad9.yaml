@@ -1,0 +1,11 @@
+id: jesse_6277a6576ad9
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/services/api.py
+name: api
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

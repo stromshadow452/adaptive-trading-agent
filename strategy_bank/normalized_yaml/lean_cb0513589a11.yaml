@@ -1,0 +1,11 @@
+id: lean_cb0513589a11
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/OptionModelsConsistencyRegressionAlgorithm.py
+name: OptionModelsConsistencyRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: finrl_meta_d33c85567318
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_future_trading/wt4elegantrl/wtpy/WtDataDefs.py
+name: WtDataDefs
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

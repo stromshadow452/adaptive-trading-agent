@@ -1,0 +1,11 @@
+id: lean_0f98ba2d1c61
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/DropboxCoarseFineAlgorithm.py
+name: DropboxCoarseFineAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

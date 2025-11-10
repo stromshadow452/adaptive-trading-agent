@@ -1,0 +1,11 @@
+id: jesse_b1c11414e477
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/cvi.py
+name: cvi
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

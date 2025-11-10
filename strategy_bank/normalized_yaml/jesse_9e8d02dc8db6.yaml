@@ -1,0 +1,11 @@
+id: jesse_9e8d02dc8db6
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/cksp.py
+name: cksp
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

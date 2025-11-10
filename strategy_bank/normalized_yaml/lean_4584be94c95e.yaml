@@ -1,0 +1,11 @@
+id: lean_4584be94c95e
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/IndexOptionBuySellCallIntradayRegressionAlgorithm.py
+name: IndexOptionBuySellCallIntradayRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

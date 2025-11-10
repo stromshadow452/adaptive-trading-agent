@@ -1,0 +1,11 @@
+id: lean_2cf9503a12aa
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/Alphas/TriangleExchangeRateArbitrageAlpha.py
+name: TriangleExchangeRateArbitrageAlpha
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

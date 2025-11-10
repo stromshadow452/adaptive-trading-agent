@@ -1,0 +1,3 @@
+﻿"ts","mode","symbol","tf","side","price","size","sl","tp","sl_type","status","notes"
+"2025-10-28T18:18:11.6400921Z","paper","EURUSD","M15","sell","1.159703","0.050000","","","","OPEN","reconstructed_from_log;no_plan_match"
+2025-10-28T18:31:31.141714Z,paper,EURUSD,M15,sell,1.15970276,0.05000000,1.16842895,1.14661348,atr,OPEN,EURUSD-1761676291141,reports/daily/EURUSD_M15_plan_20251028T144648Z.json

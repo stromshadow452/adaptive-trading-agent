@@ -1,0 +1,11 @@
+id: jesse_6b202d5f812f
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/store/state_exchanges.py
+name: state_exchanges
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: lean_986a0e29f5f0
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm/Risk/NullRiskManagementModel.py
+name: NullRiskManagementModel
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

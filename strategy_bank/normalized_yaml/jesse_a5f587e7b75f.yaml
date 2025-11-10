@@ -1,0 +1,11 @@
+id: jesse_a5f587e7b75f
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/mcginley_dynamic.py
+name: mcginley_dynamic
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

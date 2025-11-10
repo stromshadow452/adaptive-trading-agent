@@ -1,0 +1,280 @@
+{
+    "value":  [
+                  {
+                      "symbol":  "ETHUSD",
+                      "tf":  "M15",
+                      "generated_at":  "2025-10-27T13:18:32.175598Z",
+                      "candidate":  {
+                                        "pair":  "ETHUSD",
+                                        "tf":  "M15",
+                                        "close":  1.1997823472038773,
+                                        "price":  1.1997823472038773,
+                                        "score":  -1.4360206422868087,
+                                        "tech_score":  -1.4360206422868087,
+                                        "tech_sharpe":  0.0,
+                                        "tech_trades":  0.0,
+                                        "adx":  24.426188299214477,
+                                        "atr":  0.005920371606718902,
+                                        "vol_ratio":  0.26030810594281906,
+                                        "impact":  0.0,
+                                        "impact_score":  0.0,
+                                        "surprise_norm":  0.0,
+                                        "fund_score":  0.0,
+                                        "within_1h_event":  false,
+                                        "session":  "LONDON"
+                                    },
+                      "meta_w":  0.5,
+                      "finrl_present":  false,
+                      "two_layer_enabled":  false,
+                      "enter":  true,
+                      "side":  "sell",
+                      "size":  0.05,
+                      "price":  1.1997823472038773,
+                      "atr":  0.005920371606718902,
+                      "sl":  1.2086629046139556,
+                      "tp":  1.1864615110887597,
+                      "sl_type":  "atr",
+                      "final_score":  -1.0770154817151065,
+                      "reason":  {
+                                     "screener_score":  -1.4360206422868087,
+                                     "meta_w":  0.5,
+                                     "finrl_boost":  0.0,
+                                     "min_entry":  0.2,
+                                     "min_confidence":  0.0,
+                                     "explain":  "score_neg -1.077"
+                                 },
+                      "layer_signals":  null,
+                      "notes":  [
+                                    "Single-layer (hybrid heuristic) path",
+                                    "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+                                ],
+                      "decision":  {
+                                       "enter":  true,
+                                       "side":  "sell",
+                                       "final_score":  -1.0770154817151065,
+                                       "size":  0.05,
+                                       "sl":  1.2086629046139556,
+                                       "tp":  1.1864615110887597,
+                                       "sl_type":  "atr",
+                                       "reason":  "@{screener_score=-1.4360206422868087; meta_w=0.5; finrl_boost=0.0; min_entry=0.2; min_confidence=0.0; explain=score_neg -1.077}"
+                                   }
+                  },
+                  {
+                      "symbol":  "AAPL",
+                      "tf":  "M15",
+                      "generated_at":  "2025-10-27T13:18:32.175979Z",
+                      "candidate":  {
+                                        "pair":  "AAPL",
+                                        "tf":  "M15",
+                                        "close":  1.1862554876020297,
+                                        "price":  1.1862554876020297,
+                                        "score":  -1.436020642286775,
+                                        "tech_score":  -1.436020642286775,
+                                        "tech_sharpe":  0.0,
+                                        "tech_trades":  0.0,
+                                        "adx":  24.426188299214303,
+                                        "atr":  0.005853622803736867,
+                                        "vol_ratio":  0.26030810594281906,
+                                        "impact":  0.0,
+                                        "impact_score":  0.0,
+                                        "surprise_norm":  0.0,
+                                        "fund_score":  0.0,
+                                        "within_1h_event":  false,
+                                        "session":  "LONDON"
+                                    },
+                      "meta_w":  0.5,
+                      "finrl_present":  false,
+                      "two_layer_enabled":  false,
+                      "enter":  true,
+                      "side":  "sell",
+                      "size":  0.05,
+                      "price":  1.1862554876020297,
+                      "atr":  0.005853622803736867,
+                      "sl":  1.195035921807635,
+                      "tp":  1.1730848362936217,
+                      "sl_type":  "atr",
+                      "final_score":  -1.0770154817150812,
+                      "reason":  {
+                                     "screener_score":  -1.436020642286775,
+                                     "meta_w":  0.5,
+                                     "finrl_boost":  0.0,
+                                     "min_entry":  0.2,
+                                     "min_confidence":  0.0,
+                                     "explain":  "score_neg -1.077"
+                                 },
+                      "layer_signals":  null,
+                      "notes":  [
+                                    "Single-layer (hybrid heuristic) path",
+                                    "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+                                ],
+                      "decision":  {
+                                       "enter":  true,
+                                       "side":  "sell",
+                                       "final_score":  -1.0770154817150812,
+                                       "size":  0.05,
+                                       "sl":  1.195035921807635,
+                                       "tp":  1.1730848362936217,
+                                       "sl_type":  "atr",
+                                       "reason":  "@{screener_score=-1.436020642286775; meta_w=0.5; finrl_boost=0.0; min_entry=0.2; min_confidence=0.0; explain=score_neg -1.077}"
+                                   }
+                  },
+                  {
+                      "symbol":  "USDJPY",
+                      "tf":  "M15",
+                      "generated_at":  "2025-10-27T13:18:32.174231Z",
+                      "candidate":  {
+                                        "pair":  "USDJPY",
+                                        "tf":  "M15",
+                                        "close":  1.182347728161496,
+                                        "price":  1.182347728161496,
+                                        "score":  -1.436020642286772,
+                                        "tech_score":  -1.436020642286772,
+                                        "tech_sharpe":  0.0,
+                                        "tech_trades":  0.0,
+                                        "adx":  24.426188299214772,
+                                        "atr":  0.005834339816208689,
+                                        "vol_ratio":  0.26030810594281906,
+                                        "impact":  0.0,
+                                        "impact_score":  0.0,
+                                        "surprise_norm":  0.0,
+                                        "fund_score":  0.0,
+                                        "within_1h_event":  false,
+                                        "session":  "LONDON"
+                                    },
+                      "meta_w":  0.5,
+                      "finrl_present":  false,
+                      "two_layer_enabled":  false,
+                      "enter":  true,
+                      "side":  "sell",
+                      "size":  0.05,
+                      "price":  1.182347728161496,
+                      "atr":  0.005834339816208689,
+                      "sl":  1.191099237885809,
+                      "tp":  1.1692204635750265,
+                      "sl_type":  "atr",
+                      "final_score":  -1.077015481715079,
+                      "reason":  {
+                                     "screener_score":  -1.436020642286772,
+                                     "meta_w":  0.5,
+                                     "finrl_boost":  0.0,
+                                     "min_entry":  0.2,
+                                     "min_confidence":  0.0,
+                                     "explain":  "score_neg -1.077"
+                                 },
+                      "layer_signals":  null,
+                      "notes":  [
+                                    "Single-layer (hybrid heuristic) path",
+                                    "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+                                ],
+                      "decision":  {
+                                       "enter":  true,
+                                       "side":  "sell",
+                                       "final_score":  -1.077015481715079,
+                                       "size":  0.05,
+                                       "sl":  1.191099237885809,
+                                       "tp":  1.1692204635750265,
+                                       "sl_type":  "atr",
+                                       "reason":  "@{screener_score=-1.436020642286772; meta_w=0.5; finrl_boost=0.0; min_entry=0.2; min_confidence=0.0; explain=score_neg -1.077}"
+                                   }
+                  },
+                  {
+                      "symbol":  "XAGUSD",
+                      "tf":  "H1",
+                      "generated_at":  "2025-10-28T12:22:29.166969Z",
+                      "candidate":  {
+                                        "symbol":  "XAGUSD",
+                                        "price":  22.17,
+                                        "tf":  "H1",
+                                        "kind":  "forex",
+                                        "csv_path":  ".\\data\\raw\\forex_kaggle_multiTF\\XAGUSD_D1.csv",
+                                        "timestamp":  "2025-10-27T18:27:21.652294Z"
+                                    },
+                      "meta_w":  0.5,
+                      "finrl_present":  false,
+                      "two_layer_enabled":  false,
+                      "enter":  true,
+                      "side":  "buy",
+                      "size":  0.0,
+                      "price":  22.17,
+                      "atr":  null,
+                      "sl":  null,
+                      "tp":  null,
+                      "sl_type":  "none",
+                      "final_score":  0.05,
+                      "reason":  {
+                                     "screener_score":  0.0,
+                                     "meta_w":  0.5,
+                                     "finrl_boost":  0.0,
+                                     "min_entry":  0.2,
+                                     "min_confidence":  0.0,
+                                     "explain":  "below_threshold score=0.000 conf=1.000",
+                                     "mtf":  "@{reason=confirmed; agree=1.0; votes=System.Object[]}"
+                                 },
+                      "layer_signals":  null,
+                      "notes":  [
+                                    "Single-layer (hybrid heuristic) path",
+                                    "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+                                ],
+                      "decision":  {
+                                       "enter":  false,
+                                       "side":  "hold",
+                                       "final_score":  0.0,
+                                       "size":  0.0,
+                                       "sl":  null,
+                                       "tp":  null,
+                                       "sl_type":  "none",
+                                       "reason":  "@{screener_score=0.0; meta_w=0.5; finrl_boost=0.0; min_entry=0.2; min_confidence=0.0; explain=below_threshold score=0.000 conf=1.000; mtf=}"
+                                   }
+                  },
+                  {
+                      "symbol":  "USDCHF",
+                      "tf":  "H1",
+                      "generated_at":  "2025-10-28T12:22:29.153316Z",
+                      "candidate":  {
+                                        "symbol":  "USDCHF",
+                                        "price":  0.915,
+                                        "tf":  "H1",
+                                        "kind":  "forex",
+                                        "csv_path":  ".\\data\\raw\\forex_kaggle_multiTF\\USDCHF_D1.csv",
+                                        "timestamp":  "2025-10-27T18:27:21.645649Z"
+                                    },
+                      "meta_w":  0.5,
+                      "finrl_present":  false,
+                      "two_layer_enabled":  false,
+                      "enter":  true,
+                      "side":  "buy",
+                      "size":  0.0,
+                      "price":  0.915,
+                      "atr":  null,
+                      "sl":  null,
+                      "tp":  null,
+                      "sl_type":  "none",
+                      "final_score":  0.05,
+                      "reason":  {
+                                     "screener_score":  0.0,
+                                     "meta_w":  0.5,
+                                     "finrl_boost":  0.0,
+                                     "min_entry":  0.2,
+                                     "min_confidence":  0.0,
+                                     "explain":  "below_threshold score=0.000 conf=1.000",
+                                     "mtf":  "@{reason=confirmed; agree=1.0; votes=System.Object[]}"
+                                 },
+                      "layer_signals":  null,
+                      "notes":  [
+                                    "Single-layer (hybrid heuristic) path",
+                                    "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+                                ],
+                      "decision":  {
+                                       "enter":  false,
+                                       "side":  "hold",
+                                       "final_score":  0.0,
+                                       "size":  0.0,
+                                       "sl":  null,
+                                       "tp":  null,
+                                       "sl_type":  "none",
+                                       "reason":  "@{screener_score=0.0; meta_w=0.5; finrl_boost=0.0; min_entry=0.2; min_confidence=0.0; explain=below_threshold score=0.000 conf=1.000; mtf=}"
+                                   }
+                  }
+              ],
+    "Count":  5
+}

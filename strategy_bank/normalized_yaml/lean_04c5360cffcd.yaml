@@ -1,0 +1,11 @@
+id: lean_04c5360cffcd
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/ClassicRenkoConsolidatorAlgorithm.py
+name: ClassicRenkoConsolidatorAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: jesse_6877e661b54f
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/import_candles_mode/drivers/Bybit/BybitUSDCPerpetual.py
+name: BybitUSDCPerpetual
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

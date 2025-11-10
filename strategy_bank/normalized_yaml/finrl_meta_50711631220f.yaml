@@ -1,0 +1,11 @@
+id: finrl_meta_50711631220f
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_stock_trading/env_nasdaq100_wrds.py
+name: env_nasdaq100_wrds
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

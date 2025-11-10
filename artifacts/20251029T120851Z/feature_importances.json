@@ -1,0 +1,26 @@
+{
+  "created_at": "20251029T120851Z",
+  "model_type": "RandomForest",
+  "features": [
+    {
+      "name": "ret1",
+      "importance": 0.21135292039163212
+    },
+    {
+      "name": "ma5_ma20_diff",
+      "importance": 0.21216465656707634
+    },
+    {
+      "name": "vol5",
+      "importance": 0.22029642194733978
+    },
+    {
+      "name": "atr_proxy",
+      "importance": 0.20314758668003718
+    },
+    {
+      "name": "range",
+      "importance": 0.15303841441391464
+    }
+  ]
+}

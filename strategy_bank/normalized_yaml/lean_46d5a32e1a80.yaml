@@ -1,0 +1,11 @@
+id: lean_46d5a32e1a80
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/OptionPriceModelForSupportedAmericanOptionRegressionAlgorithm.py
+name: OptionPriceModelForSupportedAmericanOptionRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: finrl_meta_8e952403282b
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_crypto_trading/env_multiple_crypto.py
+name: env_multiple_crypto
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

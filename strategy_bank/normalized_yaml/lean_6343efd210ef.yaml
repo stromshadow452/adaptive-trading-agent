@@ -1,0 +1,11 @@
+id: lean_6343efd210ef
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CustomModelsAlgorithm.py
+name: CustomModelsAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

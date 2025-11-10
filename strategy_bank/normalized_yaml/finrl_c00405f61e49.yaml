@@ -1,0 +1,11 @@
+id: finrl_c00405f61e49
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/unit_tests/environments/test_cash_penalty.py
+name: test_cash_penalty
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

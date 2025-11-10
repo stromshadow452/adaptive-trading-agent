@@ -1,0 +1,11 @@
+id: lean_325e6d2c4ba4
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/MeanReversionPortfolioAlgorithm.py
+name: MeanReversionPortfolioAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

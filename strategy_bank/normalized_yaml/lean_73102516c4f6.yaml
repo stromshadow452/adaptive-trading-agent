@@ -1,0 +1,11 @@
+id: lean_73102516c4f6
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/ComboOrderTicketDemoAlgorithm.py
+name: ComboOrderTicketDemoAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

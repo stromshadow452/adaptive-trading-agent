@@ -1,0 +1,11 @@
+id: lean_98acfb7140e4
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/TickDataFilteringAlgorithm.py
+name: TickDataFilteringAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

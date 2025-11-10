@@ -1,0 +1,11 @@
+id: finrl_cbcc7dd28cc4
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/trade.py
+name: trade
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: lean_3294bd346796
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CustomUniverseSelectionModelRegressionAlgorithm.py
+name: CustomUniverseSelectionModelRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

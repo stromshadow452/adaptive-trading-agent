@@ -1,0 +1,11 @@
+id: freqtrade_996d5c322c1d
+source_vendor: freqtrade
+file: strategy_bank/external_raw/freqtrade/user_data/strategies/FixedRiskRewardLoss.py
+name: FixedRiskRewardLoss
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

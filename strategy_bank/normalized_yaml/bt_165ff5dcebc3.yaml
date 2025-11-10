@@ -1,0 +1,11 @@
+id: bt_165ff5dcebc3
+source_vendor: bt
+file: strategy_bank/external_raw/bt/bt/algos.py
+name: algos
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

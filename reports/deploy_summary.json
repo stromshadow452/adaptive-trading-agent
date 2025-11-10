@@ -1,0 +1,43 @@
+{
+  "timestamp": "2025-10-18T10:47:48.736309Z",
+  "paper": {
+    "equity_csv": "E:\\adaptive-trading-agent (2) (1)\\adaptive-trading-agent (2)\\reports\\paper_EURUSD_M15_20251018_104745_equity.csv",
+    "trades_csv": "E:\\adaptive-trading-agent (2) (1)\\adaptive-trading-agent (2)\\reports\\paper_EURUSD_M15_20251018_104745_trades.csv"
+  },
+  "gate": {
+    "timestamp": "2025-10-18T10:47:48.136565Z",
+    "inputs": {
+      "equity_csv": "E:\\adaptive-trading-agent (2) (1)\\adaptive-trading-agent (2)\\reports\\paper_EURUSD_M15_20251018_104745_equity.csv",
+      "trades_csv": "E:\\adaptive-trading-agent (2) (1)\\adaptive-trading-agent (2)\\reports\\paper_EURUSD_M15_20251018_104745_trades.csv"
+    },
+    "metrics": {
+      "days": 0,
+      "sharpe": 0.0,
+      "max_drawdown": 0.0,
+      "turnover": 3.248,
+      "win_rate": 0.0,
+      "exposure": 0.31730449396015553
+    },
+    "thresholds": {
+      "min_sharpe": 0.8,
+      "max_drawdown": -0.2,
+      "max_turnover": 20.0,
+      "min_winrate": 0.3,
+      "max_exposure": 0.6,
+      "min_days": 60
+    },
+    "checks": {
+      "days_ok": false,
+      "sharpe_ok": false,
+      "dd_ok": true,
+      "turnover_ok": true,
+      "winrate_ok": false,
+      "exposure_ok": true
+    },
+    "result": "FAIL"
+  },
+  "promoted": false,
+  "promoted_name": null,
+  "live_path": null,
+  "notes": "Gate FAILED; not promoted."
+}

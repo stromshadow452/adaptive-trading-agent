@@ -1,0 +1,66 @@
+{
+  "symbol": "AUDUSD",
+  "tf": "M15",
+  "generated_at": "2025-10-27T07:55:00.523253Z",
+  "candidate": {
+    "pair": "AUDUSD",
+    "tf": "M15",
+    "close": 1.201786326404151,
+    "price": 1.201786326404151,
+    "score": -1.443392144749097,
+    "tech_score": -1.443392144749097,
+    "tech_sharpe": 0.0,
+    "tech_trades": 0.0,
+    "adx": 24.474694521239126,
+    "atr": 0.005956000595891368,
+    "vol_ratio": 0.2833898853893322,
+    "impact": 0.0,
+    "impact_score": 0.0,
+    "surprise_norm": 0.0,
+    "fund_score": 0.0,
+    "within_1h_event": false,
+    "session": "LONDON"
+  },
+  "meta_w": 0.5,
+  "finrl_present": false,
+  "two_layer_enabled": false,
+  "enter": true,
+  "side": "sell",
+  "size": 0.05,
+  "price": 1.201786326404151,
+  "atr": 0.005956000595891368,
+  "sl": 1.210720327297988,
+  "tp": 1.1883853250633956,
+  "sl_type": "atr",
+  "final_score": -1.0825441085618226,
+  "reason": {
+    "screener_score": -1.443392144749097,
+    "meta_w": 0.5,
+    "finrl_boost": 0.0,
+    "min_entry": 0.2,
+    "min_confidence": 0.0,
+    "explain": "score_neg -1.083"
+  },
+  "layer_signals": null,
+  "notes": [
+    "Single-layer (hybrid heuristic) path",
+    "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+  ],
+  "decision": {
+    "enter": true,
+    "side": "sell",
+    "final_score": -1.0825441085618226,
+    "size": 0.05,
+    "sl": 1.210720327297988,
+    "tp": 1.1883853250633956,
+    "sl_type": "atr",
+    "reason": {
+      "screener_score": -1.443392144749097,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "score_neg -1.083"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+id: finrl_3cfff95df923
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/agents/portfolio_optimization/__init__.py
+name: __init__
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

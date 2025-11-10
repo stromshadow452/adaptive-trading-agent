@@ -1,0 +1,11 @@
+id: lean_08f8e601c77a
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/DailyAlgorithm.py
+name: DailyAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

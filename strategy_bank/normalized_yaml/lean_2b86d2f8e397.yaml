@@ -1,0 +1,11 @@
+id: lean_2b86d2f8e397
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/ExtendedMarketTradingRegressionAlgorithm.py
+name: ExtendedMarketTradingRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

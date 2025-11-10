@@ -1,0 +1,11 @@
+id: jesse_b37fe709e05f
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/t3.py
+name: t3
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

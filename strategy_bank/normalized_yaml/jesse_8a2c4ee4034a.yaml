@@ -1,0 +1,11 @@
+id: jesse_8a2c4ee4034a
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/vlma.py
+name: vlma
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

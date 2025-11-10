@@ -1,0 +1,11 @@
+id: lean_6b56cd643aa2
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/BubbleAlgorithm.py
+name: BubbleAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

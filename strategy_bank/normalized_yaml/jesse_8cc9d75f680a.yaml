@@ -1,0 +1,11 @@
+id: jesse_8cc9d75f680a
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/models/ClosedTrade.py
+name: ClosedTrade
+family: ml_rl
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

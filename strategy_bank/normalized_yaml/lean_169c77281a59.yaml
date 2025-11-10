@@ -1,0 +1,11 @@
+id: lean_169c77281a59
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/Benchmarks/CoarseFineUniverseSelectionBenchmark.py
+name: CoarseFineUniverseSelectionBenchmark
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

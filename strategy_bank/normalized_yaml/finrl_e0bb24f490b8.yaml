@@ -1,0 +1,11 @@
+id: finrl_e0bb24f490b8
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/meta/env_portfolio_optimization/env_portfolio_optimization.py
+name: env_portfolio_optimization
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

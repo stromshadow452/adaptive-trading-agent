@@ -1,0 +1,29 @@
+symbols: [EURUSD, GBPUSD, USDJPY, AUDUSD, USDCAD, NZDUSD]
+timeframes: [1m,5m,15m,1h,4h,1d]
+risk:
+  per_trade: 0.01
+  max_vol: 0.03
+  max_daily_dd: 0.05
+  cooldown_after_losses: 3
+backtest:
+  fee_bps: 1.0
+  slippage_bps: 2.0
+rl:
+  enabled: true
+  timesteps_weekly: 300000
+production:
+  symbol: USDJPY
+  timeframe: H4
+  initial_equity: 15000
+  fee_bps: 1.0
+  slip_bps: 2.0
+  atr_pos_k: 0.0
+  sl_atr: 0.0
+  tp_atr: 0.0
+  max_hold: 0
+regime:
+  method: rule
+  adx_period: 14
+  vol_window: 20
+  adx_trend_thresh: 25.0
+  vol_high_quantile: 0.85

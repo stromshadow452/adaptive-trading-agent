@@ -1,0 +1,11 @@
+id: bt_8f040b3b0abc
+source_vendor: bt
+file: strategy_bank/external_raw/bt/tests/test_algos.py
+name: test_algos
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

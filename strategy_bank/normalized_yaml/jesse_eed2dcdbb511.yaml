@@ -1,0 +1,11 @@
+id: jesse_eed2dcdbb511
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/tests/test_helpers.py
+name: test_helpers
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

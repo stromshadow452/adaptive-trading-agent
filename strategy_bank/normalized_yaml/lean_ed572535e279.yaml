@@ -1,0 +1,11 @@
+id: lean_ed572535e279
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/BybitCryptoRegressionAlgorithm.py
+name: BybitCryptoRegressionAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

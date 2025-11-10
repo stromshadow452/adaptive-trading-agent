@@ -1,0 +1,11 @@
+id: finrl_da288dc1188e
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/meta/env_stock_trading/env_nas100_wrds.py
+name: env_nas100_wrds
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

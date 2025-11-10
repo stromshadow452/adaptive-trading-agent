@@ -1,0 +1,11 @@
+id: jesse_352abe11060c
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/midprice.py
+name: midprice
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

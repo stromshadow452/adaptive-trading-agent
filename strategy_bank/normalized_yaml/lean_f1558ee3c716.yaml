@@ -1,0 +1,11 @@
+id: lean_f1558ee3c716
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/BasicTemplateIndiaAlgorithm.py
+name: BasicTemplateIndiaAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

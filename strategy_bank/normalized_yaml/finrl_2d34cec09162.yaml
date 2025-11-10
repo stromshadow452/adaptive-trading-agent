@@ -1,0 +1,11 @@
+id: finrl_2d34cec09162
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/unit_tests/preprocessors/test_yahoodownloader.py
+name: test_yahoodownloader
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

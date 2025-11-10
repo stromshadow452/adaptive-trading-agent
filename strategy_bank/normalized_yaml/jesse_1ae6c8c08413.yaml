@@ -1,0 +1,11 @@
+id: jesse_1ae6c8c08413
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/services/general_info.py
+name: general_info
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

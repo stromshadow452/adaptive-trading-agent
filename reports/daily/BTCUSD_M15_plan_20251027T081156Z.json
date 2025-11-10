@@ -1,0 +1,136 @@
+{
+  "symbol": "BTCUSD",
+  "tf": "M15",
+  "generated_at": "2025-10-27T08:11:56.501386Z",
+  "candidate": {
+    "pair": "BTCUSD",
+    "tf": "M15",
+    "close": 1.153891223517609,
+    "price": 1.153891223517609,
+    "score": -1.4433921447489788,
+    "tech_score": -1.4433921447489788,
+    "tech_sharpe": 0.0,
+    "tech_trades": 0.0,
+    "adx": 24.474694521238607,
+    "atr": 0.005718634555801641,
+    "vol_ratio": 0.2833898853893322,
+    "impact": 0.0,
+    "impact_score": 0.0,
+    "surprise_norm": 0.0,
+    "fund_score": 0.0,
+    "within_1h_event": false,
+    "session": "LONDON",
+    "rl_action": "short",
+    "rl_conf": 0.985
+  },
+  "meta_w": 0.5,
+  "finrl_present": false,
+  "two_layer_enabled": true,
+  "enter": true,
+  "side": "sell",
+  "size": 0.05,
+  "price": 1.153891223517609,
+  "atr": 0.005718634555801641,
+  "sl": 1.1624691753513114,
+  "tp": 1.1410242957670553,
+  "sl_type": "atr",
+  "final_score": 0.947189257160426,
+  "reason": {
+    "layer": "fusion",
+    "stats": {
+      "side": "sell",
+      "conf": 0.947189257160426,
+      "score": -1.4433921447489788,
+      "regime": "",
+      "trend_strength": 0.0,
+      "rsi14": 50.0,
+      "meta_w": 0.5,
+      "base_conf": 0.947189257160426
+    },
+    "rl": {
+      "side": "sell",
+      "conf": 0.985,
+      "source": "candidate_rl_fields"
+    },
+    "fusion": {
+      "mode": "confirmed",
+      "stats": {
+        "score": -1.4433921447489788,
+        "regime": "",
+        "trend_strength": 0.0,
+        "rsi14": 50.0,
+        "meta_w": 0.5,
+        "base_conf": 0.947189257160426,
+        "conf": 0.947189257160426
+      },
+      "rl": {
+        "source": "candidate_rl_fields"
+      },
+      "final_conf": 0.947189257160426
+    }
+  },
+  "layer_signals": {
+    "stats": {
+      "side": "sell",
+      "conf": 0.947189257160426,
+      "score": -1.4433921447489788,
+      "regime": "",
+      "trend_strength": 0.0,
+      "rsi14": 50.0,
+      "meta_w": 0.5,
+      "base_conf": 0.947189257160426
+    },
+    "rl": {
+      "side": "sell",
+      "conf": 0.985,
+      "source": "candidate_rl_fields"
+    }
+  },
+  "notes": [
+    "Two-layer fusion (Stats + FinRL) enabled",
+    "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+  ],
+  "decision": {
+    "enter": true,
+    "side": "sell",
+    "final_score": 0.947189257160426,
+    "size": 0.05,
+    "sl": 1.1624691753513114,
+    "tp": 1.1410242957670553,
+    "sl_type": "atr",
+    "reason": {
+      "layer": "fusion",
+      "stats": {
+        "side": "sell",
+        "conf": 0.947189257160426,
+        "score": -1.4433921447489788,
+        "regime": "",
+        "trend_strength": 0.0,
+        "rsi14": 50.0,
+        "meta_w": 0.5,
+        "base_conf": 0.947189257160426
+      },
+      "rl": {
+        "side": "sell",
+        "conf": 0.985,
+        "source": "candidate_rl_fields"
+      },
+      "fusion": {
+        "mode": "confirmed",
+        "stats": {
+          "score": -1.4433921447489788,
+          "regime": "",
+          "trend_strength": 0.0,
+          "rsi14": 50.0,
+          "meta_w": 0.5,
+          "base_conf": 0.947189257160426,
+          "conf": 0.947189257160426
+        },
+        "rl": {
+          "source": "candidate_rl_fields"
+        },
+        "final_conf": 0.947189257160426
+      }
+    }
+  }
+}

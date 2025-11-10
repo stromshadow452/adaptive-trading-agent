@@ -1,0 +1,132 @@
+{
+  "symbol": "GBPUSD",
+  "tf": "M15",
+  "generated_at": "2025-10-27T07:47:25.009431Z",
+  "candidate": {
+    "pair": "GBPUSD",
+    "tf": "M15",
+    "close": 1.1834499167216463,
+    "price": 1.1834499167216463,
+    "score": -1.4433921447490512,
+    "tech_score": -1.4433921447490512,
+    "tech_sharpe": 0.0,
+    "tech_trades": 0.0,
+    "adx": 24.474694521238888,
+    "atr": 0.0058651261495809015,
+    "vol_ratio": 0.2833898853893322,
+    "impact": 0.0,
+    "impact_score": 0.0,
+    "surprise_norm": 0.0,
+    "fund_score": 0.0,
+    "within_1h_event": false,
+    "session": "LONDON"
+  },
+  "meta_w": 0.5,
+  "finrl_present": false,
+  "two_layer_enabled": true,
+  "enter": false,
+  "side": "hold",
+  "size": 0.0,
+  "price": 1.1834499167216463,
+  "atr": 0.0058651261495809015,
+  "sl": null,
+  "tp": null,
+  "sl_type": "none",
+  "final_score": 0.0,
+  "reason": {
+    "layer": "fusion",
+    "stats": {
+      "side": "sell",
+      "conf": 0.9471892571604332,
+      "score": -1.4433921447490512,
+      "regime": "",
+      "trend_strength": 0.0,
+      "rsi14": 50.0,
+      "meta_w": 0.5,
+      "base_conf": 0.9471892571604332
+    },
+    "rl": {
+      "side": "hold",
+      "conf": 0.5,
+      "source": "none"
+    },
+    "fusion": {
+      "mode": "abstain_rl_uncertain",
+      "stats": {
+        "score": -1.4433921447490512,
+        "regime": "",
+        "trend_strength": 0.0,
+        "rsi14": 50.0,
+        "meta_w": 0.5,
+        "base_conf": 0.9471892571604332,
+        "conf": 0.9471892571604332
+      },
+      "rl": {
+        "source": "none"
+      }
+    }
+  },
+  "layer_signals": {
+    "stats": {
+      "side": "sell",
+      "conf": 0.9471892571604332,
+      "score": -1.4433921447490512,
+      "regime": "",
+      "trend_strength": 0.0,
+      "rsi14": 50.0,
+      "meta_w": 0.5,
+      "base_conf": 0.9471892571604332
+    },
+    "rl": {
+      "side": "hold",
+      "conf": 0.5,
+      "source": "none"
+    }
+  },
+  "notes": [
+    "Two-layer fusion (Stats + FinRL) enabled",
+    "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+  ],
+  "decision": {
+    "enter": false,
+    "side": "hold",
+    "final_score": 0.0,
+    "size": 0.0,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "reason": {
+      "layer": "fusion",
+      "stats": {
+        "side": "sell",
+        "conf": 0.9471892571604332,
+        "score": -1.4433921447490512,
+        "regime": "",
+        "trend_strength": 0.0,
+        "rsi14": 50.0,
+        "meta_w": 0.5,
+        "base_conf": 0.9471892571604332
+      },
+      "rl": {
+        "side": "hold",
+        "conf": 0.5,
+        "source": "none"
+      },
+      "fusion": {
+        "mode": "abstain_rl_uncertain",
+        "stats": {
+          "score": -1.4433921447490512,
+          "regime": "",
+          "trend_strength": 0.0,
+          "rsi14": 50.0,
+          "meta_w": 0.5,
+          "base_conf": 0.9471892571604332,
+          "conf": 0.9471892571604332
+        },
+        "rl": {
+          "source": "none"
+        }
+      }
+    }
+  }
+}

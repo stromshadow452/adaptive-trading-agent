@@ -1,0 +1,11 @@
+id: lean_a27d4b49fd38
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/BasicTemplateTradableIndexAlgorithm.py
+name: BasicTemplateTradableIndexAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

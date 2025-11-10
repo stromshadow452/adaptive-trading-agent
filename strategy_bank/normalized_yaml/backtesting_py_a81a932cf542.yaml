@@ -1,0 +1,11 @@
+id: backtesting_py_a81a932cf542
+source_vendor: backtesting_py
+file: strategy_bank/external_raw/backtesting_py/backtesting/test/__main__.py
+name: __main__
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

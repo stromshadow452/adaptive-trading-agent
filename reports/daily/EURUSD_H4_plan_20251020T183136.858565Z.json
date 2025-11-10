@@ -1,0 +1,46 @@
+{
+  "pair": "EURUSD",
+  "tf": "H4",
+  "timestamp": "2025-10-20T18:31:36.858565Z",
+  "final_score": 0.0,
+  "action": "hold",
+  "size_pct": 0.01,
+  "entry": 1.16326,
+  "sl": null,
+  "tp": null,
+  "strategy_name": null,
+  "strategy_exit": {},
+  "reasons": [
+    "meta_w=0.00",
+    "final_score=0.00",
+    "strategy=none",
+    "fit=0.00",
+    "boost=1.00",
+    "low_trade_count_warn"
+  ],
+  "meta_weight": 0.0,
+  "raw_candidate": {
+    "pair": "EURUSD",
+    "tf": "H4",
+    "tech_score": 2.0,
+    "fund_score": 0.0,
+    "impact_score": 0.0,
+    "surprise_norm": 0.0,
+    "adx": 0.0,
+    "atr": 0.0,
+    "vol_ratio": 0.0,
+    "tech_sharpe": 0.0,
+    "tech_trades": 0.0,
+    "close": 1.16326,
+    "within_1h_event": false,
+    "session": null
+  },
+  "_model_meta": {
+    "model_type": "RandomForestClassifier",
+    "n_samples": 82,
+    "class_counts": {
+      "0": 57,
+      "1": 25
+    }
+  }
+}

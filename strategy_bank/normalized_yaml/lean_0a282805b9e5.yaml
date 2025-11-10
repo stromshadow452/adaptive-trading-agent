@@ -1,0 +1,11 @@
+id: lean_0a282805b9e5
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/OptionSplitRegressionAlgorithm.py
+name: OptionSplitRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

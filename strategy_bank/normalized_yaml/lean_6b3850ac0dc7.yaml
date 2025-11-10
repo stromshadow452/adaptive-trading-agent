@@ -1,0 +1,11 @@
+id: lean_6b3850ac0dc7
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/RangeConsolidatorWithTickAlgorithm.py
+name: RangeConsolidatorWithTickAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

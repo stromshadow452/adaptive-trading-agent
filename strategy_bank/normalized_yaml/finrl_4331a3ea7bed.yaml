@@ -1,0 +1,11 @@
+id: finrl_4331a3ea7bed
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/__main__.py
+name: __main__
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

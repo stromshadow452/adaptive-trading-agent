@@ -1,0 +1,11 @@
+id: lean_339c979b5e75
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/FutureOptionPutITMExpiryRegressionAlgorithm.py
+name: FutureOptionPutITMExpiryRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

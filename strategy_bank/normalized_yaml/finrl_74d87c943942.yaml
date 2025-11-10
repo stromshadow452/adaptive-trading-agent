@@ -1,0 +1,11 @@
+id: finrl_74d87c943942
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/meta/preprocessor/ibkrdownloader.py
+name: ibkrdownloader
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

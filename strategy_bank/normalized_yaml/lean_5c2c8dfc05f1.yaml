@@ -1,0 +1,11 @@
+id: lean_5c2c8dfc05f1
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/NakedCallStrategyAlgorithm.py
+name: NakedCallStrategyAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

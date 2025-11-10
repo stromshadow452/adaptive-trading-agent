@@ -1,0 +1,11 @@
+id: jesse_d4cdb5cd1bbe
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/jsa.py
+name: jsa
+family: unknown
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

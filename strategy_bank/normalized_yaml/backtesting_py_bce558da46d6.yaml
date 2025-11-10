@@ -1,0 +1,12 @@
+id: backtesting_py_bce558da46d6
+source_vendor: backtesting_py
+file: strategy_bank/external_raw/backtesting_py/doc/examples/Trading with Machine
+  Learning.py
+name: Trading with Machine Learning
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

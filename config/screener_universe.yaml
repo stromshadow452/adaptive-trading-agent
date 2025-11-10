@@ -1,0 +1,71 @@
+universe:
+  forex:
+  - AUDJPY
+  - AUDUSD
+  - CHFJPY
+  - EURCAD
+  - EURCHF
+  - EURGBP
+  - EURJPY
+  - EURUSD
+  - GBPCHF
+  - GBPJPY
+  - GBPUSD
+  - NZDJPY
+  - NZDUSD
+  - USDCAD
+  - USDCHF
+  - USDJPY
+  crypto: []
+timeframes:
+- M15
+- H4
+symbol_timeframes:
+  AUDJPY:
+  - H4
+  - M15
+  AUDUSD:
+  - H4
+  - M15
+  CHFJPY:
+  - H4
+  - M15
+  EURCAD:
+  - H4
+  - M15
+  EURCHF:
+  - H4
+  - M15
+  EURGBP:
+  - H4
+  - M15
+  EURJPY:
+  - H4
+  - M15
+  EURUSD:
+  - H4
+  - M15
+  GBPCHF:
+  - H4
+  - M15
+  GBPJPY:
+  - H4
+  - M15
+  GBPUSD:
+  - H4
+  - M15
+  NZDJPY:
+  - H4
+  - M15
+  NZDUSD:
+  - H4
+  - M15
+  USDCAD:
+  - H4
+  - M15
+  USDCHF:
+  - H4
+  - M15
+  USDJPY:
+  - H4
+  - M15

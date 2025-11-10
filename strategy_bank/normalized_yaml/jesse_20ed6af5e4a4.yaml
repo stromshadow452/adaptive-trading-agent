@@ -1,0 +1,11 @@
+id: jesse_20ed6af5e4a4
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/import_candles_mode/drivers/Gate/GateUSDTMain.py
+name: GateUSDTMain
+family: breakout
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

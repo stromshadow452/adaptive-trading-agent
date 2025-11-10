@@ -1,0 +1,11 @@
+id: lean_c13be17cac1d
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/MovingAverageCrossAlgorithm.py
+name: MovingAverageCrossAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

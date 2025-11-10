@@ -1,0 +1,11 @@
+id: lean_e93a20a601ee
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/BasicTemplateCryptoFutureAlgorithm.py
+name: BasicTemplateCryptoFutureAlgorithm
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

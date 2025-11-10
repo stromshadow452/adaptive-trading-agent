@@ -1,0 +1,11 @@
+id: jesse_dc54141d1ca1
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/tests/test_state_orders.py
+name: test_state_orders
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

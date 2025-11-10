@@ -1,0 +1,11 @@
+id: finrl_meta_1f268210e171
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/unit_tests/test_alphavantage.py
+name: test_alphavantage
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

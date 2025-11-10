@@ -1,0 +1,11 @@
+id: lean_43fa9d67e167
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/Alphas/SykesShortMicroCapAlpha.py
+name: SykesShortMicroCapAlpha
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

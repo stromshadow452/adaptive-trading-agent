@@ -1,0 +1,11 @@
+id: jesse_03195e0ca81b
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/dpo.py
+name: dpo
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: finrl_meta_cdf8c0b612b7
+source_vendor: finrl_meta
+file: strategy_bank/external_raw/finrl_meta/meta/env_future_trading/wt4elegantrl/elegantrl/demo.py
+name: demo
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

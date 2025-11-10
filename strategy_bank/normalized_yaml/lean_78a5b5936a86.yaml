@@ -1,0 +1,11 @@
+id: lean_78a5b5936a86
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/BaseFrameworkRegressionAlgorithm.py
+name: BaseFrameworkRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

@@ -1,0 +1,11 @@
+id: jesse_f56f83789d17
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/kaufmanstop.py
+name: kaufmanstop
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

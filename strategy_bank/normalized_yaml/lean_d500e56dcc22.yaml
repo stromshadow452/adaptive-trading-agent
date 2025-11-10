@@ -1,0 +1,11 @@
+id: lean_d500e56dcc22
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/Alphas/VIXDualThrustAlpha.py
+name: VIXDualThrustAlpha
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

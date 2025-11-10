@@ -1,0 +1,11 @@
+id: finrl_e676da23f97c
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/meta/data_processors/processor_alpaca.py
+name: processor_alpaca
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

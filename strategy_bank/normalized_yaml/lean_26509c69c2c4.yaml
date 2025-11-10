@@ -1,0 +1,11 @@
+id: lean_26509c69c2c4
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Framework/Risk/MaximumDrawdownPercentPortfolio.py
+name: MaximumDrawdownPercentPortfolio
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

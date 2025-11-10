@@ -1,0 +1,29 @@
+{
+  "default": {
+    "max_same_side": 3,
+    "max_total_positions": 6,
+    "max_net_exposure": 0.40,
+    "max_bucket_per_side": { "fx": 2, "crypto": 2, "equity": 2 },
+    "max_drawdown_stop": 0.05,
+    "per_symbol_limit": 1,
+    "description": "Balanced risk profile (default)."
+  },
+  "tight": {
+    "max_same_side": 2,
+    "max_total_positions": 4,
+    "max_net_exposure": 0.30,
+    "max_bucket_per_side": { "fx": 1, "crypto": 1, "equity": 2 },
+    "max_drawdown_stop": 0.04,
+    "per_symbol_limit": 1,
+    "description": "Conservative mode for high volatility sessions."
+  },
+  "loose": {
+    "max_same_side": 3,
+    "max_total_positions": 8,
+    "max_net_exposure": 0.45,
+    "max_bucket_per_side": { "fx": 3, "crypto": 2, "equity": 3 },
+    "max_drawdown_stop": 0.06,
+    "per_symbol_limit": 1,
+    "description": "Aggressive mode for strong trending sessions."
+  }
+}

@@ -1,0 +1,11 @@
+id: jesse_13418b99ac03
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/backtest_mode.py
+name: backtest_mode
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

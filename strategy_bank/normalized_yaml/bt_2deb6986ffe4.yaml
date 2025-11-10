@@ -1,0 +1,11 @@
+id: bt_2deb6986ffe4
+source_vendor: bt
+file: strategy_bank/external_raw/bt/docs/source/conf.py
+name: conf
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

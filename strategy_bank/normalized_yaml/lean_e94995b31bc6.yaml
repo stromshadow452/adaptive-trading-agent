@@ -1,0 +1,11 @@
+id: lean_e94995b31bc6
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CustomDataBenchmarkRegressionAlgorithm.py
+name: CustomDataBenchmarkRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

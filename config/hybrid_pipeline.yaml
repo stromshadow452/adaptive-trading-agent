@@ -1,0 +1,27 @@
+screener:
+  script: tools/multi_pair_screener.py
+  config: config/screener.yaml
+  out_dir: reports/screener
+paper_deploy:
+  script: tools/paper_deploy.py
+  top: 3
+  equity: 10000
+  out_dir: reports/daily_logs
+summary:
+  script: tools/generate_run_summary.py
+  reports_dir: reports/daily_logs
+  out_dir: reports/aggregate
+meta_selector:
+  script: tools/train_meta_selector.py
+  logs_dir: reports/daily_logs
+  out: models/meta_selector/meta_selector.joblib
+decision_engine:
+  script: tools/decision_engine_runner.py
+  out_dir: reports/daily
+finrl:
+  enabled: True
+  script: tools/finrl_adapter.py
+  policies_dir: models/finrl
+  algo: PPO
+risk:
+  kill_on_errors: true

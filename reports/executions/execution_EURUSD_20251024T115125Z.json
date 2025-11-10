@@ -1,0 +1,21 @@
+{
+  "timestamp": "2025-10-24T11:51:25.069996+00:00",
+  "plan_file": "reports\\daily\\EURUSD_H4_plan_20251020T183136.909868Z.json",
+  "symbol": "EURUSD",
+  "tf": "H4",
+  "side": "hold",
+  "size": 0,
+  "price": 0.0,
+  "sl": null,
+  "tp": null,
+  "meta": [
+    "meta_w=0.00",
+    "final_score=0.00",
+    "strategy=none",
+    "fit=0.00",
+    "boost=1.00",
+    "low_trade_count_warn"
+  ],
+  "reason": "",
+  "status": "filled_paper"
+}

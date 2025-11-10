@@ -1,0 +1,11 @@
+id: jesse_a8dcfd2e7aca
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/kdj.py
+name: kdj
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

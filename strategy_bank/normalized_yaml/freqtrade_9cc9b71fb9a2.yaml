@@ -1,0 +1,11 @@
+id: freqtrade_9cc9b71fb9a2
+source_vendor: freqtrade
+file: strategy_bank/external_raw/freqtrade/user_data/hyperopts/GodStraHo.py
+name: GodStraHo
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

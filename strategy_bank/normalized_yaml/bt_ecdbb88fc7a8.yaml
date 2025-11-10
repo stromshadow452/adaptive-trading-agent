@@ -1,0 +1,11 @@
+id: bt_ecdbb88fc7a8
+source_vendor: bt
+file: strategy_bank/external_raw/bt/bt/core.py
+name: core
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

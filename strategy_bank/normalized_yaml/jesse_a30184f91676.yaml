@@ -1,0 +1,11 @@
+id: jesse_a30184f91676
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/services/notifier.py
+name: notifier
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

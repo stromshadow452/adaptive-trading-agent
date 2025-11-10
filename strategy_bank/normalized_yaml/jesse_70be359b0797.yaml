@@ -1,0 +1,11 @@
+id: jesse_70be359b0797
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/indicators/minmax.py
+name: minmax
+family: trend
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

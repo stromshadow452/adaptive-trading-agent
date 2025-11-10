@@ -1,0 +1,40 @@
+{
+  "id": "run_20251028T145351Z",
+  "start": "2025-10-28T14:53:51.207867Z",
+  "mode": "exec",
+  "autoretrain": false,
+  "steps": [
+    {
+      "name": "screener",
+      "start": "2025-10-28T14:53:51.207874Z",
+      "status": "ok",
+      "end": "2025-10-28T14:53:51.873593Z"
+    },
+    {
+      "name": "paper_deploy",
+      "start": "2025-10-28T14:53:51.873608Z",
+      "status": "ok",
+      "end": "2025-10-28T14:53:53.117531Z"
+    },
+    {
+      "name": "generate_summary",
+      "start": "2025-10-28T14:53:53.117542Z",
+      "status": "ok",
+      "end": "2025-10-28T14:53:53.208285Z"
+    },
+    {
+      "name": "decision_engine",
+      "start": "2025-10-28T14:53:53.208298Z",
+      "status": "ok",
+      "end": "2025-10-28T14:53:54.361019Z"
+    },
+    {
+      "name": "finrl_adapter",
+      "start": "2025-10-28T14:53:54.361031Z",
+      "status": "ok",
+      "end": "2025-10-28T14:53:54.565132Z"
+    }
+  ],
+  "dry_run": false,
+  "end": "2025-10-28T14:53:54.565146Z"
+}

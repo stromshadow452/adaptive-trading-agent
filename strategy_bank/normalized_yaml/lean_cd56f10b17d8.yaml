@@ -1,0 +1,11 @@
+id: lean_cd56f10b17d8
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/AllShortableSymbolsCoarseSelectionRegressionAlgorithm.py
+name: AllShortableSymbolsCoarseSelectionRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

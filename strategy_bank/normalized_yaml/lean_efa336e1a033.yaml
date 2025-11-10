@@ -1,0 +1,11 @@
+id: lean_efa336e1a033
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/CompleteOrderTagUpdateAlgorithm.py
+name: CompleteOrderTagUpdateAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

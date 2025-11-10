@@ -1,0 +1,11 @@
+id: finrl_3fe52bf7c4cc
+source_vendor: finrl
+file: strategy_bank/external_raw/finrl/finrl/applications/stock_trading/stock_trading.py
+name: stock_trading
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

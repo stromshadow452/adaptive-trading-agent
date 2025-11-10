@@ -1,0 +1,4969 @@
+[
+  {
+    "symbol": "EURUSD",
+    "tf": "M15",
+    "generated_at": "2025-10-27T13:18:32.173192Z",
+    "candidate": {
+      "pair": "EURUSD",
+      "tf": "M15",
+      "close": 1.1740312144803602,
+      "price": 1.1740312144803602,
+      "score": -1.4360206422867399,
+      "tech_score": -1.4360206422867399,
+      "tech_sharpe": 0.0,
+      "tech_trades": 0.0,
+      "adx": 24.426188299214303,
+      "atr": 0.0057933016632642125,
+      "vol_ratio": 0.26030810594281906,
+      "impact": 0.0,
+      "impact_score": 0.0,
+      "surprise_norm": 0.0,
+      "fund_score": 0.0,
+      "within_1h_event": false,
+      "session": "LONDON"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "sell",
+    "size": 0.05,
+    "price": 1.1740312144803602,
+    "atr": 0.0057933016632642125,
+    "sl": 1.1827211669752564,
+    "tp": 1.1609962857380156,
+    "sl_type": "atr",
+    "final_score": -1.0770154817150548,
+    "reason": {
+      "screener_score": -1.4360206422867399,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "score_neg -1.077"
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": true,
+      "side": "sell",
+      "final_score": -1.0770154817150548,
+      "size": 0.05,
+      "sl": 1.1827211669752564,
+      "tp": 1.1609962857380156,
+      "sl_type": "atr",
+      "reason": {
+        "screener_score": -1.4360206422867399,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "score_neg -1.077"
+      }
+    },
+    "gate_reason": {
+      "mode": "same_side_cap",
+      "side": "sell",
+      "limit": 3
+    }
+  },
+  {
+    "symbol": "GBPUSD",
+    "tf": "M15",
+    "generated_at": "2025-10-27T13:18:32.173734Z",
+    "candidate": {
+      "pair": "GBPUSD",
+      "tf": "M15",
+      "close": 1.1614061455186355,
+      "price": 1.1614061455186355,
+      "score": -1.4360206422867126,
+      "tech_score": -1.4360206422867126,
+      "tech_sharpe": 0.0,
+      "tech_trades": 0.0,
+      "adx": 24.426188299214477,
+      "atr": 0.005731002780480928,
+      "vol_ratio": 0.26030810594281906,
+      "impact": 0.0,
+      "impact_score": 0.0,
+      "surprise_norm": 0.0,
+      "fund_score": 0.0,
+      "within_1h_event": false,
+      "session": "LONDON"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "sell",
+    "size": 0.05,
+    "price": 1.1614061455186355,
+    "atr": 0.005731002780480928,
+    "sl": 1.170002649689357,
+    "tp": 1.1485113892625534,
+    "sl_type": "atr",
+    "final_score": -1.0770154817150344,
+    "reason": {
+      "screener_score": -1.4360206422867126,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "score_neg -1.077"
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": true,
+      "side": "sell",
+      "final_score": -1.0770154817150344,
+      "size": 0.05,
+      "sl": 1.170002649689357,
+      "tp": 1.1485113892625534,
+      "sl_type": "atr",
+      "reason": {
+        "screener_score": -1.4360206422867126,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "score_neg -1.077"
+      }
+    },
+    "gate_reason": {
+      "mode": "same_side_cap",
+      "side": "sell",
+      "limit": 3
+    }
+  },
+  {
+    "symbol": "BTCUSD",
+    "tf": "M15",
+    "generated_at": "2025-10-27T13:18:32.175181Z",
+    "candidate": {
+      "pair": "BTCUSD",
+      "tf": "M15",
+      "close": 1.1382601857554742,
+      "price": 1.1382601857554742,
+      "score": -1.4360206422866395,
+      "tech_score": -1.4360206422866395,
+      "tech_sharpe": 0.0,
+      "tech_trades": 0.0,
+      "adx": 24.426188299214566,
+      "atr": 0.005616788162044997,
+      "vol_ratio": 0.26030810594281906,
+      "impact": 0.0,
+      "impact_score": 0.0,
+      "surprise_norm": 0.0,
+      "fund_score": 0.0,
+      "within_1h_event": false,
+      "session": "LONDON"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "sell",
+    "size": 0.05,
+    "price": 1.1382601857554742,
+    "atr": 0.005616788162044997,
+    "sl": 1.1466853679985416,
+    "tp": 1.125622412390873,
+    "sl_type": "atr",
+    "final_score": -1.0770154817149797,
+    "reason": {
+      "screener_score": -1.4360206422866395,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "score_neg -1.077"
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": true,
+      "side": "sell",
+      "final_score": -1.0770154817149797,
+      "size": 0.05,
+      "sl": 1.1466853679985416,
+      "tp": 1.125622412390873,
+      "sl_type": "atr",
+      "reason": {
+        "screener_score": -1.4360206422866395,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "score_neg -1.077"
+      }
+    },
+    "gate_reason": {
+      "mode": "same_side_cap",
+      "side": "sell",
+      "limit": 3
+    }
+  },
+  {
+    "symbol": "AUDUSD",
+    "tf": "M15",
+    "generated_at": "2025-10-27T13:18:32.174632Z",
+    "candidate": {
+      "pair": "AUDUSD",
+      "tf": "M15",
+      "close": 1.1318474523145983,
+      "price": 1.1318474523145983,
+      "score": -1.4360206422866386,
+      "tech_score": -1.4360206422866386,
+      "tech_sharpe": 0.0,
+      "tech_trades": 0.0,
+      "adx": 24.426188299214623,
+      "atr": 0.005585144285075756,
+      "vol_ratio": 0.26030810594281906,
+      "impact": 0.0,
+      "impact_score": 0.0,
+      "surprise_norm": 0.0,
+      "fund_score": 0.0,
+      "within_1h_event": false,
+      "session": "LONDON"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "sell",
+    "size": 0.05,
+    "price": 1.1318474523145983,
+    "atr": 0.005585144285075756,
+    "sl": 1.1402251687422118,
+    "tp": 1.1192808776731777,
+    "sl_type": "atr",
+    "final_score": -1.0770154817149789,
+    "reason": {
+      "screener_score": -1.4360206422866386,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "score_neg -1.077"
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": true,
+      "side": "sell",
+      "final_score": -1.0770154817149789,
+      "size": 0.05,
+      "sl": 1.1402251687422118,
+      "tp": 1.1192808776731777,
+      "sl_type": "atr",
+      "reason": {
+        "screener_score": -1.4360206422866386,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "score_neg -1.077"
+      }
+    },
+    "gate_reason": {
+      "mode": "same_side_cap",
+      "side": "sell",
+      "limit": 3
+    }
+  },
+  {
+    "symbol": "SPY",
+    "tf": "M15",
+    "generated_at": "2025-10-27T13:18:32.176382Z",
+    "candidate": {
+      "pair": "SPY",
+      "tf": "M15",
+      "close": 1.1265369074338727,
+      "price": 1.1265369074338727,
+      "score": -1.436020642286597,
+      "tech_score": -1.436020642286597,
+      "tech_sharpe": 0.0,
+      "tech_trades": 0.0,
+      "adx": 24.426188299214477,
+      "atr": 0.0055589391994605615,
+      "vol_ratio": 0.26030810594281906,
+      "impact": 0.0,
+      "impact_score": 0.0,
+      "surprise_norm": 0.0,
+      "fund_score": 0.0,
+      "within_1h_event": false,
+      "session": "LONDON"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "sell",
+    "size": 0.05,
+    "price": 1.1265369074338727,
+    "atr": 0.0055589391994605615,
+    "sl": 1.1348753162330636,
+    "tp": 1.1140292942350865,
+    "sl_type": "atr",
+    "final_score": -1.0770154817149478,
+    "reason": {
+      "screener_score": -1.436020642286597,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "score_neg -1.077"
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": true,
+      "side": "sell",
+      "final_score": -1.0770154817149478,
+      "size": 0.05,
+      "sl": 1.1348753162330636,
+      "tp": 1.1140292942350865,
+      "sl_type": "atr",
+      "reason": {
+        "screener_score": -1.436020642286597,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "score_neg -1.077"
+      }
+    },
+    "gate_reason": {
+      "mode": "same_side_cap",
+      "side": "sell",
+      "limit": 3
+    }
+  },
+  {
+    "symbol": "ETHUSD",
+    "tf": "M15",
+    "generated_at": "2025-10-27T08:11:56.502108Z",
+    "candidate": {
+      "pair": "ETHUSD",
+      "tf": "M15",
+      "close": 1.1890610584824128,
+      "price": 1.1890610584824128,
+      "score": -1.4433921447490736,
+      "tech_score": -1.4433921447490736,
+      "tech_sharpe": 0.0,
+      "tech_trades": 0.0,
+      "adx": 24.474694521238888,
+      "atr": 0.00589293472331526,
+      "vol_ratio": 0.2833898853893322,
+      "impact": 0.0,
+      "impact_score": 0.0,
+      "surprise_norm": 0.0,
+      "fund_score": 0.0,
+      "within_1h_event": false,
+      "session": "LONDON",
+      "rl_action": "short",
+      "rl_conf": 0.9755
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": true,
+    "enter": true,
+    "side": "sell",
+    "size": 0.05,
+    "price": 1.1890610584824128,
+    "atr": 0.00589293472331526,
+    "sl": 1.1979004605673857,
+    "tp": 1.1758019553549535,
+    "sl_type": "atr",
+    "final_score": 0.9471892571604354,
+    "reason": {
+      "layer": "fusion",
+      "stats": {
+        "side": "sell",
+        "conf": 0.9471892571604354,
+        "score": -1.4433921447490736,
+        "regime": "",
+        "trend_strength": 0.0,
+        "rsi14": 50.0,
+        "meta_w": 0.5,
+        "base_conf": 0.9471892571604354
+      },
+      "rl": {
+        "side": "sell",
+        "conf": 0.9755,
+        "source": "candidate_rl_fields"
+      },
+      "fusion": {
+        "mode": "confirmed",
+        "stats": {
+          "score": -1.4433921447490736,
+          "regime": "",
+          "trend_strength": 0.0,
+          "rsi14": 50.0,
+          "meta_w": 0.5,
+          "base_conf": 0.9471892571604354,
+          "conf": 0.9471892571604354
+        },
+        "rl": {
+          "source": "candidate_rl_fields"
+        },
+        "final_conf": 0.9471892571604354
+      }
+    },
+    "layer_signals": {
+      "stats": {
+        "side": "sell",
+        "conf": 0.9471892571604354,
+        "score": -1.4433921447490736,
+        "regime": "",
+        "trend_strength": 0.0,
+        "rsi14": 50.0,
+        "meta_w": 0.5,
+        "base_conf": 0.9471892571604354
+      },
+      "rl": {
+        "side": "sell",
+        "conf": 0.9755,
+        "source": "candidate_rl_fields"
+      }
+    },
+    "notes": [
+      "Two-layer fusion (Stats + FinRL) enabled",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": true,
+      "side": "sell",
+      "final_score": 0.9471892571604354,
+      "size": 0.05,
+      "sl": 1.1979004605673857,
+      "tp": 1.1758019553549535,
+      "sl_type": "atr",
+      "reason": {
+        "layer": "fusion",
+        "stats": {
+          "side": "sell",
+          "conf": 0.9471892571604354,
+          "score": -1.4433921447490736,
+          "regime": "",
+          "trend_strength": 0.0,
+          "rsi14": 50.0,
+          "meta_w": 0.5,
+          "base_conf": 0.9471892571604354
+        },
+        "rl": {
+          "side": "sell",
+          "conf": 0.9755,
+          "source": "candidate_rl_fields"
+        },
+        "fusion": {
+          "mode": "confirmed",
+          "stats": {
+            "score": -1.4433921447490736,
+            "regime": "",
+            "trend_strength": 0.0,
+            "rsi14": 50.0,
+            "meta_w": 0.5,
+            "base_conf": 0.9471892571604354,
+            "conf": 0.9471892571604354
+          },
+          "rl": {
+            "source": "candidate_rl_fields"
+          },
+          "final_conf": 0.9471892571604354
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "per_symbol_limit",
+      "symbol": "ETHUSD",
+      "limit": 1
+    }
+  },
+  {
+    "symbol": "BTCUSD",
+    "tf": "M15",
+    "generated_at": "2025-10-27T08:11:56.501386Z",
+    "candidate": {
+      "pair": "BTCUSD",
+      "tf": "M15",
+      "close": 1.153891223517609,
+      "price": 1.153891223517609,
+      "score": -1.4433921447489788,
+      "tech_score": -1.4433921447489788,
+      "tech_sharpe": 0.0,
+      "tech_trades": 0.0,
+      "adx": 24.474694521238607,
+      "atr": 0.005718634555801641,
+      "vol_ratio": 0.2833898853893322,
+      "impact": 0.0,
+      "impact_score": 0.0,
+      "surprise_norm": 0.0,
+      "fund_score": 0.0,
+      "within_1h_event": false,
+      "session": "LONDON",
+      "rl_action": "short",
+      "rl_conf": 0.985
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": true,
+    "enter": true,
+    "side": "sell",
+    "size": 0.05,
+    "price": 1.153891223517609,
+    "atr": 0.005718634555801641,
+    "sl": 1.1624691753513114,
+    "tp": 1.1410242957670553,
+    "sl_type": "atr",
+    "final_score": 0.947189257160426,
+    "reason": {
+      "layer": "fusion",
+      "stats": {
+        "side": "sell",
+        "conf": 0.947189257160426,
+        "score": -1.4433921447489788,
+        "regime": "",
+        "trend_strength": 0.0,
+        "rsi14": 50.0,
+        "meta_w": 0.5,
+        "base_conf": 0.947189257160426
+      },
+      "rl": {
+        "side": "sell",
+        "conf": 0.985,
+        "source": "candidate_rl_fields"
+      },
+      "fusion": {
+        "mode": "confirmed",
+        "stats": {
+          "score": -1.4433921447489788,
+          "regime": "",
+          "trend_strength": 0.0,
+          "rsi14": 50.0,
+          "meta_w": 0.5,
+          "base_conf": 0.947189257160426,
+          "conf": 0.947189257160426
+        },
+        "rl": {
+          "source": "candidate_rl_fields"
+        },
+        "final_conf": 0.947189257160426
+      }
+    },
+    "layer_signals": {
+      "stats": {
+        "side": "sell",
+        "conf": 0.947189257160426,
+        "score": -1.4433921447489788,
+        "regime": "",
+        "trend_strength": 0.0,
+        "rsi14": 50.0,
+        "meta_w": 0.5,
+        "base_conf": 0.947189257160426
+      },
+      "rl": {
+        "side": "sell",
+        "conf": 0.985,
+        "source": "candidate_rl_fields"
+      }
+    },
+    "notes": [
+      "Two-layer fusion (Stats + FinRL) enabled",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": true,
+      "side": "sell",
+      "final_score": 0.947189257160426,
+      "size": 0.05,
+      "sl": 1.1624691753513114,
+      "tp": 1.1410242957670553,
+      "sl_type": "atr",
+      "reason": {
+        "layer": "fusion",
+        "stats": {
+          "side": "sell",
+          "conf": 0.947189257160426,
+          "score": -1.4433921447489788,
+          "regime": "",
+          "trend_strength": 0.0,
+          "rsi14": 50.0,
+          "meta_w": 0.5,
+          "base_conf": 0.947189257160426
+        },
+        "rl": {
+          "side": "sell",
+          "conf": 0.985,
+          "source": "candidate_rl_fields"
+        },
+        "fusion": {
+          "mode": "confirmed",
+          "stats": {
+            "score": -1.4433921447489788,
+            "regime": "",
+            "trend_strength": 0.0,
+            "rsi14": 50.0,
+            "meta_w": 0.5,
+            "base_conf": 0.947189257160426,
+            "conf": 0.947189257160426
+          },
+          "rl": {
+            "source": "candidate_rl_fields"
+          },
+          "final_conf": 0.947189257160426
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "same_side_cap",
+      "side": "sell",
+      "limit": 3
+    }
+  },
+  {
+    "symbol": "EURUSD",
+    "tf": "M15",
+    "generated_at": "2025-10-27T08:11:56.498013Z",
+    "candidate": {
+      "pair": "EURUSD",
+      "tf": "M15",
+      "close": 1.1282402897541055,
+      "price": 1.1282402897541055,
+      "score": -1.4433921447489084,
+      "tech_score": -1.4433921447489084,
+      "tech_sharpe": 0.0,
+      "tech_trades": 0.0,
+      "adx": 24.474694521238945,
+      "atr": 0.005591509647301706,
+      "vol_ratio": 0.2833898853893322,
+      "impact": 0.0,
+      "impact_score": 0.0,
+      "surprise_norm": 0.0,
+      "fund_score": 0.0,
+      "within_1h_event": false,
+      "session": "LONDON",
+      "rl_action": "short",
+      "rl_conf": 0.9695
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": true,
+    "enter": true,
+    "side": "sell",
+    "size": 0.05,
+    "price": 1.1282402897541055,
+    "atr": 0.005591509647301706,
+    "sl": 1.1366275542250581,
+    "tp": 1.1156593930476766,
+    "sl_type": "atr",
+    "final_score": 0.9471892571604189,
+    "reason": {
+      "layer": "fusion",
+      "stats": {
+        "side": "sell",
+        "conf": 0.9471892571604189,
+        "score": -1.4433921447489084,
+        "regime": "",
+        "trend_strength": 0.0,
+        "rsi14": 50.0,
+        "meta_w": 0.5,
+        "base_conf": 0.9471892571604189
+      },
+      "rl": {
+        "side": "sell",
+        "conf": 0.9695,
+        "source": "candidate_rl_fields"
+      },
+      "fusion": {
+        "mode": "confirmed",
+        "stats": {
+          "score": -1.4433921447489084,
+          "regime": "",
+          "trend_strength": 0.0,
+          "rsi14": 50.0,
+          "meta_w": 0.5,
+          "base_conf": 0.9471892571604189,
+          "conf": 0.9471892571604189
+        },
+        "rl": {
+          "source": "candidate_rl_fields"
+        },
+        "final_conf": 0.9471892571604189
+      }
+    },
+    "layer_signals": {
+      "stats": {
+        "side": "sell",
+        "conf": 0.9471892571604189,
+        "score": -1.4433921447489084,
+        "regime": "",
+        "trend_strength": 0.0,
+        "rsi14": 50.0,
+        "meta_w": 0.5,
+        "base_conf": 0.9471892571604189
+      },
+      "rl": {
+        "side": "sell",
+        "conf": 0.9695,
+        "source": "candidate_rl_fields"
+      }
+    },
+    "notes": [
+      "Two-layer fusion (Stats + FinRL) enabled",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": true,
+      "side": "sell",
+      "final_score": 0.9471892571604189,
+      "size": 0.05,
+      "sl": 1.1366275542250581,
+      "tp": 1.1156593930476766,
+      "sl_type": "atr",
+      "reason": {
+        "layer": "fusion",
+        "stats": {
+          "side": "sell",
+          "conf": 0.9471892571604189,
+          "score": -1.4433921447489084,
+          "regime": "",
+          "trend_strength": 0.0,
+          "rsi14": 50.0,
+          "meta_w": 0.5,
+          "base_conf": 0.9471892571604189
+        },
+        "rl": {
+          "side": "sell",
+          "conf": 0.9695,
+          "source": "candidate_rl_fields"
+        },
+        "fusion": {
+          "mode": "confirmed",
+          "stats": {
+            "score": -1.4433921447489084,
+            "regime": "",
+            "trend_strength": 0.0,
+            "rsi14": 50.0,
+            "meta_w": 0.5,
+            "base_conf": 0.9471892571604189,
+            "conf": 0.9471892571604189
+          },
+          "rl": {
+            "source": "candidate_rl_fields"
+          },
+          "final_conf": 0.9471892571604189
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "same_side_cap",
+      "side": "sell",
+      "limit": 3
+    }
+  },
+  {
+    "symbol": "AAPL",
+    "tf": "M15",
+    "generated_at": "2025-10-27T08:11:56.502800Z",
+    "candidate": {
+      "pair": "AAPL",
+      "tf": "M15",
+      "close": 1.1184207916727642,
+      "price": 1.1184207916727642,
+      "score": -1.4433921447488658,
+      "tech_score": -1.4433921447488658,
+      "tech_sharpe": 0.0,
+      "tech_trades": 0.0,
+      "adx": 24.474694521238764,
+      "atr": 0.005542844643266623,
+      "vol_ratio": 0.2833898853893322,
+      "impact": 0.0,
+      "impact_score": 0.0,
+      "surprise_norm": 0.0,
+      "fund_score": 0.0,
+      "within_1h_event": false,
+      "session": "LONDON",
+      "rl_action": "short",
+      "rl_conf": 1.0
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": true,
+    "enter": true,
+    "side": "sell",
+    "size": 0.05,
+    "price": 1.1184207916727642,
+    "atr": 0.005542844643266623,
+    "sl": 1.126735058637664,
+    "tp": 1.1059493912254144,
+    "sl_type": "atr",
+    "final_score": 0.9471892571604147,
+    "reason": {
+      "layer": "fusion",
+      "stats": {
+        "side": "sell",
+        "conf": 0.9471892571604147,
+        "score": -1.4433921447488658,
+        "regime": "",
+        "trend_strength": 0.0,
+        "rsi14": 50.0,
+        "meta_w": 0.5,
+        "base_conf": 0.9471892571604147
+      },
+      "rl": {
+        "side": "sell",
+        "conf": 1.0,
+        "source": "candidate_rl_fields"
+      },
+      "fusion": {
+        "mode": "confirmed",
+        "stats": {
+          "score": -1.4433921447488658,
+          "regime": "",
+          "trend_strength": 0.0,
+          "rsi14": 50.0,
+          "meta_w": 0.5,
+          "base_conf": 0.9471892571604147,
+          "conf": 0.9471892571604147
+        },
+        "rl": {
+          "source": "candidate_rl_fields"
+        },
+        "final_conf": 0.9471892571604147
+      }
+    },
+    "layer_signals": {
+      "stats": {
+        "side": "sell",
+        "conf": 0.9471892571604147,
+        "score": -1.4433921447488658,
+        "regime": "",
+        "trend_strength": 0.0,
+        "rsi14": 50.0,
+        "meta_w": 0.5,
+        "base_conf": 0.9471892571604147
+      },
+      "rl": {
+        "side": "sell",
+        "conf": 1.0,
+        "source": "candidate_rl_fields"
+      }
+    },
+    "notes": [
+      "Two-layer fusion (Stats + FinRL) enabled",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": true,
+      "side": "sell",
+      "final_score": 0.9471892571604147,
+      "size": 0.05,
+      "sl": 1.126735058637664,
+      "tp": 1.1059493912254144,
+      "sl_type": "atr",
+      "reason": {
+        "layer": "fusion",
+        "stats": {
+          "side": "sell",
+          "conf": 0.9471892571604147,
+          "score": -1.4433921447488658,
+          "regime": "",
+          "trend_strength": 0.0,
+          "rsi14": 50.0,
+          "meta_w": 0.5,
+          "base_conf": 0.9471892571604147
+        },
+        "rl": {
+          "side": "sell",
+          "conf": 1.0,
+          "source": "candidate_rl_fields"
+        },
+        "fusion": {
+          "mode": "confirmed",
+          "stats": {
+            "score": -1.4433921447488658,
+            "regime": "",
+            "trend_strength": 0.0,
+            "rsi14": 50.0,
+            "meta_w": 0.5,
+            "base_conf": 0.9471892571604147,
+            "conf": 0.9471892571604147
+          },
+          "rl": {
+            "source": "candidate_rl_fields"
+          },
+          "final_conf": 0.9471892571604147
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "per_symbol_limit",
+      "symbol": "AAPL",
+      "limit": 1
+    }
+  },
+  {
+    "symbol": "USDJPY",
+    "tf": "M15",
+    "generated_at": "2025-10-27T08:11:56.499704Z",
+    "candidate": {
+      "pair": "USDJPY",
+      "tf": "M15",
+      "close": 1.1305448658344202,
+      "price": 1.1305448658344202,
+      "score": -1.443392144748932,
+      "tech_score": -1.443392144748932,
+      "tech_sharpe": 0.0,
+      "tech_trades": 0.0,
+      "adx": 24.47469452123888,
+      "atr": 0.00560293102579978,
+      "vol_ratio": 0.2833898853893322,
+      "impact": 0.0,
+      "impact_score": 0.0,
+      "surprise_norm": 0.0,
+      "fund_score": 0.0,
+      "within_1h_event": false,
+      "session": "LONDON",
+      "rl_action": "short",
+      "rl_conf": 0.9112
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": true,
+    "enter": true,
+    "side": "sell",
+    "size": 0.05,
+    "price": 1.1305448658344202,
+    "atr": 0.00560293102579978,
+    "sl": 1.1389492623731199,
+    "tp": 1.1179382710263706,
+    "sl_type": "atr",
+    "final_score": 0.9112,
+    "reason": {
+      "layer": "fusion",
+      "stats": {
+        "side": "sell",
+        "conf": 0.9471892571604212,
+        "score": -1.443392144748932,
+        "regime": "",
+        "trend_strength": 0.0,
+        "rsi14": 50.0,
+        "meta_w": 0.5,
+        "base_conf": 0.9471892571604212
+      },
+      "rl": {
+        "side": "sell",
+        "conf": 0.9112,
+        "source": "candidate_rl_fields"
+      },
+      "fusion": {
+        "mode": "confirmed",
+        "stats": {
+          "score": -1.443392144748932,
+          "regime": "",
+          "trend_strength": 0.0,
+          "rsi14": 50.0,
+          "meta_w": 0.5,
+          "base_conf": 0.9471892571604212,
+          "conf": 0.9471892571604212
+        },
+        "rl": {
+          "source": "candidate_rl_fields"
+        },
+        "final_conf": 0.9112
+      }
+    },
+    "layer_signals": {
+      "stats": {
+        "side": "sell",
+        "conf": 0.9471892571604212,
+        "score": -1.443392144748932,
+        "regime": "",
+        "trend_strength": 0.0,
+        "rsi14": 50.0,
+        "meta_w": 0.5,
+        "base_conf": 0.9471892571604212
+      },
+      "rl": {
+        "side": "sell",
+        "conf": 0.9112,
+        "source": "candidate_rl_fields"
+      }
+    },
+    "notes": [
+      "Two-layer fusion (Stats + FinRL) enabled",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": true,
+      "side": "sell",
+      "final_score": 0.9112,
+      "size": 0.05,
+      "sl": 1.1389492623731199,
+      "tp": 1.1179382710263706,
+      "sl_type": "atr",
+      "reason": {
+        "layer": "fusion",
+        "stats": {
+          "side": "sell",
+          "conf": 0.9471892571604212,
+          "score": -1.443392144748932,
+          "regime": "",
+          "trend_strength": 0.0,
+          "rsi14": 50.0,
+          "meta_w": 0.5,
+          "base_conf": 0.9471892571604212
+        },
+        "rl": {
+          "side": "sell",
+          "conf": 0.9112,
+          "source": "candidate_rl_fields"
+        },
+        "fusion": {
+          "mode": "confirmed",
+          "stats": {
+            "score": -1.443392144748932,
+            "regime": "",
+            "trend_strength": 0.0,
+            "rsi14": 50.0,
+            "meta_w": 0.5,
+            "base_conf": 0.9471892571604212,
+            "conf": 0.9471892571604212
+          },
+          "rl": {
+            "source": "candidate_rl_fields"
+          },
+          "final_conf": 0.9112
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "per_symbol_limit",
+      "symbol": "USDJPY",
+      "limit": 1
+    }
+  },
+  {
+    "symbol": "AUDUSD",
+    "tf": "M15",
+    "generated_at": "2025-10-27T08:11:56.500568Z",
+    "candidate": {
+      "pair": "AUDUSD",
+      "tf": "M15",
+      "close": 1.201786326404151,
+      "price": 1.201786326404151,
+      "score": -1.443392144749097,
+      "tech_score": -1.443392144749097,
+      "tech_sharpe": 0.0,
+      "tech_trades": 0.0,
+      "adx": 24.474694521239126,
+      "atr": 0.005956000595891368,
+      "vol_ratio": 0.2833898853893322,
+      "impact": 0.0,
+      "impact_score": 0.0,
+      "surprise_norm": 0.0,
+      "fund_score": 0.0,
+      "within_1h_event": false,
+      "session": "LONDON",
+      "rl_action": "short",
+      "rl_conf": 0.9029
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": true,
+    "enter": true,
+    "side": "sell",
+    "size": 0.05,
+    "price": 1.201786326404151,
+    "atr": 0.005956000595891368,
+    "sl": 1.210720327297988,
+    "tp": 1.1883853250633956,
+    "sl_type": "atr",
+    "final_score": 0.9029,
+    "reason": {
+      "layer": "fusion",
+      "stats": {
+        "side": "sell",
+        "conf": 0.9471892571604378,
+        "score": -1.443392144749097,
+        "regime": "",
+        "trend_strength": 0.0,
+        "rsi14": 50.0,
+        "meta_w": 0.5,
+        "base_conf": 0.9471892571604378
+      },
+      "rl": {
+        "side": "sell",
+        "conf": 0.9029,
+        "source": "candidate_rl_fields"
+      },
+      "fusion": {
+        "mode": "confirmed",
+        "stats": {
+          "score": -1.443392144749097,
+          "regime": "",
+          "trend_strength": 0.0,
+          "rsi14": 50.0,
+          "meta_w": 0.5,
+          "base_conf": 0.9471892571604378,
+          "conf": 0.9471892571604378
+        },
+        "rl": {
+          "source": "candidate_rl_fields"
+        },
+        "final_conf": 0.9029
+      }
+    },
+    "layer_signals": {
+      "stats": {
+        "side": "sell",
+        "conf": 0.9471892571604378,
+        "score": -1.443392144749097,
+        "regime": "",
+        "trend_strength": 0.0,
+        "rsi14": 50.0,
+        "meta_w": 0.5,
+        "base_conf": 0.9471892571604378
+      },
+      "rl": {
+        "side": "sell",
+        "conf": 0.9029,
+        "source": "candidate_rl_fields"
+      }
+    },
+    "notes": [
+      "Two-layer fusion (Stats + FinRL) enabled",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": true,
+      "side": "sell",
+      "final_score": 0.9029,
+      "size": 0.05,
+      "sl": 1.210720327297988,
+      "tp": 1.1883853250633956,
+      "sl_type": "atr",
+      "reason": {
+        "layer": "fusion",
+        "stats": {
+          "side": "sell",
+          "conf": 0.9471892571604378,
+          "score": -1.443392144749097,
+          "regime": "",
+          "trend_strength": 0.0,
+          "rsi14": 50.0,
+          "meta_w": 0.5,
+          "base_conf": 0.9471892571604378
+        },
+        "rl": {
+          "side": "sell",
+          "conf": 0.9029,
+          "source": "candidate_rl_fields"
+        },
+        "fusion": {
+          "mode": "confirmed",
+          "stats": {
+            "score": -1.443392144749097,
+            "regime": "",
+            "trend_strength": 0.0,
+            "rsi14": 50.0,
+            "meta_w": 0.5,
+            "base_conf": 0.9471892571604378,
+            "conf": 0.9471892571604378
+          },
+          "rl": {
+            "source": "candidate_rl_fields"
+          },
+          "final_conf": 0.9029
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "same_side_cap",
+      "side": "sell",
+      "limit": 3
+    }
+  },
+  {
+    "symbol": "SPY",
+    "tf": "M15",
+    "generated_at": "2025-10-27T08:11:56.503599Z",
+    "candidate": {
+      "pair": "SPY",
+      "tf": "M15",
+      "close": 1.1289416824742011,
+      "price": 1.1289416824742011,
+      "score": -1.443392144748916,
+      "tech_score": -1.443392144748916,
+      "tech_sharpe": 0.0,
+      "tech_trades": 0.0,
+      "adx": 24.474694521238792,
+      "atr": 0.005594985719018577,
+      "vol_ratio": 0.2833898853893322,
+      "impact": 0.0,
+      "impact_score": 0.0,
+      "surprise_norm": 0.0,
+      "fund_score": 0.0,
+      "within_1h_event": false,
+      "session": "LONDON",
+      "rl_action": "short",
+      "rl_conf": 0.8811
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": true,
+    "enter": true,
+    "side": "sell",
+    "size": 0.05,
+    "price": 1.1289416824742011,
+    "atr": 0.005594985719018577,
+    "sl": 1.137334161052729,
+    "tp": 1.1163529646064094,
+    "sl_type": "atr",
+    "final_score": 0.8811,
+    "reason": {
+      "layer": "fusion",
+      "stats": {
+        "side": "sell",
+        "conf": 0.9471892571604197,
+        "score": -1.443392144748916,
+        "regime": "",
+        "trend_strength": 0.0,
+        "rsi14": 50.0,
+        "meta_w": 0.5,
+        "base_conf": 0.9471892571604197
+      },
+      "rl": {
+        "side": "sell",
+        "conf": 0.8811,
+        "source": "candidate_rl_fields"
+      },
+      "fusion": {
+        "mode": "confirmed",
+        "stats": {
+          "score": -1.443392144748916,
+          "regime": "",
+          "trend_strength": 0.0,
+          "rsi14": 50.0,
+          "meta_w": 0.5,
+          "base_conf": 0.9471892571604197,
+          "conf": 0.9471892571604197
+        },
+        "rl": {
+          "source": "candidate_rl_fields"
+        },
+        "final_conf": 0.8811
+      }
+    },
+    "layer_signals": {
+      "stats": {
+        "side": "sell",
+        "conf": 0.9471892571604197,
+        "score": -1.443392144748916,
+        "regime": "",
+        "trend_strength": 0.0,
+        "rsi14": 50.0,
+        "meta_w": 0.5,
+        "base_conf": 0.9471892571604197
+      },
+      "rl": {
+        "side": "sell",
+        "conf": 0.8811,
+        "source": "candidate_rl_fields"
+      }
+    },
+    "notes": [
+      "Two-layer fusion (Stats + FinRL) enabled",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": true,
+      "side": "sell",
+      "final_score": 0.8811,
+      "size": 0.05,
+      "sl": 1.137334161052729,
+      "tp": 1.1163529646064094,
+      "sl_type": "atr",
+      "reason": {
+        "layer": "fusion",
+        "stats": {
+          "side": "sell",
+          "conf": 0.9471892571604197,
+          "score": -1.443392144748916,
+          "regime": "",
+          "trend_strength": 0.0,
+          "rsi14": 50.0,
+          "meta_w": 0.5,
+          "base_conf": 0.9471892571604197
+        },
+        "rl": {
+          "side": "sell",
+          "conf": 0.8811,
+          "source": "candidate_rl_fields"
+        },
+        "fusion": {
+          "mode": "confirmed",
+          "stats": {
+            "score": -1.443392144748916,
+            "regime": "",
+            "trend_strength": 0.0,
+            "rsi14": 50.0,
+            "meta_w": 0.5,
+            "base_conf": 0.9471892571604197,
+            "conf": 0.9471892571604197
+          },
+          "rl": {
+            "source": "candidate_rl_fields"
+          },
+          "final_conf": 0.8811
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "same_side_cap",
+      "side": "sell",
+      "limit": 3
+    }
+  },
+  {
+    "symbol": "GBPUSD",
+    "tf": "M15",
+    "generated_at": "2025-10-27T08:11:56.498973Z",
+    "candidate": {
+      "pair": "GBPUSD",
+      "tf": "M15",
+      "close": 1.1834499167216463,
+      "price": 1.1834499167216463,
+      "score": -1.4433921447490512,
+      "tech_score": -1.4433921447490512,
+      "tech_sharpe": 0.0,
+      "tech_trades": 0.0,
+      "adx": 24.474694521238888,
+      "atr": 0.0058651261495809015,
+      "vol_ratio": 0.2833898853893322,
+      "impact": 0.0,
+      "impact_score": 0.0,
+      "surprise_norm": 0.0,
+      "fund_score": 0.0,
+      "within_1h_event": false,
+      "session": "LONDON",
+      "rl_action": "short",
+      "rl_conf": 0.8712
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": true,
+    "enter": true,
+    "side": "sell",
+    "size": 0.05,
+    "price": 1.1834499167216463,
+    "atr": 0.0058651261495809015,
+    "sl": 1.1922476059460176,
+    "tp": 1.1702533828850894,
+    "sl_type": "atr",
+    "final_score": 0.8712,
+    "reason": {
+      "layer": "fusion",
+      "stats": {
+        "side": "sell",
+        "conf": 0.9471892571604332,
+        "score": -1.4433921447490512,
+        "regime": "",
+        "trend_strength": 0.0,
+        "rsi14": 50.0,
+        "meta_w": 0.5,
+        "base_conf": 0.9471892571604332
+      },
+      "rl": {
+        "side": "sell",
+        "conf": 0.8712,
+        "source": "candidate_rl_fields"
+      },
+      "fusion": {
+        "mode": "confirmed",
+        "stats": {
+          "score": -1.4433921447490512,
+          "regime": "",
+          "trend_strength": 0.0,
+          "rsi14": 50.0,
+          "meta_w": 0.5,
+          "base_conf": 0.9471892571604332,
+          "conf": 0.9471892571604332
+        },
+        "rl": {
+          "source": "candidate_rl_fields"
+        },
+        "final_conf": 0.8712
+      }
+    },
+    "layer_signals": {
+      "stats": {
+        "side": "sell",
+        "conf": 0.9471892571604332,
+        "score": -1.4433921447490512,
+        "regime": "",
+        "trend_strength": 0.0,
+        "rsi14": 50.0,
+        "meta_w": 0.5,
+        "base_conf": 0.9471892571604332
+      },
+      "rl": {
+        "side": "sell",
+        "conf": 0.8712,
+        "source": "candidate_rl_fields"
+      }
+    },
+    "notes": [
+      "Two-layer fusion (Stats + FinRL) enabled",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": true,
+      "side": "sell",
+      "final_score": 0.8712,
+      "size": 0.05,
+      "sl": 1.1922476059460176,
+      "tp": 1.1702533828850894,
+      "sl_type": "atr",
+      "reason": {
+        "layer": "fusion",
+        "stats": {
+          "side": "sell",
+          "conf": 0.9471892571604332,
+          "score": -1.4433921447490512,
+          "regime": "",
+          "trend_strength": 0.0,
+          "rsi14": 50.0,
+          "meta_w": 0.5,
+          "base_conf": 0.9471892571604332
+        },
+        "rl": {
+          "side": "sell",
+          "conf": 0.8712,
+          "source": "candidate_rl_fields"
+        },
+        "fusion": {
+          "mode": "confirmed",
+          "stats": {
+            "score": -1.4433921447490512,
+            "regime": "",
+            "trend_strength": 0.0,
+            "rsi14": 50.0,
+            "meta_w": 0.5,
+            "base_conf": 0.9471892571604332,
+            "conf": 0.9471892571604332
+          },
+          "rl": {
+            "source": "candidate_rl_fields"
+          },
+          "final_conf": 0.8712
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "same_side_cap",
+      "side": "sell",
+      "limit": 3
+    }
+  },
+  {
+    "symbol": "XAGUSD",
+    "tf": "M15",
+    "generated_at": "2025-10-28T12:22:29.166205Z",
+    "candidate": {
+      "symbol": "XAGUSD",
+      "price": 22.17,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\XAGUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.652290Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 22.17,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "per_symbol_limit",
+      "symbol": "XAGUSD",
+      "limit": 1
+    }
+  },
+  {
+    "symbol": "XAGUSD",
+    "tf": "M5",
+    "generated_at": "2025-10-28T12:22:29.154010Z",
+    "candidate": {
+      "symbol": "XAGUSD",
+      "price": 22.17,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\XAGUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.652281Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 22.17,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "per_symbol_limit",
+      "symbol": "XAGUSD",
+      "limit": 1
+    }
+  },
+  {
+    "symbol": "USDCHF",
+    "tf": "M15",
+    "generated_at": "2025-10-28T12:22:29.152548Z",
+    "candidate": {
+      "symbol": "USDCHF",
+      "price": 0.915,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\USDCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.645646Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 0.915,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "per_symbol_limit",
+      "symbol": "USDCHF",
+      "limit": 1
+    }
+  },
+  {
+    "symbol": "NZDUSD",
+    "tf": "H1",
+    "generated_at": "2025-10-28T12:22:29.151320Z",
+    "candidate": {
+      "symbol": "NZDUSD",
+      "price": 0.5997,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\NZDUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.638019Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 0.5997,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "USDCHF",
+    "tf": "M5",
+    "generated_at": "2025-10-28T12:22:29.151911Z",
+    "candidate": {
+      "symbol": "USDCHF",
+      "price": 0.915,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\USDCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.645640Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 0.915,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "per_symbol_limit",
+      "symbol": "USDCHF",
+      "limit": 1
+    }
+  },
+  {
+    "symbol": "NZDUSD",
+    "tf": "M15",
+    "generated_at": "2025-10-28T12:22:29.150711Z",
+    "candidate": {
+      "symbol": "NZDUSD",
+      "price": 0.5997,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\NZDUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.638017Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 0.5997,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "NZDUSD",
+    "tf": "M5",
+    "generated_at": "2025-10-28T12:22:29.150117Z",
+    "candidate": {
+      "symbol": "NZDUSD",
+      "price": 0.5997,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\NZDUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.638009Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 0.5997,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "NZDJPY",
+    "tf": "H1",
+    "generated_at": "2025-10-28T12:22:29.149540Z",
+    "candidate": {
+      "symbol": "NZDJPY",
+      "price": 89.56,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\NZDJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.631106Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 89.56,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "NZDJPY",
+    "tf": "M15",
+    "generated_at": "2025-10-28T12:22:29.149017Z",
+    "candidate": {
+      "symbol": "NZDJPY",
+      "price": 89.56,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\NZDJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.631104Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 89.56,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "GBPJPY",
+    "tf": "H1",
+    "generated_at": "2025-10-28T12:22:29.147859Z",
+    "candidate": {
+      "symbol": "GBPJPY",
+      "price": 182.22,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.623683Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 182.22,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "NZDJPY",
+    "tf": "M5",
+    "generated_at": "2025-10-28T12:22:29.148448Z",
+    "candidate": {
+      "symbol": "NZDJPY",
+      "price": 89.56,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\NZDJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.631098Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 89.56,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "GBPJPY",
+    "tf": "M15",
+    "generated_at": "2025-10-28T12:22:29.147290Z",
+    "candidate": {
+      "symbol": "GBPJPY",
+      "price": 182.22,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.623679Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 182.22,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "GBPJPY",
+    "tf": "M5",
+    "generated_at": "2025-10-28T12:22:29.146570Z",
+    "candidate": {
+      "symbol": "GBPJPY",
+      "price": 182.22,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.623668Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 182.22,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "GBPCHF",
+    "tf": "H1",
+    "generated_at": "2025-10-28T12:22:29.145984Z",
+    "candidate": {
+      "symbol": "GBPCHF",
+      "price": 1.1164,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.615259Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 1.1164,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "GBPCHF",
+    "tf": "M15",
+    "generated_at": "2025-10-28T12:22:29.145489Z",
+    "candidate": {
+      "symbol": "GBPCHF",
+      "price": 1.1164,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.615255Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 1.1164,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "EURJPY",
+    "tf": "H1",
+    "generated_at": "2025-10-28T12:22:29.144343Z",
+    "candidate": {
+      "symbol": "EURJPY",
+      "price": 157.9,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.608469Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 157.9,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "GBPCHF",
+    "tf": "M5",
+    "generated_at": "2025-10-28T12:22:29.144901Z",
+    "candidate": {
+      "symbol": "GBPCHF",
+      "price": 1.1164,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.615246Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 1.1164,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "EURJPY",
+    "tf": "M15",
+    "generated_at": "2025-10-28T12:22:29.143776Z",
+    "candidate": {
+      "symbol": "EURJPY",
+      "price": 157.9,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.608467Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 157.9,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "EURJPY",
+    "tf": "M5",
+    "generated_at": "2025-10-28T12:22:29.143246Z",
+    "candidate": {
+      "symbol": "EURJPY",
+      "price": 157.9,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.608460Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 157.9,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "EURCHF",
+    "tf": "H1",
+    "generated_at": "2025-10-28T12:22:29.142752Z",
+    "candidate": {
+      "symbol": "EURCHF",
+      "price": 0.9674,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.600948Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 0.9674,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "EURCHF",
+    "tf": "M15",
+    "generated_at": "2025-10-28T12:22:29.142171Z",
+    "candidate": {
+      "symbol": "EURCHF",
+      "price": 0.9674,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.600945Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 0.9674,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "EURCHF",
+    "tf": "M5",
+    "generated_at": "2025-10-28T12:22:29.141611Z",
+    "candidate": {
+      "symbol": "EURCHF",
+      "price": 0.9674,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.600934Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 0.9674,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy",
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy",
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "XAGUSD",
+    "tf": "H1",
+    "generated_at": "2025-10-28T06:20:45.200933Z",
+    "candidate": {
+      "symbol": "XAGUSD",
+      "price": 22.17,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\XAGUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.652294Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 22.17,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "per_symbol_limit",
+      "symbol": "XAGUSD",
+      "limit": 1
+    }
+  },
+  {
+    "symbol": "XAGUSD",
+    "tf": "M15",
+    "generated_at": "2025-10-28T06:20:45.199940Z",
+    "candidate": {
+      "symbol": "XAGUSD",
+      "price": 22.17,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\XAGUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.652290Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 22.17,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "per_symbol_limit",
+      "symbol": "XAGUSD",
+      "limit": 1
+    }
+  },
+  {
+    "symbol": "XAGUSD",
+    "tf": "M5",
+    "generated_at": "2025-10-28T06:20:45.188714Z",
+    "candidate": {
+      "symbol": "XAGUSD",
+      "price": 22.17,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\XAGUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.652281Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 22.17,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "per_symbol_limit",
+      "symbol": "XAGUSD",
+      "limit": 1
+    }
+  },
+  {
+    "symbol": "USDCHF",
+    "tf": "H1",
+    "generated_at": "2025-10-28T06:20:45.187901Z",
+    "candidate": {
+      "symbol": "USDCHF",
+      "price": 0.915,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\USDCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.645649Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 0.915,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "per_symbol_limit",
+      "symbol": "USDCHF",
+      "limit": 1
+    }
+  },
+  {
+    "symbol": "USDCHF",
+    "tf": "M15",
+    "generated_at": "2025-10-28T06:20:45.187294Z",
+    "candidate": {
+      "symbol": "USDCHF",
+      "price": 0.915,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\USDCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.645646Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 0.915,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "per_symbol_limit",
+      "symbol": "USDCHF",
+      "limit": 1
+    }
+  },
+  {
+    "symbol": "USDCHF",
+    "tf": "M5",
+    "generated_at": "2025-10-28T06:20:45.186753Z",
+    "candidate": {
+      "symbol": "USDCHF",
+      "price": 0.915,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\USDCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.645640Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 0.915,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "per_symbol_limit",
+      "symbol": "USDCHF",
+      "limit": 1
+    }
+  },
+  {
+    "symbol": "NZDUSD",
+    "tf": "H1",
+    "generated_at": "2025-10-28T06:20:45.186215Z",
+    "candidate": {
+      "symbol": "NZDUSD",
+      "price": 0.5997,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\NZDUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.638019Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 0.5997,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "NZDUSD",
+    "tf": "M15",
+    "generated_at": "2025-10-28T06:20:45.185684Z",
+    "candidate": {
+      "symbol": "NZDUSD",
+      "price": 0.5997,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\NZDUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.638017Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 0.5997,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "NZDJPY",
+    "tf": "H1",
+    "generated_at": "2025-10-28T06:20:45.184451Z",
+    "candidate": {
+      "symbol": "NZDJPY",
+      "price": 89.56,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\NZDJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.631106Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 89.56,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "NZDUSD",
+    "tf": "M5",
+    "generated_at": "2025-10-28T06:20:45.185105Z",
+    "candidate": {
+      "symbol": "NZDUSD",
+      "price": 0.5997,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\NZDUSD_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.638009Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 0.5997,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "NZDJPY",
+    "tf": "M15",
+    "generated_at": "2025-10-28T06:20:45.183614Z",
+    "candidate": {
+      "symbol": "NZDJPY",
+      "price": 89.56,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\NZDJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.631104Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 89.56,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "NZDJPY",
+    "tf": "M5",
+    "generated_at": "2025-10-28T06:20:45.182991Z",
+    "candidate": {
+      "symbol": "NZDJPY",
+      "price": 89.56,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\NZDJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.631098Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 89.56,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "GBPJPY",
+    "tf": "H1",
+    "generated_at": "2025-10-28T06:20:45.182330Z",
+    "candidate": {
+      "symbol": "GBPJPY",
+      "price": 182.22,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.623683Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 182.22,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "GBPJPY",
+    "tf": "M15",
+    "generated_at": "2025-10-28T06:20:45.181727Z",
+    "candidate": {
+      "symbol": "GBPJPY",
+      "price": 182.22,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.623679Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 182.22,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "GBPJPY",
+    "tf": "M5",
+    "generated_at": "2025-10-28T06:20:45.180996Z",
+    "candidate": {
+      "symbol": "GBPJPY",
+      "price": 182.22,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.623668Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 182.22,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "EURCHF",
+    "tf": "H1",
+    "generated_at": "2025-10-28T06:20:45.176681Z",
+    "candidate": {
+      "symbol": "EURCHF",
+      "price": 0.9674,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.600948Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 0.9674,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "EURJPY",
+    "tf": "H1",
+    "generated_at": "2025-10-28T06:20:45.178559Z",
+    "candidate": {
+      "symbol": "EURJPY",
+      "price": 157.9,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.608469Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 157.9,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "EURJPY",
+    "tf": "M15",
+    "generated_at": "2025-10-28T06:20:45.177952Z",
+    "candidate": {
+      "symbol": "EURJPY",
+      "price": 157.9,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.608467Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 157.9,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "EURJPY",
+    "tf": "M5",
+    "generated_at": "2025-10-28T06:20:45.177319Z",
+    "candidate": {
+      "symbol": "EURJPY",
+      "price": 157.9,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURJPY_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.608460Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 157.9,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "GBPCHF",
+    "tf": "H1",
+    "generated_at": "2025-10-28T06:20:45.180374Z",
+    "candidate": {
+      "symbol": "GBPCHF",
+      "price": 1.1164,
+      "tf": "H1",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.615259Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 1.1164,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "GBPCHF",
+    "tf": "M15",
+    "generated_at": "2025-10-28T06:20:45.179796Z",
+    "candidate": {
+      "symbol": "GBPCHF",
+      "price": 1.1164,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.615255Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 1.1164,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "GBPCHF",
+    "tf": "M5",
+    "generated_at": "2025-10-28T06:20:45.179165Z",
+    "candidate": {
+      "symbol": "GBPCHF",
+      "price": 1.1164,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\GBPCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.615246Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 1.1164,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "EURCHF",
+    "tf": "M15",
+    "generated_at": "2025-10-28T06:20:45.176092Z",
+    "candidate": {
+      "symbol": "EURCHF",
+      "price": 0.9674,
+      "tf": "M15",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.600945Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 0.9674,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  },
+  {
+    "symbol": "EURCHF",
+    "tf": "M5",
+    "generated_at": "2025-10-28T06:20:45.175492Z",
+    "candidate": {
+      "symbol": "EURCHF",
+      "price": 0.9674,
+      "tf": "M5",
+      "kind": "forex",
+      "csv_path": ".\\data\\raw\\forex_kaggle_multiTF\\EURCHF_D1.csv",
+      "timestamp": "2025-10-27T18:27:21.600934Z"
+    },
+    "meta_w": 0.5,
+    "finrl_present": false,
+    "two_layer_enabled": false,
+    "enter": true,
+    "side": "buy",
+    "size": 0.0,
+    "price": 0.9674,
+    "atr": null,
+    "sl": null,
+    "tp": null,
+    "sl_type": "none",
+    "final_score": 0.05,
+    "reason": {
+      "screener_score": 0.0,
+      "meta_w": 0.5,
+      "finrl_boost": 0.0,
+      "min_entry": 0.2,
+      "min_confidence": 0.0,
+      "explain": "below_threshold score=0.000 conf=1.000",
+      "mtf": {
+        "reason": "confirmed",
+        "agree": 1.0,
+        "votes": [
+          "buy"
+        ]
+      }
+    },
+    "layer_signals": null,
+    "notes": [
+      "Single-layer (hybrid heuristic) path",
+      "Executor may re-check risk gates and price-fill from CSV if price==0.0."
+    ],
+    "decision": {
+      "enter": false,
+      "side": "hold",
+      "final_score": 0.0,
+      "size": 0.0,
+      "sl": null,
+      "tp": null,
+      "sl_type": "none",
+      "reason": {
+        "screener_score": 0.0,
+        "meta_w": 0.5,
+        "finrl_boost": 0.0,
+        "min_entry": 0.2,
+        "min_confidence": 0.0,
+        "explain": "below_threshold score=0.000 conf=1.000",
+        "mtf": {
+          "reason": "confirmed",
+          "agree": 1.0,
+          "votes": [
+            "buy"
+          ]
+        }
+      }
+    },
+    "gate_reason": {
+      "mode": "bucket_side_cap",
+      "bucket": "fx",
+      "side": "buy",
+      "limit": 2
+    }
+  }
+]

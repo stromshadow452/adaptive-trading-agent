@@ -1,0 +1,8 @@
+{
+  "pair": "AUDUSD",
+  "tf": "H4",
+  "sharpe": 0.0,
+  "total_return": 0.0,
+  "bars": 201,
+  "source_equity_csv": "reports\\daily_logs\\AUDUSD_H4_paper_20251020_182022_equity.csv"
+}

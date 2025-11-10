@@ -1,0 +1,11 @@
+id: lean_49ee3bc2a102
+source_vendor: lean
+file: strategy_bank/external_raw/lean/Algorithm.Python/OptionIndicatorsMirrorContractsRegressionAlgorithm.py
+name: OptionIndicatorsMirrorContractsRegressionAlgorithm
+family: mean_reversion
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD

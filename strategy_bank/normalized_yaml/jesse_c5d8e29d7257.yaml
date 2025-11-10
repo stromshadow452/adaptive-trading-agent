@@ -1,0 +1,11 @@
+id: jesse_c5d8e29d7257
+source_vendor: jesse
+file: strategy_bank/external_raw/jesse/jesse/modes/import_candles_mode/drivers/Apex/ApexProMain.py
+name: ApexProMain
+family: stat_arb
+timeframe: auto
+assets:
+- AUTO
+params: {}
+entry_rule: TBD
+exit_rule: TBD
