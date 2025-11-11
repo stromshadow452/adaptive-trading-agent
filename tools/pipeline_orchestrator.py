@@ -10,6 +10,21 @@ Execution Reflex Engine → Broker + Hedger → Stark-Vision Dashboard + Logs
 This orchestrator is additive-only and idempotent. It wires in the Sentiment Brain
 between Volatility and Risk using the lightweight adapter.
 """
+# --- imports (top of file) ---
+from src.stages.meta_gating_brain import run_meta_gating
+from src.stages.throttle_gate import run_throttle_gate
+
+# --- after risk_brain(...) ---
+meta_out = run_meta_gating({**ctx, **risk_out}, config)
+logger_append(meta_out)
+
+throttle_out = run_throttle_gate({**ctx, **meta_out}, config, state)
+logger_append(throttle_out)
+
+if throttle_out.get("vote", 0.0) <= 0.0:
+    return flat_position()
+# continue to Execution Reflex Engine ...
+
 from __future__ import annotations
 
 from typing import Any, Dict

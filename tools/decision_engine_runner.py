@@ -2,38 +2,63 @@
 # tools/decision_engine_runner.py
 """
 Thin runner around src.decision_engine.main
-- Accepts --candidates, --meta_model, --finrl_policies, --risk_config
-- Accepts --out as EITHER a folder OR a json file (e.g. reports/daily/approved.json)
-  * If --out endswith .json -> we create a temp plans folder, run decision_engine
-    to dump individual *_plan_*.json files, then aggregate "enter=True" plans
-    into the single --out JSON file.
-  * If --out is a folder -> just forward to decision_engine (plans per-file).
 
-Additive: --neural_chain flag to run an immutable neural pipeline including Sentiment Brain
-via tools.pipeline_orchestrator.run_pipeline. This path is deterministic, append-only logging,
-and does not affect existing behavior when the flag is not provided.
+Capabilities
+-----------
+1) Accepts --candidates, --meta_model, --finrl_policies, --risk_config.
+2) Accepts --out as EITHER a folder OR a .json file.
+   - If --out endswith .json -> we create a temp plans folder, run decision_engine
+     to dump individual *_plan_*.json files, then aggregate only enter=True plans
+     into the single --out JSON file.
+   - If --out is a folder -> forward args to decision_engine (plans per-file).
+
+Additive: --neural_chain flag runs an immutable neural pipeline (Market Data→...→Broker)
+via tools.pipeline_orchestrator.run_pipeline + optional Sentiment Brain.
+This is deterministic, append-only logging, and does not change behavior if not used.
 """
-
 from __future__ import annotations
+
 import os
 import sys
 import json
 import glob
 import argparse
+import inspect
 from datetime import datetime, timezone
-from typing import Any, Dict
+from typing import Any, Dict, List
 
-# Import engine without modifying it
+# Ensure src importable
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from src.decision_engine import main as decision_main  # noqa: E402
 
-# Neural chain orchestrator import (additive)
+# Optional libs used downstream; kept to avoid missing-module surprises
+import joblib  # noqa: F401
+import time  # noqa: F401
+import lightgbm  # noqa: F401
+
+# Policy adapter bits (for optional FinRL auditing/wrapping)
+from tools.policy_adapter import (
+    finrl_signal_adapter,
+    _unwrap_estimator,
+    SklearnPolicyAdapter,
+)
+
+# Optional neural orchestrator imports (additive only)
 try:
     from tools.pipeline_orchestrator import run_pipeline  # type: ignore
-    from tools.executor_hooks.sentiment_hook import run_sentiment_stage_full as run_sentiment_stage  # noqa: F401
 except Exception:
     run_pipeline = None  # type: ignore
 
+# Optional sentiment hook (additive only)
+try:
+    from tools.executor_hooks.sentiment_hook import (  # type: ignore
+        run_sentiment_stage_full as run_sentiment_stage,
+    )
+except Exception:
+    def run_sentiment_stage(*args, **kwargs):  # type: ignore
+        return None
+
+# News router (live or stub)
 try:
     from tools.executor_hooks.news_router_live import news_router  # type: ignore
     NEWS_ROUTER_SOURCE = "live"
@@ -45,6 +70,53 @@ except Exception:
         def news_router(md: Dict[str, Any]) -> str:  # type: ignore
             return "Market sees steady performance with balanced commentary."
         NEWS_ROUTER_SOURCE = "stub"
+
+# ---- ADDITIVE: FinRL audit helper (pure, optional) ----
+def finrl_audit_call(
+    candidate: Dict[str, Any],
+    policy: Any,
+    finrl_cfg: Dict[str, Any],
+    sym: str,
+    logger,
+) -> tuple[str, float, Dict[str, Any]]:
+    """
+    Wrap finrl_signal_adapter with pre/post audit logs.
+    Safe to call from any FinRL stage loop.
+
+    Returns:
+        (side, conf, meta)
+    """
+    est = _unwrap_estimator(policy)
+    try:
+        logger({
+            "stage": "finrl_signal_audit",
+            "symbol": sym,
+            "est_type": type(est).__name__,
+            "has_proba": hasattr(est, "predict_proba"),
+            "has_predict": hasattr(est, "predict"),
+        })
+    except Exception:
+        # logging must not break flow
+        pass
+
+    # Enforce a usable interface (temporary safety gate)
+    wrapped = SklearnPolicyAdapter(est)
+    side, conf, meta = finrl_signal_adapter(candidate, wrapped, finrl_cfg)
+
+    try:
+        logger({
+            "stage": "finrl_signal",
+            "symbol": sym,
+            "side": side,
+            "conf": conf,
+            "source": meta.get("source") if isinstance(meta, dict) else None,
+            "feat_dim": meta.get("feat_dim") if isinstance(meta, dict) else None,
+        })
+    except Exception:
+        pass
+
+    return side, conf, meta
+# ---- END ADDITIVE: FinRL audit helper ----
 
 
 def _str2bool(v):
@@ -67,7 +139,7 @@ def _build_neural_stages(args) -> Dict[str, Any]:
     Assemble stage callables required by run_pipeline(stages).
     Prefer project implementations; otherwise, fall back to deterministic stubs.
     """
-    # Attempt to import stage callables from your codebase
+    # Try to use project implementations if present
     market_data = feature_reactor = primary_ml_brain = rl_brain = volatility_brain = None
     risk_brain = meta_gating_brain = risk_throttle_gates = execution_reflex_engine = broker_hedger = None
     try:
@@ -88,7 +160,7 @@ def _build_neural_stages(args) -> Dict[str, Any]:
         meta_gating_brain, risk_throttle_gates = _meta, _gates
         execution_reflex_engine, broker_hedger = _execx, _broker
     except Exception:
-        # Deterministic minimal stubs suitable for smoke/shadow
+        # Deterministic minimal stubs for smoke/shadow mode
         def market_data() -> Dict[str, Any]:  # type: ignore
             return {"market_data_id": "MD-CHAIN", "symbol": "EURUSD"}
 
@@ -135,48 +207,48 @@ def _build_neural_stages(args) -> Dict[str, Any]:
         "primary_ml_brain": primary_ml_brain,
         "rl_brain": rl_brain,
         "volatility_brain": volatility_brain,
-        "risk_brain": risk_brain,  # Should accept optional 5th arg
+        "risk_brain": risk_brain,  # should accept optional 5th arg (sentiment)
         "meta_gating_brain": meta_gating_brain,
         "risk_throttle_gates": risk_throttle_gates,
         "execution_reflex_engine": execution_reflex_engine,
         "broker_hedger": broker_hedger,
         "news_router": news_router,
         "lang": "en",
-        "news_source": "stub",
+        "news_source": NEWS_ROUTER_SOURCE,
         "logger_append": _logger_append,
         "config": cfg,
     }
     return stages
 
+
 def _is_json_file(p: str) -> bool:
     return p.lower().endswith(".json")
+
 
 def _ensure_parent_dir(path: str) -> None:
     parent = os.path.dirname(path)
     if parent and not os.path.exists(parent):
         os.makedirs(parent, exist_ok=True)
 
-def _collect_plans(plans_dir: str) -> list[dict]:
-    out = []
+
+def _collect_plans(plans_dir: str) -> List[dict]:
+    out: List[dict] = []
     for fp in glob.glob(os.path.join(plans_dir, "*_plan_*.json")):
         try:
-            # BOM-safe read
-            with open(fp, "r", encoding="utf-8-sig") as f:
+            with open(fp, "r", encoding="utf-8-sig") as f:  # BOM-safe
                 out.append(json.load(f))
         except Exception:
-            # skip unreadable
             pass
     return out
 
-def _make_approved(plans: list[dict]) -> dict:
+
+def _make_approved(plans: List[dict]) -> dict:
     """
     Convert list of plan JSONs into a compact approved payload:
     {
       "generated_at": "...Z",
       "count": N,
-      "approved": [
-        {symbol, tf, side, size, price, sl, tp, final_score, meta_w, finrl_present, notes, reason}
-      ]
+      "approved": [ {symbol, tf, side, size, price, sl, tp, final_score, meta_w, finrl_present, notes, reason} ]
     }
     """
     approved = []
@@ -208,21 +280,44 @@ def _make_approved(plans: list[dict]) -> dict:
     }
     return payload
 
+
+def _call_engine(decision_main_func, argv_list: List[str]):
+    """
+    Robustly call src.decision_engine.main() no matter its signature.
+    - If main(args=...) exists -> pass argv_list.
+    - If main() takes no args -> patch sys.argv and call main().
+    """
+    try:
+        sig = inspect.signature(decision_main_func)
+        if len(sig.parameters) >= 1:
+            return decision_main_func(argv_list)
+    except (TypeError, ValueError):
+        pass
+
+    old_argv = sys.argv[:]
+    try:
+        sys.argv = ["decision_engine"] + list(argv_list)
+        return decision_main_func()
+    finally:
+        sys.argv = old_argv
+
+
 def main():
     ap = argparse.ArgumentParser(description="Decision Engine runner (folder/file out smart handling)")
-    ap.add_argument("--candidates", required=False, help="path to candidates JSON (no BOM, utf-8)")
+    ap.add_argument("--candidates", required=False, help="path to candidates JSON")
     ap.add_argument("--meta_model", default="models/meta_selector/meta_selector.joblib")
     ap.add_argument("--finrl_policies", default=None)
     ap.add_argument("--risk_config", default="config/decision.yaml")
     ap.add_argument("--out", required=False, help="folder for plans OR a .json aggregate file")
+
     # pass-through options
     ap.add_argument("--auto_execute", action="store_true")
     ap.add_argument("--primary_thresh", type=float, default=0.70)
     ap.add_argument("--finrl_thresh", type=float, default=0.65)
-    # additive flag: neural chain execution
+
+    # additive (neural-chain) options
     ap.add_argument("--neural_chain", action="store_true", help="Run the neural pipeline with Sentiment Brain")
     ap.add_argument("--use_remote", action="store_true", help="Enable remote fetching for news router (default: False)")
-    # neural-chain config flags
     ap.add_argument("--enable_sentiment", type=_str2bool, nargs="?", const=True, default=False,
                     help="Enable Sentiment Brain (default False). Accepts true/false.")
     ap.add_argument("--dry_run", type=_str2bool, nargs="?", const=True, default=False,
@@ -231,31 +326,45 @@ def main():
                     help="Cap for sentiment vote weight (default 0.35).")
     ap.add_argument("--seed", type=int, default=2025,
                     help="Deterministic seed (default 2025).")
+
+    # Controlled debug flags
+    ap.add_argument("--shadow", action="store_true",
+                    help="Enable shadow mode (compute and log, no execution)")
+    ap.add_argument("--verbose", action="store_true",
+                    help="Enable verbose logging for debug")
+
     args = ap.parse_args()
 
-    # Optional neural chain execution path (additive-only)
+    # Optional neural chain path
     if bool(getattr(args, "neural_chain", False)):
         if run_pipeline is None:
             print(json.dumps({"SMOKE": "FAIL", "reason": "orchestrator_unavailable"}, ensure_ascii=False))
             return 1
-        # Normalize config from CLI for orchestrator
-        cfg: Dict[str, Any] = {}
-        cfg["dry_run"] = bool(args.dry_run)
-        cfg["seed"] = int(args.seed)
-        cfg["sentiment_vote_cap"] = float(args.sentiment_vote_cap)
-        cfg["use_remote"] = bool(args.use_remote)
-        ff = cfg.setdefault("feature_flags", {})
-        ff["enable_sentiment"] = bool(args.enable_sentiment)
+        cfg: Dict[str, Any] = {
+            "dry_run": bool(args.dry_run),
+            "seed": int(args.seed),
+            "sentiment_vote_cap": float(args.sentiment_vote_cap),
+            "use_remote": bool(args.use_remote),
+            "feature_flags": {"enable_sentiment": bool(args.enable_sentiment)},
+        }
         setattr(args, "config", cfg)
 
         stages = _build_neural_stages(args)
         stages["news_router"] = news_router
         stages["news_source"] = NEWS_ROUTER_SOURCE
         _ = run_pipeline(stages)
-        _logger_append({"SMOKE": "PASS", "stage_order": ["market_data", "feature_reactor", "primary_ml_brain", "rl_brain", "volatility_brain", "sentiment_brain", "risk_brain", "meta_gating_brain", "risk_throttle_gates", "execution_reflex_engine", "broker_hedger"]})
+        _logger_append({
+            "SMOKE": "PASS",
+            "stage_order": [
+                "market_data", "feature_reactor", "primary_ml_brain", "rl_brain",
+                "volatility_brain", "sentiment_brain", "risk_brain",
+                "meta_gating_brain", "risk_throttle_gates",
+                "execution_reflex_engine", "broker_hedger"
+            ]
+        })
         return 0
 
-    # Legacy path: enforce required args when not using neural_chain
+    # Legacy decision engine path
     if not args.candidates or not args.out:
         ap.error("--candidates and --out are required unless --neural_chain is set")
 
@@ -263,12 +372,12 @@ def main():
     out_is_file = _is_json_file(out_arg)
 
     if out_is_file:
-        # prepare a sibling temp folder to hold per-plan jsons
-        # e.g., reports/daily/approved.json -> reports/daily/plans
+        # e.g., reports/daily/approved.json -> write per-plan into reports/daily/plans then aggregate
         parent = os.path.dirname(out_arg) or "."
         plans_dir = os.path.join(parent, "plans")
         os.makedirs(plans_dir, exist_ok=True)
-        forwarded = [
+
+        forwarded: List[str] = [
             "--candidates", args.candidates,
             "--out", plans_dir,
             "--meta_model", args.meta_model,
@@ -277,15 +386,12 @@ def main():
         if args.finrl_policies:
             forwarded += ["--finrl_policies", args.finrl_policies]
         if args.auto_execute:
-            forwarded += ["--auto_execute"]
-            forwarded += ["--primary_thresh", str(args.primary_thresh)]
-            forwarded += ["--finrl_thresh", str(args.finrl_thresh)]
+            forwarded += ["--auto_execute", "--primary_thresh", str(args.primary_thresh), "--finrl_thresh", str(args.finrl_thresh)]
 
-        rc = decision_main(forwarded)
+        rc = _call_engine(decision_main, forwarded)
         if rc not in (0, None):
             return rc
 
-        # collect individual plans and write one approved file
         plans = _collect_plans(plans_dir)
         payload = _make_approved(plans)
         _ensure_parent_dir(out_arg)
@@ -294,22 +400,20 @@ def main():
         print(f"Wrote aggregate approved file: {out_arg} (count={payload['count']})")
         return 0
 
-    else:
-        # treat as folder; ensure exists then forward
-        os.makedirs(out_arg, exist_ok=True)
-        forwarded = [
-            "--candidates", args.candidates,
-            "--out", out_arg,
-            "--meta_model", args.meta_model,
-            "--risk_config", args.risk_config,
-        ]
-        if args.finrl_policies:
-            forwarded += ["--finrl_policies", args.finrl_policies]
-        if args.auto_execute:
-            forwarded += ["--auto_execute"]
-            forwarded += ["--primary_thresh", str(args.primary_thresh)]
-            forwarded += ["--finrl_thresh", str(args.finrl_thresh)]
-        return decision_main(forwarded)
+    # Treat as folder; ensure exists then forward
+    os.makedirs(out_arg, exist_ok=True)
+    forwarded = [
+        "--candidates", args.candidates,
+        "--out", out_arg,
+        "--meta_model", args.meta_model,
+        "--risk_config", args.risk_config,
+    ]
+    if args.finrl_policies:
+        forwarded += ["--finrl_policies", args.finrl_policies]
+    if args.auto_execute:
+        forwarded += ["--auto_execute", "--primary_thresh", str(args.primary_thresh), "--finrl_thresh", str(args.finrl_thresh)]
+    return _call_engine(decision_main, forwarded)
+
 
 if __name__ == "__main__":
     sys.exit(main())
