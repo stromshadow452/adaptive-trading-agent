@@ -13,3 +13,4 @@
 *.h5  -text
 *.csv text
 *.parquet -text
+*.py text eol=lf
