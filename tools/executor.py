@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
 Executor v6.7 — CSV-feature builder, robust symbol extraction, universe filter,
 model metadata guard, dry-run, strong price/size backfill + side inference.
@@ -28,7 +28,7 @@ import argparse
 import time
 import math
 import traceback
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from typing import Any, Dict, List, Optional, Tuple
 import hashlib
 
@@ -90,6 +90,9 @@ PRIMARY_META: dict = {}
 _STRICT_META: bool = False
 _EXPECT_TF: str = ""
 _BANNER_PRINTED: bool = False
+
+# --- DRY-RUN global choke (never write executions in dry_run) ---
+DRY_WRITE_ALLOWED: bool = False
 
 def _meta_path_for_model(model_path: str) -> str:
     base, _ = os.path.splitext(model_path)
@@ -474,6 +477,7 @@ def _fallback_size_from_price_atr(price: float, atr: Optional[float],
     try: a = float(atr) if atr is not None else 0.0
     except Exception: a = 0.0
     stop_dist = (a*stop_atr_mult) if a>0.0 else (price*sl_pct)
+
     if stop_dist<=0.0: return 0.0
     notional = equity*risk_per_trade
     size = notional/(stop_dist*price)
@@ -758,6 +762,42 @@ def build_feature_vector_from_csv(sym: str, csv_dirs: List[str], expected_featur
             print(f"primary: CSV features build failed: {e}")
             traceback.print_exc()
         return None
+
+# --- Add once near top-level helpers ---
+def _iso_now():
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+def _stale_csv_guard(last_ts_iso: str, max_age_min: int = 15) -> bool:
+    try:
+        ts = datetime.fromisoformat(last_ts_iso.replace("Z", "+00:00"))
+        return (datetime.now(timezone.utc) - ts) > timedelta(minutes=max_age_min)
+    except Exception:
+        return True  # treat unknown as stale
+
+def _compute_stops(price: float, atr: float|None, side: str, rcfg: dict) -> tuple[float|None, float|None, str]:
+    stop_mult = float(rcfg.get("stop_atr_mult", 1.5))
+    rr        = float(rcfg.get("takeprofit_rr", 1.5))
+    if price <= 0: return None, None, "none"
+    if atr and atr > 0:
+        sd = atr * stop_mult; tp = sd * rr
+        return (price - sd, price + tp, "atr") if side == "buy" else (price + sd, price - tp, "atr")
+    # pct fallback
+    slp = float(rcfg.get("sl_pct", 0.01)); tpp = float(rcfg.get("tp_pct", 0.02))
+    return ((price * (1 - slp), price * (1 + tpp), "pct") if side == "buy"
+            else (price * (1 + slp), price * (1 - tpp), "pct"))
+
+class _Throttle:
+    # typed, no globals; instantiate per run
+    def __init__(self, minutes=15):
+        self.window = timedelta(minutes=minutes)
+        self.last: dict[str, datetime] = {}
+
+    def allow(self, symbol: str) -> bool:
+        now = datetime.now(timezone.utc)
+        t = self.last.get(symbol)
+        if t and (now - t) < self.window: return False
+        self.last[symbol] = now
+        return True
 
 # === sizing factor (reduced for FinRL fallback) ===
 SIZE_REDUCTION_FACTOR = 0.6   # was 0.8
@@ -1064,7 +1104,76 @@ def append_execution(exec_path: str, row: dict):
     with open(exec_path,"a",encoding="utf-8",newline="") as f:
         writer=csv.DictWriter(f, fieldnames=EXEC_FIELDS); writer.writerow(row)
 
+# ---- NEW: stable plan ordering + idempotent append choke -------------------
+def _stable_sort_plans(plans: List[dict]) -> List[dict]:
+    def _key(p):
+        c = p.get("candidate") or {}
+        sym = (p.get("symbol") or c.get("symbol") or "ZZZ").upper()
+        tf  = (p.get("tf") or p.get("timeframe") or c.get("tf") or c.get("timeframe") or "UNK").upper()
+        return (sym, tf)
+    try:
+        return sorted(plans, key=_key)
+    except Exception:
+        return plans
+
+def _exists_in_csv(exec_path: str, row: dict) -> bool:
+    # Idempotent guard: avoid duplicate OPEN with same identity
+    if not os.path.exists(exec_path) or os.path.getsize(exec_path) == 0:
+        return False
+    try:
+        with open(exec_path, "r", encoding="utf-8", newline="") as f:
+            rdr = csv.DictReader(f)
+            for r in rdr:
+                if (r.get("status","").upper()=="OPEN"
+                    and r.get("symbol","")==row.get("symbol","")
+                    and r.get("tf","")==row.get("tf","")
+                    and r.get("side","")==row.get("side","")
+                    and r.get("price","")==row.get("price","")):
+                    return True
+    except Exception:
+        return False
+    return False
+
+def append_execution_safe(exec_path: str, row: dict, *, dry_run: bool):
+    # Single choke point for all writes
+    if dry_run:
+        return  # hard stop: never touch disk in dry-run
+    ensure_exec_header(exec_path)
+    if _exists_in_csv(exec_path, row):
+        return
+    append_execution_safe(exec_path, row, dry_run=args.dry_run)
+
 # ------------------------- Main executor loop -------------------------
+def _normalize_agg_rows(rows: list[dict]) -> list[dict]:
+    """Drop volatile fields and sort deterministically."""
+    keep = ("symbol","tf","side","price","size","sl","tp","sl_type","status","plan_file")
+    out: list[dict] = []
+    for r in (rows or []):
+        try:
+            clean = {k: r.get(k) for k in keep}
+            if "decision_reason" in r:
+                clean["decision_reason"] = r["decision_reason"]
+            out.append(clean)
+        except Exception:
+            continue
+    out.sort(key=lambda x: (str(x.get("symbol","")), str(x.get("tf","")), str(x.get("side",""))))
+    return out
+
+def write_aggregate_safe(path: str, payload: dict, *, dry_run: bool):
+    """Deterministic aggregate in dry_run; normal write otherwise."""
+    if not path or not payload:
+        return
+    obj = payload
+    if dry_run:
+        if isinstance(payload, dict) and isinstance(payload.get("orders"), list):
+            obj = {"opened": int(payload.get("opened", 0)),
+                   "orders": _normalize_agg_rows(payload["orders"])}
+        elif isinstance(payload, list):
+            obj = _normalize_agg_rows(payload)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(obj, f, sort_keys=True, ensure_ascii=True, separators=(",", ":"))
+
 def main():
     global _STRICT_META, _EXPECT_TF
     ap = argparse.ArgumentParser(description="Executor v6.7")
@@ -1197,6 +1306,8 @@ def main():
         for p in sorted(glob.glob(os.path.join(folder,"*_plan_*.json"))):
             _load_one(p,"plans")
 
+    plans = _stable_sort_plans(plans)
+
     if not plans:
         print(f"Executed (opened): 0 (dry_run={args.dry_run})")
         return 0
@@ -1204,9 +1315,16 @@ def main():
     if not args.dry_run: ensure_exec_header(args.executions)
     open_counts = read_existing_open_counts(args.executions) if (not args.dry_run) else {}
 
+    # --- ADD: collect rows deterministically for artifacts (dry_run and aggregate) ---
+    rows_out: List[dict] = []
+
+    # --- NEW: stable plan order for determinism ---
+    plans = _stable_sort_plans(plans)
+
     opened=0
     rcfg_for_patch={}
     simple_price_dir = args.csv_price_dir[0] if args.csv_price_dir else None
+    agg_rows: list[dict] = []
 
     for plan in plans:
         if not isinstance(plan,dict): continue
@@ -1304,6 +1422,10 @@ def main():
             "plan_file": plan.get("_plan_path") or (args.approved or args.plans),
         }
 
+        agg_rows.append(row.copy())
+        # --- keep a copy for artifact writers (dry-run safe) ---
+        rows_out.append(row)
+
         if args.dry_run:
             if used_path:
                 print(f"[DRY OPEN] {sym} {tf} {side} price={price:.6f} size={final_size:.6f} (csv={used_path})  -> {decision}: {reason}")
@@ -1313,7 +1435,8 @@ def main():
             open_counts[sym] = open_counts.get(sym,0)+1
             continue
 
-        append_execution(args.executions, row)
+        # ---- single choke for writes (idempotent + no dry-run writes) ----
+        append_execution_safe(args.executions, row, dry_run=args.dry_run)
         opened += 1
         open_counts[sym] = open_counts.get(sym,0)+1
         if used_path:
@@ -1321,8 +1444,45 @@ def main():
         else:
             print(f"[OPEN] {sym} {tf} {side} price={price:.6f} size={final_size:.6f}  -> {decision}: {reason}")
 
+    # --- artifacts (does not change control flow) ---
+
+        try:
+            os.makedirs(os.path.dirname(args.aggregate), exist_ok=True)
+            agg = {
+                "ts": now_utc_iso(),
+                "dry_run": bool(args.dry_run),
+                "opened": int(opened),
+                "mode": args.mode,
+                "executions_path": args.executions,
+                "items": rows_out,
+            }
+            with open(args.aggregate, "w", encoding="utf-8") as f:
+                json.dump(agg, f, ensure_ascii=False, indent=2)
+            if args.verbose:
+                pass
+
+        except Exception as e:
+            print(f"[warn] aggregate write failed: {e}")
+
+    # NOTE: Idempotency guard — do NOT write executions in dry_run
+    if args.dry_run and DRY_WRITE_ALLOWED and args.executions and rows_out:
+        try:
+            ensure_exec_header(args.executions)
+            for r in rows_out:
+                append_execution_safe(args.executions, r, dry_run=args.dry_run)
+            if args.verbose:
+                print(f"[artifact] wrote executions -> {args.executions} (dry_run)")
+        except Exception as e:
+            print(f"[warn] could not write executions file: {e}")
+    if args.aggregate:
+        write_aggregate_safe(args.aggregate, {"opened": opened, "orders": agg_rows}, dry_run=args.dry_run)
+        print(f"[artifact] wrote aggregate -> {args.aggregate}")
     print(f"Executed (opened): {opened} (dry_run={args.dry_run})")
     return 0
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+
+
