@@ -82,3 +82,18 @@ models/
 data/raw/
 *.csv
 *.parquet
+# Artifacts / reports
+reports/**/*
+!reports/.gitkeep
+# Wheels / build
+.wheelhouse/**/*
+dist/**/*
+build/**/*
+# Backups / temp
+*.bak
+*.autobak
+__pycache__/
+# Models & data (tracked elsewhere)
+models/**/*
+data/**/*
+!data/README.md
