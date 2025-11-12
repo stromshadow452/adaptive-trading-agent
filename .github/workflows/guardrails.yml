@@ -1,0 +1,51 @@
+name: guardrails
+on:
+  push:
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Verify executor guardrails
+        run: |
+          python - <<'PY'
+import re, sys, io
+p="tools/executor.py"
+try:
+    s=io.open(p,'r',encoding='utf-8').read()
+except FileNotFoundError:
+    print(f"ERROR: {p} not found"); sys.exit(1)
+
+# Exactly one canonical aggregate writer
+if len(re.findall(r'write_aggregate_safe\\(\\s*args\\.aggregate', s)) != 1:
+    print("ERROR: need exactly one write_aggregate_safe(args.aggregate, ...)")
+    sys.exit(1)
+
+# No raw executions writes
+if re.search(r'open\\(\\s*args\\.executions', s):
+    print("ERROR: raw open(args.executions ...) found")
+    sys.exit(1)
+
+# Syntax check
+compile(s, p, 'exec')
+print("OK: guardrails satisfied")
+PY
+
+      - name: Enforce LF on .py files
+        shell: bash
+        run: |
+          BAD=$(git ls-files '*.py' | xargs -I{} bash -lc 'file -b --mime {} | grep -qi "crlf" && echo {}' || true)
+          if [ -n "$BAD" ]; then
+            echo "CRLF detected in:"
+            echo "$BAD"
+            exit 1
+          fi
