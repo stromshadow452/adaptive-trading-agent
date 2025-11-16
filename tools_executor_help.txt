@@ -1,0 +1,63 @@
+usage: python.exe -m tools.executor [-h] (--approved APPROVED | --plans PLANS)
+                                    --executions EXECUTIONS
+                                    [--aggregate AGGREGATE]
+                                    [--max_position MAX_POSITION]
+                                    [--universe UNIVERSE]
+                                    [--csv_price_dir CSV_PRICE_DIR]
+                                    [--require_csv_price]
+                                    [--mode {paper,live}] [--exclude EXCLUDE]
+                                    [--primary_thresh PRIMARY_THRESH]
+                                    [--finrl_thresh FINRL_THRESH]
+                                    [--model_primary_path MODEL_PRIMARY_PATH]
+                                    [--model_finrl_path MODEL_FINRL_PATH]
+                                    [--dry_run] [--verbose] [--strict_meta]
+                                    [--expect_timeframe EXPECT_TIMEFRAME]
+                                    [--broker_min_lot BROKER_MIN_LOT]
+                                    [--broker_lot_step BROKER_LOT_STEP]
+                                    [--decision_min_size DECISION_MIN_SIZE]
+                                    [--disable_finrl] [--grey_zone GREY_ZONE]
+                                    [--allow_symbols [ALLOW_SYMBOLS ...]]
+
+Executor v6.7
+
+options:
+  -h, --help            show this help message and exit
+  --approved APPROVED   approved.json (portfolio gate output)
+  --plans PLANS         folder containing *_plan_*.json
+  --executions EXECUTIONS
+                        executions CSV path to append
+  --aggregate AGGREGATE
+                        aggregate summary JSON (optional)
+  --max_position MAX_POSITION
+                        max OPEN positions per symbol
+  --universe UNIVERSE   forex | crypto | fx+crypto (optional filter)
+  --csv_price_dir CSV_PRICE_DIR
+                        CSV price root (repeatable)
+  --require_csv_price   skip order if no CSV price found
+  --mode {paper,live}
+  --exclude EXCLUDE     Symbol to skip (repeatable)
+  --primary_thresh PRIMARY_THRESH
+                        primary confidence threshold (0..1)
+  --finrl_thresh FINRL_THRESH
+                        finrl confidence threshold (0..1)
+  --model_primary_path MODEL_PRIMARY_PATH
+                        path to primary model payload/joblib
+  --model_finrl_path MODEL_FINRL_PATH
+                        path to finrl model joblib OR directory for auto-pick
+  --dry_run             do not write to executions CSV; only print
+  --verbose             verbose logging
+  --strict_meta         Fail if model metadata and live features don't match.
+  --expect_timeframe EXPECT_TIMEFRAME
+                        Require timeframe in model metadata (e.g., M15).
+  --broker_min_lot BROKER_MIN_LOT
+                        Broker minimum lot size
+  --broker_lot_step BROKER_LOT_STEP
+                        Broker lot step/increment
+  --decision_min_size DECISION_MIN_SIZE
+                        Decision minimum size floor
+  --disable_finrl       Skip all FinRL checks and fallbacks
+  --grey_zone GREY_ZONE
+                        Primary score band for FinRL fallback (default 0.05)
+  --allow_symbols [ALLOW_SYMBOLS ...]
+                        If provided, restrict trading strictly to these
+                        symbols

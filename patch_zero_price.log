@@ -1,0 +1,7 @@
+﻿2025-11-15 18:12:14 : START patch run
+2025-11-15 18:12:14 : Backup created -> E:\adaptive-trading-agent (2)\adaptive-trading-agent (2)\tools\executor.py.bak_zero_price_guard
+2025-11-15 18:12:14 : Inserted import: from zero_price_guard import guard as zero_guard at index 45
+2025-11-15 18:12:14 : Inserted zero-price guard block before append_execution_safe at index 1683
+2025-11-15 18:12:14 : Wrote patched executor -> E:\adaptive-trading-agent (2)\adaptive-trading-agent (2)\tools\executor.py
+2025-11-15 18:12:14 : PATCH APPLIED SUCCESSFULLY
+2025-11-15 18:12:14 : If you want to see the changed lines: use Get-Content -Path E:\adaptive-trading-agent (2)\adaptive-trading-agent (2)\tools\executor.py -TotalCount 200 | Select-String -Pattern 'zero-price-guard|zero_price_guard|SKIP_EXEC|append_execution_safe'

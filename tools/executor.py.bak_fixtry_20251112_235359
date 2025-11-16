@@ -1,0 +1,1669 @@
+﻿#!/usr/bin/env python3
+"""
+Executor v6.7 — CSV-feature builder, robust symbol extraction, universe filter,
+model metadata guard, dry-run, strong price/size backfill + side inference.
+
+This variant includes:
+ - tolerant duplicate check (price tolerance 1e-5)
+ - advisory CSV lock to avoid read/check/write races
+ - schema-only writer (ts only) and deterministic price formatting
+"""
+
+from __future__ import annotations
+
+import os
+import re
+import glob
+import csv
+import json
+import argparse
+import time
+import math
+import traceback
+from datetime import datetime, timezone, timedelta
+from typing import Any, Dict, List, Optional, Tuple
+import hashlib
+import contextlib
+
+try:
+    import joblib
+except Exception:
+    joblib = None  # type: ignore
+
+import numpy as np
+import pandas as pd
+
+# Optional LightGBM (for FinRL Booster models)
+try:
+    import lightgbm as lgb  # type: ignore
+except Exception:
+    lgb = None  # type: ignore
+
+# --- repo path shim so "src/..." works when running from tools/ ---
+import os as _os_sys, sys
+REPO_ROOT = _os_sys.path.abspath(_os_sys.path.join(_os_sys.path.dirname(__file__), ".."))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+# Shared guards (your repo modules)
+from src.model_guard import load_sidecar_meta, assert_feature_names, feature_list_hash
+from src.features.common_features import FEATURE_LIST  # kept for consistency
+
+# per-symbol/config-aware thresholds
+from tools.utils import get_threshold_for
+
+# ===== Feature-align import (robust across layouts) =====
+try:
+    from tools.utils.feature_align import align_features_for_lgb  # preferred
+except Exception:
+    try:
+        from utils.feature_align import align_features_for_lgb  # fallback
+    except Exception:
+        import importlib.util as _ilu, pathlib as _pl, os as _os
+        _here = _pl.Path(__file__).parent
+        _cands = [
+            _here / "utils" / "feature_align.py",
+            _pl.Path(_os.path.abspath(_os.path.join(_here, ".."))) / "utils" / "feature_align.py",
+        ]
+        _loaded = False
+        for _cand in _cands:
+            if _cand.exists():
+                _spec = _ilu.spec_from_file_location("feature_align", str(_cand))
+                if _spec and _spec.loader:
+                    _mod = _ilu.module_from_spec(_spec)
+                    _spec.loader.exec_module(_mod)  # type: ignore
+                    align_features_for_lgb = _mod.align_features_for_lgb  # type: ignore
+                    _loaded = True
+                    break
+        if not _loaded:
+            raise ModuleNotFoundError("Could not import align_features_for_lgb from tools.utils or utils")
+
+# ======== Model metadata helpers & globals ========
+PRIMARY_META: dict = {}
+_STRICT_META: bool = False
+_EXPECT_TF: str = ""
+_BANNER_PRINTED: bool = False
+
+# --- DRY-RUN global choke (never write executions in dry_run) ---
+DRY_WRITE_ALLOWED: bool = False
+
+def _meta_path_for_model(model_path: str) -> str:
+    base, _ = os.path.splitext(model_path)
+    return f"{base}_metadata.json"
+
+def _feature_list_hash(names) -> Optional[str]:
+    if not names:
+        return None
+    h = hashlib.sha256()
+    h.update(("\n".join([str(x) for x in names])).encode("utf-8"))
+    return f"sha256:{h.hexdigest()}"
+
+def load_model_and_meta(model_path: str):
+    if joblib is None:
+        return None, {}
+    obj = joblib.load(model_path)
+    model = obj.get("model") if isinstance(obj, dict) and "model" in obj else obj
+    embedded_meta = obj.get("meta") if isinstance(obj, dict) and "meta" in obj else None
+    sidecar_path = _meta_path_for_model(model_path)
+    sidecar_meta = None
+    if os.path.exists(sidecar_path):
+        try:
+            with open(sidecar_path, "r", encoding="utf-8") as f:
+                sidecar_meta = json.load(f)
+        except Exception as e:
+            print(f"[meta] warn: failed reading sidecar '{sidecar_path}': {e}")
+    meta = sidecar_meta or embedded_meta or {}
+    return model, meta
+
+def print_model_banner(meta: dict, live_feat_names=None):
+    global _BANNER_PRINTED
+    if _BANNER_PRINTED:
+        return
+    model_name = meta.get("model_name") or meta.get("model") or "UnknownModel"
+    version    = meta.get("version") or "unknown"
+    timeframe  = meta.get("timeframe") or meta.get("tf") or meta.get("tf_filter")
+    fnames     = meta.get("feature_names") or meta.get("features") or []
+    fhash      = meta.get("feature_order_hash") or _feature_list_hash(fnames)
+    print("=== Model Info ===")
+    print(f"  name: {model_name}")
+    print(f"  version: {version}")
+    if timeframe:
+        print(f"  timeframe: {str(timeframe)}")
+    print(f"  features: {len(fnames)}  order_hash={fhash}")
+    if live_feat_names is not None:
+        print(f"  live features: {len(live_feat_names)}  order_hash={_feature_list_hash(live_feat_names)}")
+    print("==================")
+    _BANNER_PRINTED = True
+
+def validate_feature_compat(meta: dict, live_feat_names, strict: bool):
+    want_names = meta.get("feature_names") or meta.get("features")
+    want_hash  = meta.get("feature_order_hash") or _feature_list_hash(want_names or [])
+    def _fail(msg):
+        if strict: raise SystemExit(f"[meta] ERROR: {msg}")
+        else: print(f"[meta] warn: {msg}")
+    if not live_feat_names or not want_names:
+        if want_names and live_feat_names and len(want_names) != len(live_feat_names):
+            _fail(f"feature length mismatch: model={len(want_names)} vs live={len(live_feat_names)}")
+        return
+    if len(want_names) != len(live_feat_names):
+        _fail(f"feature length mismatch: model={len(want_names)} vs live={len(live_feat_names)}"); return
+    if list(want_names) != list(live_feat_names):
+        _fail("feature names/order mismatch between model and live vector.")
+        try:
+            for i, (a,b) in enumerate(zip(want_names, live_feat_names)):
+                if a != b:
+                    print(f"  mismatch @ {i}: model='{a}' live='{b}'")
+                    if i>10: break
+        except Exception: pass
+    live_hash = _feature_list_hash(live_feat_names)
+    if want_hash and live_hash and want_hash != live_hash:
+        _fail(f"feature order hash mismatch: model={want_hash} live={live_hash}")
+
+# ================== math helpers & sizing ==================
+def _safe_float(x, d=0.0):
+    try:
+        v = float(x)
+        if math.isnan(v) or math.isinf(v): return d
+        return v
+    except Exception:
+        return d
+
+def _sigmoid(z: float) -> float:
+    try:
+        return 1.0/(1.0+math.exp(-float(z)))
+    except Exception:
+        return 0.5
+
+def _to_prob(v: Any) -> Optional[float]:
+    """
+    Map various model outputs to [0,1] confidence.
+    """
+    try:
+        if v is None: return None
+        if isinstance(v, (list, tuple, np.ndarray)):
+            if len(v)==0: return None
+            flat = list(v)
+            if len(flat)==1 and isinstance(flat[0], (list, tuple, np.ndarray)):
+                flat = list(flat[0])
+            nums = [float(x) for x in flat if isinstance(x,(int,float,np.floating))]
+            if not nums: return None
+            if all(0.0 <= x <= 1.0 for x in nums):
+                return max(nums)
+            return _sigmoid(nums[0])
+        raw = float(v)
+        if raw in (0.0,1.0): return 0.70 if raw==1.0 else 0.30
+        if -1.0 <= raw <= 1.0: return _sigmoid(raw)
+        return _sigmoid(raw)
+    except Exception:
+        return None
+
+def _fit_to_len(fv: List[float], n: int) -> List[float]:
+    if n is None or n <= 0:
+        return list(fv)
+    if len(fv) == n:
+        return list(fv)
+    if len(fv) > n:
+        return list(fv[:n])
+    return list(fv) + [0.0] * (n - len(fv))
+
+def _lgb_expected_nfeat(booster) -> Optional[int]:
+    n = None
+    try:
+        n = int(booster.num_feature())
+    except Exception:
+        n = None
+    if (n is None or n <= 0):
+        try:
+            names = booster.feature_name()
+            if isinstance(names, (list, tuple)) and len(names) > 0:
+                n = len(names)
+        except Exception:
+            pass
+    return n
+
+def _recompute_size(plan: dict, rcfg: dict) -> float:
+    risk_per_trade = _safe_float(rcfg.get("risk_per_trade"), 0.01)
+    equity = _safe_float(plan.get("equity"), _safe_float(rcfg.get("default_equity"), 10000.0))
+    price = _safe_float(plan.get("price"), 0.0)
+    atr = _safe_float(plan.get("atr") or plan.get("atr14"), 0.0)
+    stop_mult = _safe_float(rcfg.get("stop_atr_mult"), 1.5)
+    sl_pct = _safe_float(rcfg.get("sl_pct"), 0.01)
+    eps = 1e-9
+    if price <= eps: return 0.0
+    stop_dist = max(atr*stop_mult, eps) if atr>eps else max(price*sl_pct, eps)
+    notional = equity*risk_per_trade
+    size = notional/(stop_dist*price)
+    size = max(_safe_float(rcfg.get("min_size"),0.001), min(_safe_float(rcfg.get("max_size"),0.05), size))
+    return max(0.0, size)
+
+def _compute_sl_tp(plan: dict, rcfg: dict) -> tuple[float|None, float|None, str]:
+    price = _safe_float(plan.get("price"), 0.0)
+    atr = _safe_float(plan.get("atr") or plan.get("atr14"), 0.0)
+    side = (plan.get("side") or "").lower()
+    stop_mult = _safe_float(rcfg.get("stop_atr_mult"), 1.5)
+    rr = _safe_float(rcfg.get("takeprofit_rr"), 1.5)
+    sl_pct = _safe_float(rcfg.get("sl_pct"), 0.01)
+    tp_pct = _safe_float(rcfg.get("tp_pct"), 0.02)
+    eps = 1e-9
+    if price <= eps: return None, None, "none"
+    if atr > eps:
+        stop_dist = atr*stop_mult
+        tp_dist = stop_dist*rr
+        if side=="buy":  return price-stop_dist, price+tp_dist, "atr"
+        if side=="sell": return price+stop_dist, price-tp_dist, "atr"
+    if side=="buy":  return price*(1-sl_pct), price*(1+tp_pct), "pct"
+    if side=="sell": return price*(1+sl_pct), price*(1-tp_pct), "pct"
+    return None, None, "none"
+
+# === simple single-dir backfill (kept) ===
+def _last_close_from_csv(csv_price_dir: str, symbol: str) -> float|None:
+    if not csv_price_dir or not symbol: return None
+    pats = [os.path.join(csv_price_dir, f"{symbol}_*.csv"),
+            os.path.join(csv_price_dir, f"{symbol}*.csv")]
+    files = []
+    for p in pats: files.extend(glob.glob(p))
+    if not files: return None
+    files.sort(); last_file = files[-1]
+    last_price = None
+    try:
+        with open(last_file,"r",encoding="utf-8-sig",newline="") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                for k in ("close","Close","CLOSE","c","ClosePrice","last"):
+                    if k in row and row[k]:
+                        try: last_price = float(row[k])
+                        except Exception: pass
+    except Exception: return None
+    return last_price
+
+def ensure_price_size_sl_tp(plan: dict, rcfg: dict, csv_price_dir: str) -> dict:
+    price = _safe_float(plan.get("price"), 0.0)
+    size  = _safe_float(plan.get("size"), 0.0)
+    side  = (plan.get("side") or "").lower()
+    if price>0.0 and size>0.0: return plan
+    symbol = (plan.get("symbol") or plan.get("candidate", {}).get("symbol") or "").upper()
+    if price<=0.0:
+        px = _last_close_from_csv(csv_price_dir, symbol)
+        if px and px>0: plan["price"]=px; price=px
+    if size<=0.0 and price>0.0 and side in ("buy","sell"):
+        plan["size"] = _recompute_size(plan, rcfg)
+    if price>0.0 and side in ("buy","sell"):
+        if plan.get("sl") is None or plan.get("tp") is None:
+            sl,tp,_ = _compute_sl_tp(plan, rcfg)
+            if plan.get("sl") is None: plan["sl"]=sl
+            if plan.get("tp") is None: plan["tp"]=tp
+    return plan
+
+# ------------------------- small utils -------------------------
+def now_utc_iso() -> str:
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+SEP_RE       = re.compile(r"[^A-Za-z]")
+QUOTE_MAP    = {"USDT":"USD","BUSD":"USD","USDC":"USD"}
+FX_CCY       = {"USD","EUR","JPY","GBP","AUD","NZD","CAD","CHF"}
+CRYPTO_BASES = {"BTC","ETH","SOL","XRP","BNB","ADA","DOGE","DOT","LTC","XMR","AVAX","SHIB","TRX","LINK","UNI","MATIC"}
+METALS       = {"XAU","XAG"}
+QUOTE_PREFS  = ["USDT","USDC","BUSD","USD"]
+
+def normalize_symbol(sym: str) -> str:
+    if not sym: return ""
+    s = SEP_RE.sub("", str(sym).upper())
+    if len(s)<6: return s
+    base = s[:3]; quote_raw = s[3:]; quote = QUOTE_MAP.get(quote_raw, quote_raw[:3])
+    return f"{base}{quote}"
+
+def classify_symbol(sym: str) -> str:
+    s = normalize_symbol(sym)
+    if len(s)<6: return "other"
+    base, quote = s[:3], s[3:6]
+    if base in CRYPTO_BASES: return "crypto"
+    if (base in FX_CCY or base in METALS) and (quote in FX_CCY): return "forex"
+    return "other"
+
+def in_universe(sym: str, universe: Optional[str]) -> bool:
+    if not universe: return True
+    u = universe.replace(" ", "").lower()
+    kind = classify_symbol(sym)
+    if u in {"fx+crypto","forex,crypto","crypto,forex"}: return kind in {"forex","crypto"}
+    if u == "forex": return kind=="forex"
+    if u == "crypto": return kind=="crypto"
+    return True
+
+# ---- PATCH HELPERS (safe getters) ----
+def _norm_sym(s: str) -> str:
+    return (s or "").upper().replace("-","").replace("_","").replace("/","").replace("USDT","USD")
+
+def _extract(d: dict, *paths, default=None):
+    for p in paths:
+        cur = d
+        try:
+            for k in p.split("."):
+                if isinstance(cur, dict) and k in cur: cur = cur[k]
+                else: cur=None; break
+            if cur not in (None,""): return cur
+        except Exception: pass
+    return default
+
+def get_symbol(record: dict) -> str:
+    return _norm_sym(_extract(record,"symbol","pair","asset",
+                              "candidate.symbol","candidate.pair","candidate.asset", default="UNKNOWN"))
+
+def get_tf(record: dict) -> str:
+    tf = _extract(record,"tf","timeframe","candidate.tf","candidate.timeframe", default="UNK")
+    return (tf or "UNK").upper()
+
+def get_price(record: dict) -> float:
+    p = _extract(record,"price","candidate.price", default=0.0)
+    try: return float(p)
+    except Exception: return 0.0
+
+# === Generic policy adapter + deep unwrap ====================================
+_UNWRAP_ATTRS = ("policy","model","estimator","clf","base","inner","wrapped","net","sk_model")
+
+def _deep_unwrap(obj, max_depth: int = 5):
+    """Recursively peel common wrapper attributes until we hit a bare estimator."""
+    seen = set()
+    cur = obj
+    for _ in range(max_depth):
+        if cur is None:
+            return None
+        if id(cur) in seen:
+            break
+        seen.add(id(cur))
+        if isinstance(cur, dict):
+            for k in _UNWRAP_ATTRS:
+                if k in cur and cur[k] is not None:
+                    cur = cur[k]
+                    break
+            else:
+                return cur
+            continue
+        moved = False
+        for k in _UNWRAP_ATTRS:
+            try:
+                nxt = getattr(cur, k, None)
+            except Exception:
+                nxt = None
+            if nxt is not None:
+                cur = nxt
+                moved = True
+                break
+        if not moved:
+            return cur
+    return cur
+
+class _GenericPolicyAdapter:
+    """
+    Wrap any sklearn-like/statsmodels-like estimator and expose predict_proba().
+    """
+    def __init__(self, base):
+        self.base = base
+
+    def predict_proba(self, X):
+        b = self.base
+        # 1) predict_proba native
+        if hasattr(b, "predict_proba"):
+            return b.predict_proba(X)
+        # 2) decision_function -> sigmoid to prob
+        if hasattr(b, "decision_function"):
+            z = b.decision_function(X)
+            z = np.asarray(z).reshape(-1, 1)
+            p = 1.0 / (1.0 + np.exp(-z))
+            return np.hstack([1.0 - p, p])
+        # 3) predict -> soft map 0/1 or labels
+        if hasattr(b, "predict"):
+            y = np.asarray(b.predict(X)).reshape(-1)
+            def _to_p(v):
+                s = str(v).strip().lower()
+                return 0.70 if s in {"1","buy","long","true","+1"} else 0.30
+            p = np.array([_to_p(v) for v in y], dtype=float)
+            return np.stack([1.0 - p, p], axis=1)
+        # 4) score scalar -> broadcast
+        if hasattr(b, "score"):
+            try:
+                z = float(b.score(X))
+                p = 1.0 / (1.0 + np.exp(-z))
+                return np.array([[1.0 - p, p] for _ in range(len(X))], dtype=float)
+            except Exception:
+                pass
+        raise AttributeError("Adapter: no usable prediction on wrapped estimator")
+
+def _wrap_generic(obj):
+    return _GenericPolicyAdapter(_deep_unwrap(obj))
+# ============================================================================
+
+# === FinRL per-symbol auto-picker (robust globbing) ===
+def _try_finrl_for_symbol(sym: str, tf: str, root: Optional[str]):
+    if not root or joblib is None: return None
+    try:
+        if not os.path.isdir(root): return None
+        def _cands(sym_in: str, tf_in: str) -> List[str]:
+            pats = [
+                f"{sym_in}_{tf_in}_policy.joblib",
+                f"{sym_in}_{tf_in}.joblib",
+                f"{sym_in}_{tf_in}_ppo.joblib",
+                f"{sym_in}_{tf_in}_policy.pkl",
+                f"{sym_in}_{tf_in}_*policy*.joblib",
+                f"{sym_in}_{tf_in}_*policy*.pkl",
+            ]
+            out=[]
+            for pat in pats: out.extend(glob.glob(os.path.join(root, pat)))
+            return out
+        cands = _cands(sym, tf) + _cands(sym.lower(), tf.lower())
+        cands = sorted(set(cands), key=lambda p: os.path.getmtime(p) if os.path.exists(p) else 0, reverse=True)
+        for p in cands:
+            try:
+                raw = joblib.load(p)
+                return _wrap_generic(raw)
+            except Exception:
+                continue
+    except Exception:
+        return None
+    return None
+
+# ---- conservative fallback sizing ----
+def _fallback_size_from_price_atr(price: float, atr: Optional[float],
+                                  risk_per_trade: float=0.01, equity: float=10000.0,
+                                  stop_atr_mult: float=1.5, sl_pct: float=0.01,
+                                  min_size: float=0.001, max_size: float=0.05) -> float:
+    if price<=0.0: return 0.0
+    try: a = float(atr) if atr is not None else 0.0
+    except Exception: a = 0.0
+    stop_dist = (a*stop_atr_mult) if a>0.0 else (price*sl_pct)
+
+    if stop_dist<=0.0: return 0.0
+    notional = equity*risk_per_trade
+    size = notional/(stop_dist*price)
+    return max(min_size, min(max_size, float(size)))
+
+# === recompute from price (kept) ===
+def _recompute_size_from_price(plan: dict, rcfg: dict) -> float:
+    risk_per_trade = _safe_float(rcfg.get("risk_per_trade"), 0.01)
+    equity = _safe_float(plan.get("equity"), _safe_float(rcfg.get("default_equity"), 10000.0))
+    price = _safe_float(plan.get("price"), 0.0)
+    atr = _safe_float(plan.get("atr") or plan.get("atr14"), 0.0)
+    stop_mult = _safe_float(rcfg.get("stop_atr_mult"), 1.5)
+    sl_pct = _safe_float(rcfg.get("sl_pct"), 0.01)
+    eps = 1e-9
+    if price<=eps: return 0.0
+    stop_dist = max(atr*stop_mult, eps) if atr>eps else max(price*sl_pct, eps)
+    notional = equity*risk_per_trade
+    size = notional/(stop_dist*price)
+    size = max(_safe_float(rcfg.get("min_size"),0.001), min(_safe_float(rcfg.get("max_size"),0.05), size))
+    return max(0.0, size)
+
+def ensure_price_and_size(plan: dict, rcfg: dict, csv_price_dir: str|None) -> dict:
+    price = _safe_float(plan.get("price"),0.0)
+    size = _safe_float(plan.get("size"),0.0)
+    if price>0 and size>0: return plan
+    sym = (plan.get("symbol") or plan.get("candidate", {}).get("symbol") or "").upper()
+    if not csv_price_dir or not sym: return plan
+    import glob as _glob, os as _os
+    pat1 = _os.path.join(csv_price_dir,"**",f"{sym}*.csv")
+    pat2 = _os.path.join(csv_price_dir,"**",f"*{sym}*.csv")
+    files = sorted(set(_glob.glob(pat1, recursive=True)+_glob.glob(pat2, recursive=True)))
+    if not files: return plan
+    last_price = None
+    try:
+        with open(files[-1],"r",encoding="utf-8-sig",newline="") as f:
+            reader=csv.DictReader(f); last=None
+            for row in reader: last=row
+            if last:
+                for k in ("close","Close","CLOSE","c","ClosePrice","last"):
+                    if k in last and last[k]:
+                        try: last_price=float(last[k])
+                        except Exception: pass
+    except Exception: last_price=None
+    if last_price and last_price>0:
+        plan["price"]=last_price
+        if size<=0.0: plan["size"]=_recompute_size_from_price(plan, rcfg)
+    return plan
+
+# --- lot clamp helpers ---
+def _round_to_step(x: float, step: float) -> float:
+    if step<=0: return x
+    return math.floor(x/step)*step
+
+def _lot_clamp(size: float, *, min_lot: float, lot_step: float, min_size_cfg: float) -> float:
+    try:
+        if not isinstance(size,(int,float)) or not math.isfinite(size) or size<=0: return 0.0
+    except Exception:
+        return 0.0
+    stepped = _round_to_step(float(size), float(lot_step))
+    stepped = max(stepped, float(min_lot))
+    stepped = max(stepped, float(min_size_cfg))
+    return round(stepped, 3)
+
+# ------------------------- CSV pricing & discovery -------------------------
+def last_close_from_csv_file(path: str) -> Optional[float]:
+    try:
+        df = pd.read_csv(path, sep=None, engine="python")
+        cols = [c.strip().lower() for c in df.columns]
+        if "close" not in cols: return None
+        cidx = cols.index("close")
+        return float(pd.to_numeric(df.iloc[-1, cidx], errors="coerce"))
+    except Exception:
+        try:
+            with open(path,"r",encoding="utf-8") as f:
+                reader=csv.reader(f); header=next(reader)
+                lower=[h.strip().lower() for h in header]
+                if "close" not in lower: return None
+                idx=lower.index("close"); last=None
+                for row in reader:
+                    if row and any(c.strip() for c in row): last=row
+                if not last: return None
+                return float(last[idx])
+        except Exception:
+            return None
+
+def symbol_variants(sym: str) -> List[str]:
+    s=(sym or "").upper()
+    base, quote = (s[:3], s[3:6]) if len(s)>=6 else (s,"")
+    variants=set()
+    if base and quote: variants.add(f"{base}{quote}")
+    for q in QUOTE_PREFS:
+        variants.add(f"{base}-{q}"); variants.add(f"{base}_{q}")
+    variants |= {v.lower() for v in list(variants)}
+    return list(variants)
+
+def find_csv_for_symbol(sym: str, csv_dirs: List[str]) -> Optional[str]:
+    candidates: List[str]=[]
+    stems = symbol_variants(sym)
+    for root in (csv_dirs or []):
+        for stem in stems:
+            patterns=[os.path.join(root,"**",f"{stem}*.csv"),
+                      os.path.join(root,"**",f"*{stem}*.csv")]
+            matches=[]
+            for pat in patterns: matches.extend(glob.glob(pat, recursive=True))
+            if matches: candidates.extend(matches)
+    if not candidates: return None
+    candidates.sort(key=os.path.getmtime, reverse=True)
+    return candidates[0]
+
+def _read_last_close_any(path: str) -> Optional[float]:
+    try:
+        df = pd.read_csv(path, sep=None, engine="python")
+        cols = [c.strip().lower() for c in df.columns]
+        if "close" in cols and len(df)>0:
+            cidx = cols.index("close")
+            return float(pd.to_numeric(df.iloc[-1, cidx], errors="coerce"))
+    except Exception: pass
+    try:
+        with open(path,"r",encoding="utf-8-sig",newline="") as f:
+            reader=csv.DictReader(f); last=None
+            for row in reader: last=row
+            if last:
+                for k in ("close","Close","CLOSE","c","ClosePrice","last"):
+                    if k in last and last[k]:
+                        try: return float(last[k])
+                        except Exception: continue
+    except Exception: pass
+    return None
+
+def resolve_price_from_dirs(sym: str, csv_dirs: List[str], verbose: bool=False) -> Tuple[Optional[float], Optional[str]]:
+    path = find_csv_for_symbol(sym, csv_dirs)
+    if not path:
+        if verbose: print(f"[price] {sym}: no CSV matched in roots={csv_dirs}")
+        return None, None
+    px = _read_last_close_any(path)
+    if verbose:
+        print(f"[price] {sym}: {'FOUND' if px is not None else 'FAIL'} path={os.path.basename(path)} value={px}")
+    return px, path if px is not None else (None, None)
+
+def _super_last_price_guess(sym: str, csv_dirs: List[str]) -> Optional[float]:
+    import glob as _glob, os as _os
+    paths: List[str]=[]
+    for root in (csv_dirs or []):
+        paths += _glob.glob(_os.path.join(root,"**",f"{sym}*.csv"), recursive=True)
+        paths += _glob.glob(_os.path.join(root,"**",f"*{sym}*.csv"), recursive=True)
+    if not paths: return None
+    paths.sort(key=os.path.getmtime, reverse=True)
+    for p in paths:
+        px = _read_last_close_any(p)
+        if isinstance(px,(int,float)) and px and px>0: return float(px)
+    return None
+
+# ------------------------- Plan filename → symbol fallback -------------------------
+import re as _re_path
+
+# === [TIMESTAMP GUARD HELPER] ===
+def _require_exec_timestamp(exec_row):
+    """Fail-safe: ensure executions carry an ISO-UTC timestamp."""
+    try:
+        ts = exec_row.get("timestamp") if isinstance(exec_row, dict) else None
+        if not ts:
+            try:
+                logger_append({"stage":"execution_reflex","error":"missing timestamp"})
+            except Exception:
+                pass
+            raise SystemExit("[FAIL:Execution Reflex Engine] missing timestamp")
+    except Exception as _e:
+        try:
+            logger_append({"stage":"execution_reflex","error":str(_e)})
+        except Exception:
+            pass
+        raise
+# === [END TIMESTAMP GUARD HELPER] ===
+
+
+# === [DECISION TS RESOLVER] ===
+_resolve_last_ts_cache = {}
+
+def _resolve_last_ts(sym, used_path):
+    """
+    Deterministic, cached: return ISO-UTC timestamp (last bar) for symbol.
+    Cache key = file path; no global I/O beyond first lookup per path.
+    """
+    try:
+        key = str(used_path)
+        if key in _resolve_last_ts_cache:
+            return _resolve_last_ts_cache[key]
+        # Fast, robust read with pandas; handle BOM
+        import pandas as _pd
+        try:
+            df = _pd.read_csv(used_path, encoding="utf-8")
+        except UnicodeDecodeError:
+            df = _pd.read_csv(used_path, encoding="utf-8-sig")
+        if df.empty:
+            ts = ""
+        else:
+            # accept 'timestamp' or 'time'
+            cols = {c.lower(): c for c in df.columns}
+            ts_col = cols.get("timestamp") or cols.get("time")
+            ts = "" if not ts_col else str(df[ts_col].iloc[-1])
+            if ts:
+                if "T" not in ts or not ts.endswith("Z"):
+                    ts = ts.replace(" ", "T")
+                    if not ts.endswith("Z"):
+                        ts += "Z"
+        _resolve_last_ts_cache[key] = ts
+        return ts
+    except Exception:
+        return ""
+# === [END DECISION TS RESOLVER] ===
+
+_TEMP_PREFIXES = ("EXECUTOR_TEMP_PLAN","EXECUTOR_TEMP","EXECUTOR")
+
+def _symbol_from_plan_path(plan_path: Optional[str]) -> Optional[str]:
+    if not plan_path: return None
+    base = os.path.basename(plan_path).upper()
+    if any(base.startswith(p) for p in _TEMP_PREFIXES): return None
+    m = _re_path.match(r"^([A-Z]{3,10})_([A-Z0-9]+)_PLAN_", base)
+    if m: return normalize_symbol(m.group(1))
+    m2 = _re_path.match(r"^([A-Z]{6})_", base)
+    if m2: return normalize_symbol(m2.group(1))
+    return None
+
+# ------------------------- Feature engineering -------------------------
+TRAIN_FEATURES_DEFAULT = [
+    "close","ret","sma5","sma20","sma_ratio","sma50","sma100","sma_ratio_long",
+    "atr14","hl_range","body","ret_5","ret_20","rsi14","boll_z","atr_pct","vol_norm","hod","dow",
+]
+
+def _normalize_ohlcv(df: pd.DataFrame) -> pd.DataFrame:
+    lut = {re.sub(r"[<>]","",str(c)).strip().lower(): c for c in df.columns}
+    def pick(*names):
+        for n in names:
+            if n in lut: return lut[n]
+        return None
+    c_open  = pick("open","o","bidopen","askopen")
+    c_high  = pick("high","h","bidhigh","askhigh")
+    c_low   = pick("low","l","bidlow","asklow")
+    c_close = pick("close","c","bidclose","askclose","last","price","closeprice")
+    c_vol   = pick("volume","vol","tickvol","tick_volume","tickvolume","v","tick vol","tickvol.")
+    if c_open is None or c_high is None or c_low is None or c_close is None:
+        raise ValueError("CSV missing OHLC columns")
+    out = pd.DataFrame(index=df.index.copy())
+    out["open"]  = pd.to_numeric(df[c_open], errors="coerce")
+    out["high"]  = pd.to_numeric(df[c_high], errors="coerce")
+    out["low"]   = pd.to_numeric(df[c_low], errors="coerce")
+    out["close"] = pd.to_numeric(df[c_close], errors="coerce")
+    out["volume"]= pd.to_numeric(df[c_vol], errors="coerce") if c_vol else 1.0
+    date_col=time_col=ts_col=None
+    for c in df.columns:
+        cl=str(c).lower()
+        if ("date" in cl) and date_col is None: date_col=c
+        if (("time" in cl) or ("timestamp" in cl)) and time_col is None: time_col=c
+        if cl=="timestamp": ts_col=c
+    try:
+        if date_col is not None and time_col is not None:
+            dt = pd.to_datetime(df[date_col].astype(str)+" "+df[time_col].astype(str), errors="coerce", utc=True)
+            out.index = dt
+        elif ts_col is not None:
+            out.index = pd.to_datetime(df[ts_col], errors="coerce", utc=True)
+    except Exception: pass
+    out = out.dropna(subset=["open","high","low","close"])
+    return out
+
+def _compute_atr(df: pd.DataFrame, window: int=14) -> pd.Series:
+    h,l,c = df["high"], df["low"], df["close"]
+    prev_c = c.shift(1)
+    tr = pd.concat([(h-l).abs(), (h-prev_c).abs(), (l-prev_c).abs()], axis=1).max(axis=1)
+    atr = tr.rolling(window=window, min_periods=window).mean()
+    return atr.bfill().fillna(0.0)
+
+def _compute_features_from_df(df: pd.DataFrame) -> pd.DataFrame:
+    feat = pd.DataFrame(index=df.index)
+    close=df["close"]
+    feat["close"]=close
+    feat["ret"]=close.pct_change(fill_method=None).fillna(0.0)
+    feat["sma5"]=close.rolling(5,min_periods=5).mean()
+    feat["sma20"]=close.rolling(20,min_periods=20).mean()
+    feat["sma_ratio"]=(feat["sma5"]/(feat["sma20"].replace(0,np.nan))).ffill().fillna(1.0)
+    feat["sma50"]=close.rolling(50,min_periods=50).mean()
+    feat["sma100"]=close.rolling(100,min_periods=100).mean()
+    feat["sma_ratio_long"]=(feat["sma50"]/(feat["sma100"].replace(0,np.nan))).ffill().fillna(1.0)
+    feat["atr14"]=_compute_atr(df,14)
+    feat["hl_range"]=(df["high"]-df["low"]).abs()
+    feat["body"]=(close-df["open"]).abs()
+    feat["ret_5"]=close.pct_change(5,fill_method=None).fillna(0.0)
+    feat["ret_20"]=close.pct_change(20,fill_method=None).fillna(0.0)
+    up=close.diff().clip(lower=0); down=(-close.diff().clip(upper=0)).abs()
+    avg_gain=up.rolling(14,min_periods=14).mean()
+    avg_loss=down.rolling(14,min_periods=14).mean().replace(0,np.nan)
+    rs=(avg_gain/avg_loss).replace([np.inf,-np.inf],np.nan)
+    feat["rsi14"]=(100-100/(1+rs)).fillna(50)
+    mid=close.rolling(20,min_periods=20).mean()
+    std=close.rolling(20,min_periods=20).std()
+    feat["boll_z"]=((close-mid)/std.replace(0,np.nan)).fillna(0)
+    feat["atr_pct"]=(feat["atr14"]/close).clip(lower=1e-8)
+    v=df["volume"].replace([np.inf,-np.inf],np.nan).ffill().fillna(1.0)
+    feat["vol_norm"]=(v - v.rolling(20,min_periods=1).mean())/(v.rolling(20,min_periods=1).std().replace(0,np.nan))
+    feat["vol_norm"]=feat["vol_norm"].fillna(0.0)
+    try:
+        idx=pd.DatetimeIndex(feat.index)
+        feat["hod"]=idx.hour.astype(float); feat["dow"]=idx.dayofweek.astype(float)
+    except Exception:
+        feat["hod"]=0.0; feat["dow"]=0.0
+    feat=feat.ffill().bfill()
+    return feat
+
+def _read_tail_csv(path: str, nrows: int=400) -> pd.DataFrame:
+    df = pd.read_csv(path, sep=None, engine="python")
+    if len(df)>nrows: df=df.tail(nrows)
+    return df.reset_index(drop=True)
+
+def build_feature_vector_from_csv(sym: str, csv_dirs: List[str], expected_features: List[str], verbose: bool=False) -> Optional[Tuple[List[float], str]]:
+    """
+    Returns (feature_vector, last_bar_iso_timestamp) or None on failure.
+    last_bar_iso is normalized to UTC and ends with 'Z' when possible.
+    """
+    csv_path = find_csv_for_symbol(sym, csv_dirs)
+    if not csv_path:
+        if verbose: print(f"primary: CSV not found for {sym}")
+        return None
+    try:
+        raw = _read_tail_csv(csv_path, nrows=400)
+        norm = _normalize_ohlcv(raw)
+        feats = _compute_features_from_df(norm)
+        live_feat_names = list(feats.columns)
+        assert_feature_names(expected_features, live_feat_names)
+
+        # last bar timestamp (zero-IO from the DataFrame you already have)
+        try:
+            last_dt = feats.index[-1]
+            # ensure tz-aware UTC
+            if getattr(last_dt, "tzinfo", None) is None:
+                try:
+                    last_dt = last_dt.tz_localize("UTC")
+                except Exception:
+                    last_dt = pd.to_datetime(last_dt).tz_localize("UTC")
+            last_ts_iso = last_dt.tz_convert("UTC").isoformat().replace("+00:00","Z")
+        except Exception:
+            last_ts_iso = ""
+
+        last = feats.dropna()
+        last_row = feats.iloc[-1] if last.empty else last.iloc[-1]
+        fv: List[float]=[]
+        missing: List[str]=[]
+        for name in expected_features:
+            if name in last_row.index:
+                try: fv.append(float(last_row[name]))
+                except Exception: fv.append(0.0)
+            else:
+                missing.append(name); fv.append(0.0)
+        if verbose:
+            print(f"[features] {sym} csv={os.path.basename(csv_path)} -> vector len={len(fv)} missing={missing}")
+        return (fv, last_ts_iso)
+    except Exception as e:
+        if verbose:
+            print(f"primary: CSV features build failed: {e}")
+            traceback.print_exc()
+        return None
+
+# --- Add once near top-level helpers ---
+def _iso_now():
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+def _stale_csv_guard(last_ts_iso: str, max_age_min: int = 15) -> bool:
+    try:
+        ts = datetime.fromisoformat(last_ts_iso.replace("Z", "+00:00"))
+        return (datetime.now(timezone.utc) - ts) > timedelta(minutes=max_age_min)
+    except Exception:
+        return True  # treat unknown as stale
+
+def _compute_stops(price: float, atr: float|None, side: str, rcfg: dict) -> tuple[float|None, float|None, str]:
+    stop_mult = float(rcfg.get("stop_atr_mult", 1.5))
+    rr        = float(rcfg.get("takeprofit_rr", 1.5))
+    if price <= 0: return None, None, "none"
+    if atr and atr > 0:
+        sd = atr * stop_mult; tp = sd * rr
+        return (price - sd, price + tp, "atr") if side == "buy" else (price + sd, price - tp, "atr")
+    # pct fallback
+    slp = float(rcfg.get("sl_pct", 0.01)); tpp = float(rcfg.get("tp_pct", 0.02))
+    return ((price * (1 - slp), price * (1 + tpp), "pct") if side == "buy"
+            else (price * (1 + slp), price * (1 - tpp), "pct"))
+
+class _Throttle:
+    # typed, no globals; instantiate per run
+    def __init__(self, minutes=15):
+        self.window = timedelta(minutes=minutes)
+        self.last: dict[str, datetime] = {}
+
+    def allow(self, symbol: str) -> bool:
+        now = datetime.now(timezone.utc)
+        t = self.last.get(symbol)
+        if t and (now - t) < self.window: return False
+        self.last[symbol] = now
+        return True
+
+# === sizing factor (reduced for FinRL fallback) ===
+SIZE_REDUCTION_FACTOR = 0.6   # was 0.8
+
+def heuristic_confidence_from_score(plan: dict) -> float:
+    score=None
+    if "decision" in plan and isinstance(plan["decision"], dict):
+        score = plan["decision"].get("final_score")
+    if score is None:
+        score = plan.get("final_score") or (plan.get("candidate") or {}).get("score")
+    try: s=float(score or 0.0)
+    except Exception: s=0.0
+    mag=abs(s); k=1.0
+    conf = 1.0 - math.exp(-mag/k)
+    return max(0.0, min(1.0, conf))
+
+def _extract_symbol_from_plan(plan: dict, verbose: bool=False) -> str:
+    cand = plan.get("candidate", {}) if isinstance(plan.get("candidate"), dict) else {}
+    for key in ("symbol","pair","asset"):
+        raw = plan.get(key) or cand.get(key)
+        if raw and isinstance(raw,str):
+            sym = normalize_symbol(raw).upper()
+            if verbose: print(f"[sym] from field '{key}' -> {sym}")
+            return sym
+    hints=[]
+    for k in ("base","ticker","instrument"):
+        if isinstance(cand.get(k),str): hints.append(cand.get(k))
+    if hints:
+        sym=normalize_symbol("".join(hints)).upper()
+        if len(sym)>=6:
+            if verbose: print(f"[sym] from nested hints -> {sym}")
+            return sym
+    guess = _symbol_from_plan_path(plan.get("_plan_path") or plan.get("plan_file"))
+    if guess:
+        sym=normalize_symbol(guess).upper()
+        if verbose: print(f"[sym] from filename -> {sym}")
+        return sym
+    if verbose: print("[sym] default -> UNKNOWN]")
+    return "UNKNOWN"
+
+def _load_model_and_features(path: Optional[str], verbose: bool=False) -> Tuple[Optional[Any], List[str]]:
+    global PRIMARY_META
+    if not path: return None, TRAIN_FEATURES_DEFAULT
+    if os.path.isdir(path):
+        if verbose: print(f"[finrl] path '{path}' is a directory — will auto-pick per symbol later.")
+        return None, TRAIN_FEATURES_DEFAULT
+    if joblib is None or not os.path.exists(path):
+        return None, TRAIN_FEATURES_DEFAULT
+    try:
+        model, meta = load_model_and_meta(path)
+        PRIMARY_META = meta or {}
+        feats = list(PRIMARY_META.get("feature_names") or PRIMARY_META.get("features") or []) or TRAIN_FEATURES_DEFAULT
+        if verbose:
+            print(f"Loaded primary model from {path}")
+            print(f"Primary feature count: {len(feats)}")
+        return model, feats
+    except Exception:
+        if verbose: print("Model load failed:", traceback.format_exc())
+        return None, TRAIN_FEATURES_DEFAULT
+
+def _infer_side(plan: dict) -> str:
+    cand = plan.get("candidate", {}) if isinstance(plan.get("candidate"), dict) else {}
+    dec  = plan.get("decision", {})  if isinstance(plan.get("decision"), dict)  else {}
+    candidates = [plan.get("side"), dec.get("side"), dec.get("action"), dec.get("signal"),
+                  cand.get("side"), cand.get("action"), cand.get("signal")]
+    for k in ("is_long","long","go_long"):
+        v = dec.get(k, cand.get(k, plan.get(k)))
+        if v is True or v==1: return "buy"
+    for k in ("is_short","short","go_short"):
+        v = dec.get(k, cand.get(k, plan.get(k)))
+        if v is True or v==1: return "sell"
+    for v in candidates:
+        if not isinstance(v,(str,int,float)) or v is None: continue
+        s=str(v).strip().lower()
+        if s in {"buy","long","b","1","+1"}: return "buy"
+        if s in {"sell","short","s","-1"}: return "sell"
+    try: score=float(dec.get("final_score", plan.get("final_score", cand.get("score",0))))
+    except Exception: score=None
+    if isinstance(score,(int,float)) and score is not None:
+        if score>0: return "buy"
+        if score<0: return "sell"
+    return ""
+
+# ==== FinRL inference shim (unwrap first + LightGBM special case) ====
+def _finrl_infer_conf(finrl_model: Any, fv: List[float], verbose: bool=False) -> Optional[float]:
+    if finrl_model is None or fv is None:
+        return None
+    finrl_model = _deep_unwrap(finrl_model)
+    if verbose:
+        print(f"[finrl-debug] effective_model={type(finrl_model).__name__} "
+              f"has_proba={hasattr(finrl_model,'predict_proba')} "
+              f"has_conf={hasattr(finrl_model,'predict_confidence')} "
+              f"has_predict={hasattr(finrl_model,'predict')}")
+    try:
+        if lgb is not None and isinstance(finrl_model, lgb.Booster):
+            booster = finrl_model
+            try:
+                booster.set_param({"predict_disable_shape_check": True})
+            except Exception:
+                pass
+            nexp = _lgb_expected_nfeat(booster) or 0
+            if verbose:
+                print(f"[finrl-debug] lgb.Booster expects {nexp} features; live={len(fv)}")
+            # Build name->value row using primary feature order
+            names = (PRIMARY_META.get("feature_names") or PRIMARY_META.get("features") or TRAIN_FEATURES_DEFAULT)
+            live_features_row: Dict[str, float] = {}
+            for i, nm in enumerate(names):
+                val = fv[i] if i < len(fv) else 0.0
+                try:
+                    live_features_row[str(nm)] = float(val)
+                except Exception:
+                    live_features_row[str(nm)] = 0.0
+            # Align to booster-trained order (16 cols etc.)
+            x = align_features_for_lgb(live_features_row, booster)
+            try:
+                print(f"[finrl-align] using {x.shape[1]} features in trained order")
+            except Exception:
+                pass
+            try:
+                proba = float(booster.predict(x)[0])
+                if verbose:
+                    print(f"[finrl-debug] lgb.predict -> prob={proba}")
+                return proba
+            except Exception as e:
+                if verbose:
+                    print(f"[finrl-debug] lgb.predict error: {e}")
+    except Exception:
+        pass
+    def _try_call(meth: str, payload):
+        func = getattr(finrl_model, meth, None)
+        if callable(func):
+            try:
+                return func(payload)
+            except Exception:
+                return None
+        return None
+    res = _try_call("predict_proba", [fv])
+    if res is not None:
+        prob = _to_prob(res[0] if isinstance(res,(list,tuple,np.ndarray)) else res)
+        if verbose: print(f"[finrl-debug] predict_proba -> {prob}")
+        if prob is not None: return prob
+    res = _try_call("predict_confidence", [fv])
+    if res is not None:
+        val = res[0] if isinstance(res,(list,tuple,np.ndarray)) else res
+        prob = _to_prob(val)
+        if verbose: print(f"[finrl-debug] predict_confidence -> {prob}")
+        if prob is not None: return prob
+    res = _try_call("predict", [fv])
+    if res is not None:
+        val = res[0] if isinstance(res,(list,tuple,np.ndarray)) else res
+        prob = _to_prob(val)
+        if verbose: print(f"[finrl-debug] predict -> raw:{val} prob:{prob}")
+        if prob is not None: return prob
+    for m in ("predict_action","act","action"):
+        res = _try_call(m, [fv])
+        if res is None: res = _try_call(m, fv)
+        if res is not None:
+            val = res[0] if isinstance(res,(list,tuple,np.ndarray)) else res
+            prob = _to_prob(val)
+            if verbose: print(f"[finrl-debug] {m} -> raw:{val} prob:{prob}")
+            if prob is not None: return prob
+    for payload in ([fv], fv):
+        res = _try_call("forward", payload)
+        if res is not None:
+            prob = _to_prob(res)
+            if verbose: print(f"[finrl-debug] forward -> {prob}")
+            if prob is not None: return prob
+        try:
+            call_res = finrl_model(payload)
+            prob = _to_prob(call_res)
+            if verbose: print(f"[finrl-debug] __call__ -> {prob}")
+            if prob is not None: return prob
+        except Exception:
+            pass
+    for m in ("decision_function","score"):
+        res = _try_call(m, [fv])
+        if res is not None:
+            prob = _to_prob(res)
+            if verbose: print(f"[finrl-debug] {m} -> {prob}")
+            if prob is not None: return prob
+    for attr in ("policy_output","last_action","last_logits"):
+        try:
+            val = getattr(finrl_model, attr, None)
+            prob = _to_prob(val)
+            if prob is not None:
+                if verbose: print(f"[finrl-debug] attr {attr} -> {prob}")
+                return prob
+        except Exception:
+            pass
+    if verbose:
+        print(f"[finrl-debug] no usable FinRL method found on {type(finrl_model).__name__}")
+    return None
+
+def get_confidences(plan: dict,
+                    primary_model: Optional[Any],
+                    finrl_model: Optional[Any],
+                    primary_features: List[str],
+                    csv_price_dirs: List[str],
+                    verbose: bool=False) -> Tuple[float, float]:
+    sym = _extract_symbol_from_plan(plan, verbose=verbose)
+    fv = None
+    last_ts_iso = ""
+    if primary_model is not None and sym != "UNKNOWN":
+        built = build_feature_vector_from_csv(sym, csv_price_dirs, primary_features, verbose=verbose)
+        if built is not None:
+            fv, last_ts_iso = built
+
+    # persist bar ts on the plan (typed I/O only) if found
+    try:
+        if last_ts_iso:
+            # do not override an existing upstream timestamp
+            if not plan.get("_bar_ts_iso"):
+                plan["_bar_ts_iso"] = last_ts_iso
+    except Exception:
+        pass
+
+    primary_conf = heuristic_confidence_from_score(plan)
+    if primary_model is not None and fv is not None:
+        try:
+            if hasattr(primary_model,"predict_proba"):
+                prob = primary_model.predict_proba([fv])
+                primary_conf = float(max(prob[0])) if len(prob[0]) else primary_conf
+            elif hasattr(primary_model,"predict_confidence"):
+                primary_conf = float(primary_model.predict_confidence([fv])[0])
+            elif hasattr(primary_model,"predict"):
+                p = primary_model.predict([fv])
+                try:
+                    val = float(p[0]); primary_conf = max(0.0,min(1.0,val))
+                except Exception: pass
+        except Exception:
+            if verbose: print("primary model error:", traceback.format_exc())
+
+    finrl_conf = heuristic_confidence_from_score(plan)
+    if finrl_model is not None and sym != "UNKNOWN":
+        try:
+            if fv is None:
+                built = build_feature_vector_from_csv(sym, csv_price_dirs, primary_features, verbose=verbose)
+                if built is not None:
+                    fv, last_ts_iso2 = built
+                    # stash timestamp if not already present
+                    try:
+                        if last_ts_iso2 and not plan.get("_bar_ts_iso"):
+                            plan["_bar_ts_iso"] = last_ts_iso2
+                    except Exception:
+                        pass
+            prob = _finrl_infer_conf(finrl_model, fv or [], verbose=verbose)
+            if prob is not None:
+                finrl_conf = float(prob)
+        except Exception:
+            if verbose: print("finrl model error:", traceback.format_exc())
+        finrl_conf = max(0.0, min(1.0, finrl_conf))
+
+    return max(0.0, min(1.0, primary_conf)), max(0.0, min(1.0, finrl_conf))
+
+def decide_and_execute(plan: dict,
+                       primary_model: Optional[Any],
+                       finrl_model: Optional[Any],
+                       primary_features: List[str],
+                       csv_price_dirs: List[str],
+                       primary_thresh: Optional[float],
+                       finrl_thresh: Optional[float],
+                       grey_zone: float,
+                       verbose: bool=False) -> Tuple[str, Optional[float], Optional[str]]:
+    primary_conf, finrl_conf = get_confidences(
+        plan, primary_model, finrl_model, primary_features, csv_price_dirs, verbose=verbose
+    )
+    sym_local = _extract_symbol_from_plan(plan, verbose=False)
+
+    # ----- Patch: let config take precedence when CLI flags are omitted -----
+    p_cli_default = None if primary_thresh is None else float(primary_thresh)
+    f_cli_default = None if finrl_thresh  is None else float(finrl_thresh)
+
+    p_thresh = (float(primary_thresh)
+                if primary_thresh is not None
+                else float(get_threshold_for(sym_local, "primary_thresh", cli_default=None, default=0.58)))
+    f_thresh = (float(finrl_thresh)
+                if finrl_thresh is not None
+                else float(get_threshold_for(sym_local, "finrl_thresh",  cli_default=None, default=0.65)))
+
+    if verbose:
+        print(f"[thresh] {sym_local}: resolved p={p_thresh:.3f} (cli={'set' if p_cli_default is not None else 'None'}), "
+              f"f={f_thresh:.3f} (cli={'set' if f_cli_default is not None else 'None'})")
+        print(f"decide: primary_conf={primary_conf:.3f}, finrl_conf={finrl_conf:.3f}, p_thresh={p_thresh:.3f}, f_thresh={f_thresh:.3f}, grey={grey_zone:.3f}")
+
+    # Primary wins first
+    if primary_conf >= p_thresh:
+        return "EXECUTE_PRIMARY", 1.0, f"primary_conf={primary_conf:.3f} >= p_thresh={p_thresh:.3f}"
+
+    # Grey-zone gate for FinRL fallback (allow only if primary is close to p_thresh)
+    GREY = float(grey_zone)  # e.g., if p_thresh=0.60 and GREY=0.05, allow FinRL if primary >= 0.55
+    if finrl_conf >= f_thresh and primary_conf >= (p_thresh - GREY):
+        return "EXECUTE_FINRL_FALLBACK", SIZE_REDUCTION_FACTOR, (
+            f"finrl_conf={finrl_conf:.3f} >= f_thresh={f_thresh:.3f} "
+            f"and primary near gate ({primary_conf:.3f} >= {p_thresh-GREY:.3f})"
+        )
+
+    return "SKIPPED_LOW_CONF", None, f"primary_conf={primary_conf:.3f}, finrl_conf={finrl_conf:.3f}"
+
+# ------------------------- Executions CSV I/O -------------------------
+EXEC_FIELDS = ["ts","mode","symbol","tf","side","price","size","sl","tp","sl_type","status","order_id","plan_file"]
+
+def read_existing_open_counts(exec_path: str) -> dict:
+    counts={}
+    if not os.path.exists(exec_path): return counts
+    try:
+        with open(exec_path,"r",encoding="utf-8",newline="") as f:
+            reader=csv.DictReader(f)
+            for row in reader:
+                if (row.get("status") or "").upper()=="OPEN":
+                    sym=(row.get("symbol") or "").upper()
+                    counts[sym]=counts.get(sym,0)+1
+    except Exception: pass
+    return counts
+
+def ensure_exec_header(exec_path: str):
+    exists = os.path.exists(exec_path)
+    if not exists or os.path.getsize(exec_path)==0:
+        os.makedirs(os.path.dirname(exec_path), exist_ok=True)
+        with open(exec_path,"w",encoding="utf-8",newline="") as f:
+            writer=csv.DictWriter(f, fieldnames=EXEC_FIELDS); writer.writeheader()
+
+def append_execution(exec_path: str, row: dict):
+    ensure_exec_header(exec_path)
+    with open(exec_path,"a",encoding="utf-8",newline="") as f:
+        writer=csv.DictWriter(f, fieldnames=EXEC_FIELDS); writer.writerow(row)
+
+# --- lightweight cross-platform lockfile context manager ---
+@contextlib.contextmanager
+def _csv_lock(path: str, timeout: float = 5.0, poll: float = 0.02):
+    """
+    Acquire a simple lock by creating `path + ".lock"` using O_CREAT|O_EXCL.
+    Falls back to waiting up to `timeout` seconds.
+    """
+    lock = path + ".lock"
+    start = time.time()
+    fd = None
+    while True:
+        try:
+            # atomic create
+            fd = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            # write pid for debugging
+            try:
+                os.write(fd, str(os.getpid()).encode("utf-8"))
+            except Exception:
+                pass
+            break
+        except FileExistsError:
+            if (time.time() - start) > timeout:
+                # give up (avoid infinite spin) — caller may retry or fail
+                raise TimeoutError(f"Could not acquire CSV lock for {path} (timeout={timeout}s)")
+            time.sleep(poll)
+        except Exception:
+            # generic failure to create lock; avoid blocking
+            raise
+    try:
+        yield
+    finally:
+        try:
+            if fd is not None:
+                try: os.close(fd)
+                except Exception: pass
+            try: os.remove(lock)
+            except Exception: pass
+
+# ---- NEW: stable plan ordering + idempotent append choke -------------------
+def _stable_sort_plans(plans: List[dict]) -> List[dict]:
+    def _key(p):
+        c = p.get("candidate") or {}
+        sym = (p.get("symbol") or c.get("symbol") or "ZZZ").upper()
+        tf  = (p.get("tf") or p.get("timeframe") or c.get("tf") or c.get("timeframe") or "UNK").upper()
+        return (sym, tf)
+    try:
+        return sorted(plans, key=_key)
+    except Exception:
+        return plans
+
+def _exists_in_csv(exec_path: str, row: dict) -> bool:
+    """
+    Idempotency: treat rows with same (symbol, tf, side) and price within tolerance as duplicates.
+    tolerant to string/float formats and minor re-quote differences.
+    """
+    if not os.path.exists(exec_path) or os.path.getsize(exec_path) == 0:
+        return False
+
+    def _norm_key(d: dict):
+        return (
+            (d.get("symbol","") or "").upper(),
+            (d.get("tf","") or "").upper(),
+            (d.get("side","") or "").lower(),
+        )
+    def _to_float(x):
+        try: return float(x)
+        except Exception:
+            try: return float(str(x or "0").strip())
+            except Exception: return 0.0
+
+    want_key = _norm_key(row)
+    want_px = _to_float(row.get("price"))
+    TOL = 1e-5  # acceptable price tolerance
+
+    try:
+        with open(exec_path, "r", encoding="utf-8", newline="") as f:
+            rdr = csv.DictReader(f)
+            for r in rdr:
+                if (r.get("status","").upper() != "OPEN"):
+                    continue
+                if _norm_key(r) != want_key:
+                    continue
+                existing_px = _to_float(r.get("price"))
+                if abs(existing_px - want_px) <= TOL:
+                    return True
+    except Exception:
+        # on any read error, be conservative and return False (allow)
+        return False
+    return False
+
+def append_execution_safe(exec_path: str, row: dict, *, dry_run: bool):
+    # Single choke point for all writes
+    if dry_run:
+        return  # never touch disk in dry-run
+
+    # 1) Normalize time: prefer upstream 'timestamp' or 'ts', else fallback to now_utc_iso()
+    ts = row.get("timestamp") or row.get("ts") or now_utc_iso()
+    row["timestamp"] = ts
+    row["ts"] = row.get("ts") or ts
+
+    # 2) Normalize price precision (helps duplicate detection)
+    try:
+        row["price"] = f"{float(row['price']):.8f}"
+    except Exception:
+        pass
+
+    # 3) Ensure header exists and atomically avoid duplicates with lock
+    ensure_exec_header(exec_path)
+    try:
+        with _csv_lock(exec_path, timeout=5.0):
+            if _exists_in_csv(exec_path, row):
+                return
+            # 4) Deterministic, schema-only write
+            clean = {k: row.get(k, "") for k in EXEC_FIELDS}
+            append_execution(exec_path, clean)
+    except TimeoutError:
+        # if lock could not be acquired, fallback to best-effort write (avoid silent loss)
+        # attempt one last time without lock but re-check duplicate
+        if _exists_in_csv(exec_path, row):
+            return
+        clean = {k: row.get(k, "") for k in EXEC_FIELDS}
+        append_execution(exec_path, clean)
+
+def _normalize_agg_rows(rows: list[dict]) -> list[dict]:
+    """Drop volatile fields and sort deterministically."""
+    keep = ("symbol","tf","side","price","size","sl","tp","sl_type","status","plan_file")
+    out: list[dict] = []
+    for r in (rows or []):
+        try:
+            clean = {k: r.get(k) for k in keep}
+            if "decision_reason" in r:
+                clean["decision_reason"] = r["decision_reason"]
+            out.append(clean)
+        except Exception:
+            continue
+    out.sort(key=lambda x: (str(x.get("symbol","")), str(x.get("tf","")), str(x.get("side",""))))
+    return out
+
+def write_aggregate_safe(path: str, payload: dict, *, dry_run: bool):
+    """Deterministic aggregate in dry_run; normal write otherwise."""
+    if not path or not payload:
+        return
+    obj = payload
+    if dry_run:
+        if isinstance(payload, dict) and isinstance(payload.get("orders"), list):
+            obj = {"opened": int(payload.get("opened", 0)),
+                   "orders": _normalize_agg_rows(payload["orders"])}
+        elif isinstance(payload, list):
+            obj = _normalize_agg_rows(payload)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(obj, f, sort_keys=True, ensure_ascii=True, separators=(",", ":"))
+
+def main():
+    global _STRICT_META, _EXPECT_TF
+    ap = argparse.ArgumentParser(description="Executor v6.7")
+    src = ap.add_mutually_exclusive_group(required=True)
+    src.add_argument("--approved", help="approved.json (portfolio gate output)")
+    src.add_argument("--plans", help="folder containing *_plan_*.json")
+
+    ap.add_argument("--executions", required=True, help="executions CSV path to append")
+    ap.add_argument("--aggregate", default=None, help="aggregate summary JSON (optional)")
+    ap.add_argument("--max_position", type=int, default=1, help="max OPEN positions per symbol")
+    ap.add_argument("--universe", default=None, help="forex | crypto | fx+crypto (optional filter)")
+
+    ap.add_argument("--csv_price_dir", action="append", default=[], help="CSV price root (repeatable)")
+    ap.add_argument("--require_csv_price", action="store_true", help="skip order if no CSV price found")
+    ap.add_argument("--mode", choices=["paper","live"], default="paper")
+
+    ap.add_argument("--exclude", action="append", default=[], help="Symbol to skip (repeatable)")
+    ap.add_argument("--primary_thresh", type=float, default=None, help="primary confidence threshold (0..1)")
+    ap.add_argument("--finrl_thresh", type=float, default=None, help="finrl confidence threshold (0..1)")
+
+    ap.add_argument("--model_primary_path", default="models/primary.joblib", help="path to primary model payload/joblib")
+    ap.add_argument("--model_finrl_path", default=None, help="path to finrl model joblib OR directory for auto-pick")
+    ap.add_argument("--dry_run", action="store_true", help="do not write to executions CSV; only print")
+    ap.add_argument("--verbose", action="store_true", help="verbose logging")
+
+    # Guards
+    ap.add_argument("--strict_meta", action="store_true", help="Fail if model metadata and live features don't match.")
+    ap.add_argument("--expect_timeframe", default="", help="Require timeframe in model metadata (e.g., M15).")
+
+    # Broker clamp
+    ap.add_argument("--broker_min_lot", type=float, default=0.01, help="Broker minimum lot size")
+    ap.add_argument("--broker_lot_step", type=float, default=0.01, help="Broker lot step/increment")
+    ap.add_argument("--decision_min_size", type=float, default=0.01, help="Decision minimum size floor")
+
+    # Extra switches
+    ap.add_argument("--disable_finrl", action="store_true", help="Skip all FinRL checks and fallbacks")
+    ap.add_argument("--grey_zone", type=float, default=0.05, help="Primary score band for FinRL fallback (default 0.05)")
+    ap.add_argument("--allow_symbols", nargs="*", default=[], help="If provided, restrict trading strictly to these symbols")
+
+    args = ap.parse_args()
+    _STRICT_META = bool(args.strict_meta)
+    _EXPECT_TF = str(args.expect_timeframe or "").strip()
+
+    exclude_set = {normalize_symbol(s).upper() for s in (args.exclude or []) if s}
+    allow_set   = {normalize_symbol(s).upper() for s in (args.allow_symbols or []) if s}
+
+    primary_model, primary_features = _load_model_and_features(args.model_primary_path, verbose=args.verbose)
+    if args.verbose and primary_model is None:
+        print("No primary model loaded — heuristic fallback will be used.")
+    finrl_model, _ = _load_model_and_features(args.model_finrl_path, verbose=args.verbose) if args.model_finrl_path else (None, TRAIN_FEATURES_DEFAULT)
+    if finrl_model is None and args.verbose:
+        print("No finrl model preloaded — will use per-symbol auto-pick if a folder was provided, else heuristic fallback.")
+    # If a single model path (not a directory) was provided, wrap it now (unless disabled)
+    if (not args.disable_finrl) and finrl_model is not None and not os.path.isdir(str(args.model_finrl_path or "")):
+        finrl_model = _wrap_generic(finrl_model)
+
+    # Sidecar-driven info (consistent banner)
+    meta_info = {}
+    try: meta_info = load_sidecar_meta(args.model_primary_path)
+    except Exception: meta_info = {}
+    try:
+        expected = meta_info.get("feature_names") or primary_features
+        exp_hash = feature_list_hash(expected)
+    except Exception:
+        expected = primary_features
+        exp_hash = feature_list_hash(expected)
+
+    print("=== Model Info ===")
+    print(f"  name: {os.path.splitext(os.path.basename(args.model_primary_path))[0]}")
+    print(f"  version: {meta_info.get('version','n/a')}")
+    print(f"  timeframe: {meta_info.get('timeframe','n/a')}")
+    print(f"  features: {len(expected)}  order_hash={exp_hash}")
+
+    primary_features = list(expected)
+
+    if _EXPECT_TF:
+        tfm = PRIMARY_META.get("timeframe") or PRIMARY_META.get("tf") or PRIMARY_META.get("tf_filter")
+        if not tfm or _EXPECT_TF.lower() not in str(tfm).lower():
+            msg = f"model timeframe '{tfm}' does not satisfy --expect_timeframe '{_EXPECT_TF}'"
+            if _STRICT_META: raise SystemExit(f"[meta] ERROR: {msg}")
+            else: print(f"[meta] warn: {msg}")
+
+    if args.verbose:
+        dummy = {"decision":{"final_score":-1.0}, "candidate":{"atr":0.01}, "_plan_path":"EURUSD_M15_plan_x.json"}
+        try:
+            pc, fc = get_confidences(dummy, primary_model, None if args.disable_finrl else finrl_model, primary_features, args.csv_price_dir, verbose=args.verbose)
+            print(f"[model sanity] primary_conf={pc:.3f}, finrl_conf={fc:.3f}")
+        except Exception:
+            print("[model sanity] error computing confidences:", traceback.format_exc())
+
+    # Load plans
+    plans: List[dict]=[]
+    def _load_one(path: str, tag: str):
+        try:
+            with open(path,"r",encoding="utf-8-sig") as f:
+                data=json.load(f)
+            if isinstance(data,list):
+                for d in data:
+                    if isinstance(d,dict):
+                        d["_plan_path"]=path; plans.append(d)
+            elif isinstance(data,dict):
+                data["_plan_path"]=path; plans.append(data)
+        except Exception:
+            pass
+
+    if args.approved:
+        try:
+            with open(args.approved,"r",encoding="utf-8-sig") as f:
+                obj=json.load(f)
+            if isinstance(obj,dict) and "approved" in obj: obj=obj["approved"]
+            if isinstance(obj,list) and obj and all(isinstance(x,str) for x in obj):
+                for p in obj:
+                    if os.path.isdir(p):
+                        for path in sorted(glob.glob(os.path.join(p,"*_plan_*.json"))):
+                            _load_one(path,"dir")
+                    elif os.path.isfile(p):
+                        _load_one(p,"file")
+            elif isinstance(obj,list) and obj and isinstance(obj[0],dict):
+                for d in obj:
+                    if isinstance(d,dict):
+                        d["_plan_path"]=args.approved; plans.append(d)
+            elif isinstance(obj,dict):
+                obj["_plan_path"]=args.approved; plans.append(obj)
+            else:
+                _load_one(args.approved,"fallback")
+        except Exception as e:
+            print(f"Failed to load approved: {e}"); plans=[]
+    else:
+        folder = args.plans or ""
+        for p in sorted(glob.glob(os.path.join(folder,"*_plan_*.json"))):
+            _load_one(p,"plans")
+
+    plans = _stable_sort_plans(plans)
+
+    if not plans:
+        print(f"Executed (opened): 0 (dry_run={args.dry_run})")
+        return 0
+
+    if not args.dry_run: ensure_exec_header(args.executions)
+    open_counts = read_existing_open_counts(args.executions) if (not args.dry_run) else {}
+
+    # --- ADD: collect rows deterministically for artifacts (dry_run and aggregate) ---
+    rows_out: List[dict] = []
+
+    # --- NEW: stable plan order for determinism ---
+    plans = _stable_sort_plans(plans)
+
+    opened=0
+    rcfg_for_patch={}
+    simple_price_dir = args.csv_price_dir[0] if args.csv_price_dir else None
+    agg_rows: list[dict] = []
+
+    for plan in plans:
+        if not isinstance(plan,dict): continue
+        cand = plan.get("candidate", {}) if isinstance(plan.get("candidate"), dict) else {}
+        sym  = _extract_symbol_from_plan(plan, verbose=args.verbose)
+        if not plan.get("symbol"): plan["symbol"]=sym
+        tf   = plan.get("tf") or plan.get("timeframe") or cand.get("tf") or cand.get("timeframe") or "UNK"
+        side = _infer_side(plan); plan["side"]=side
+
+        if sym in exclude_set:
+            if args.verbose: print(f"SKIP {sym}: excluded."); continue
+        if args.allow_symbols and sym not in allow_set:
+            if args.verbose: print(f"SKIP {sym}: not in allowlist {sorted(allow_set)}."); continue
+        if not in_universe(sym, args.universe):
+            if args.verbose: print(f"SKIP {sym}: not in universe {args.universe}."); continue
+
+        cur_open = open_counts.get(sym,0)
+        max_pos  = int(get_threshold_for(sym, "max_position", cli_default=args.max_position))
+        if cur_open >= max(1, max_pos):
+            if args.verbose: print(f"SKIP {sym}: at cap ({cur_open} >= {max_pos})."); continue
+
+        price = _safe_float(plan.get("price"),0.0)
+        used_path=None
+        if price<=0.0 and args.csv_price_dir:
+            px, pth = resolve_price_from_dirs(sym, args.csv_price_dir, verbose=args.verbose)
+            if px is not None and px>0: plan["price"]=px; price=px; used_path=pth
+        csv_hint = cand.get("csv_path")
+        if price<=0.0 and csv_hint and os.path.isfile(csv_hint):
+            px=_read_last_close_any(csv_hint)
+            if px is not None and px>0: plan["price"]=px; price=px; used_path=csv_hint
+        if price<=0.0 and simple_price_dir:
+            plan = ensure_price_and_size(plan, rcfg_for_patch, simple_price_dir)
+            price = _safe_float(plan.get("price"),0.0)
+        if price<=0.0 and args.csv_price_dir:
+            px = _super_last_price_guess(sym, args.csv_price_dir)
+            if px is not None and px>0:
+                plan["price"]=px; price=px
+                if args.verbose: print(f"[price-last] {sym}: FOUND value={px}")
+
+        if args.require_csv_price and (price is None or price==0):
+            if args.verbose: print(f"SKIP {sym}: require_csv_price True but no CSV price found.")
+            continue
+
+        price = float(price or 0.0)
+
+        size_plan = float(plan.get("size") or plan.get("decision", {}).get("size") or 0.0)
+        sl, tp = plan.get("sl"), plan.get("tp")
+        sltype = plan.get("sl_type") or plan.get("decision", {}).get("sl_type") or "none"
+
+        if side in {"buy","sell"} and size_plan<=0 and price>0.0:
+            atr_hint = plan.get("atr")
+            if atr_hint is None:
+                cand_atr = cand.get("atr") or cand.get("atr14")
+                atr_hint = cand_atr if isinstance(cand_atr,(int,float,str)) else None
+            try: atr_val=float(atr_hint) if atr_hint is not None else 0.0
+            except Exception: atr_val=0.0
+            size_plan=_fallback_size_from_price_atr(price=price, atr=atr_val,
+                                                    risk_per_trade=0.01, equity=10000.0,
+                                                    stop_atr_mult=1.5, sl_pct=0.01,
+                                                    min_size=0.001, max_size=0.05)
+
+        if size_plan>0:
+            size_plan = _lot_clamp(size_plan, min_lot=args.broker_min_lot, lot_step=args.broker_lot_step, min_size_cfg=args.decision_min_size)
+
+        if side not in {"buy","sell"} or size_plan<=0:
+            if args.verbose: print(f"SKIP {sym}: invalid side/size (side={side}, size={size_plan}).")
+            continue
+
+        finrl_model_eff = None if args.disable_finrl else finrl_model
+        if (not args.disable_finrl) and args.model_finrl_path and os.path.isdir(args.model_finrl_path):
+            picked = _try_finrl_for_symbol(sym, str(tf).upper(), args.model_finrl_path)
+            if picked is None: picked = _try_finrl_for_symbol(sym, str(tf).lower(), args.model_finrl_path)
+            if picked is not None:
+                finrl_model_eff = picked
+                if args.verbose: print(f"[finrl] {sym} {tf}: using per-symbol FinRL model from '{args.model_finrl_path}'")
+
+        decision, size_factor, reason = decide_and_execute(
+            plan, primary_model, finrl_model_eff, primary_features, args.csv_price_dir,
+            args.primary_thresh, args.finrl_thresh, args.grey_zone, verbose=args.verbose
+        )
+        if decision.startswith("SKIPPED"):
+            if args.verbose: print(f"SKIP {sym}: {reason}")
+            continue
+
+        final_size = _lot_clamp(size_plan*(size_factor or 1.0),
+                                min_lot=args.broker_min_lot, lot_step=args.broker_lot_step, min_size_cfg=args.decision_min_size)
+
+        order_id = f"{sym}-{int(time.time()*1000)}"
+        row = {
+            "ts": "", "mode": args.mode, "symbol": sym, "tf": tf, "side": side,
+            "price": f"{price:.8f}", "size": f"{final_size:.8f}",
+            "sl": "" if sl is None else f"{float(sl):.8f}",
+            "tp": "" if tp is None else f"{float(tp):.8f}",
+            "sl_type": sltype, "status": "OPEN", "order_id": order_id,
+            "plan_file": plan.get("_plan_path") or (args.approved or args.plans),
+        }
+
+        # prefer plan-stashed bar ts if present (zero-I/O)
+        if plan.get("_bar_ts_iso"):
+            row["timestamp"] = plan.get("_bar_ts_iso")
+
+        agg_rows.append(row.copy())
+        # --- keep a copy for artifact writers (dry-run safe) ---
+        rows_out.append(row.copy())
+
+        # idempotency: short-circuit early (avoid extra file I/O)
+        if _exists_in_csv(args.executions, row):
+            if args.verbose: print(f"[idempotent-skip] {sym} {tf} {side} @ {row.get('price')}")
+            continue
+
+        if args.dry_run:
+            decision_ts = row.get("timestamp") or row.get("ts") or (plan.get("_bar_ts_iso") or "")
+            ts_src = ("decision_ctx.bar_ts_iso" if plan.get("_bar_ts_iso")
+                      else "row.ts" if row.get("ts")
+                      else "missing")
+            if args.verbose: print(f"[ts] src={ts_src} ts={decision_ts}")
+            if (os.environ.get("STRICT_NO_CSV_TS","0") == "1") and (ts_src == "missing"):
+                raise SystemExit("[FAIL:Execution Reflex Engine] timestamp fell back to csv_resolver with STRICT_NO_CSV_TS=1")
+            print(f"[DRY OPEN] {sym} {tf} {side} price={price:.6f} size={final_size:.6f}  -> {decision}: {reason}")
+            exec_row = {
+                "timestamp": (decision_ts or ""),
+                "symbol":       sym,
+                "side":         side,
+                "size":         final_size,
+                "price":        row.get("price"),
+                "primary_conf": locals().get("primary_conf"),
+                "finrl_conf":   locals().get("finrl_conf"),
+                "source":       "execution_reflex",
+            }
+            _require_exec_timestamp(exec_row)
+            opened += 1
+            open_counts[sym] = open_counts.get(sym,0)+1
+            continue
+
+        # ---- single choke for writes (idempotent + locked) ----
+        append_execution_safe(args.executions, row, dry_run=args.dry_run)
+        opened += 1
+        open_counts[sym] = open_counts.get(sym,0)+1
+        if used_path:
+            print(f"[OPEN] {sym} {tf} {side} price={price:.6f} size={final_size:.6f} (csv={used_path})  -> {decision}: {reason}")
+        else:
+            print(f"[OPEN] {sym} {tf} {side} price={price:.6f} size={final_size:.6f}  -> {decision}: {reason}")
+
+    # NOTE: Idempotency guard — do NOT write executions in dry_run unless explicitly allowed
+    if args.dry_run and DRY_WRITE_ALLOWED and args.executions and rows_out:
+        try:
+            ensure_exec_header(args.executions)
+            for r in rows_out:
+                # ensure both legacy 'ts' and guard 'timestamp' are present before append
+                r["timestamp"] = (r.get("timestamp") or r.get("ts") or now_utc_iso())
+                if not r["timestamp"]:
+                    raise SystemExit("[FAIL:Execution Reflex Engine] missing timestamp (pre-write batch)")
+                r["ts"] = r.get("ts") or r["timestamp"]
+                # normalize price string
+                try: r["price"] = f"{float(r['price']):.8f}"
+                except Exception: pass
+                # strict schema
+                clean = {k: r.get(k, "") for k in EXEC_FIELDS}
+                append_execution_safe(args.executions, clean, dry_run=args.dry_run)
+            if args.verbose:
+                print(f"[artifact] wrote executions -> {args.executions} (dry_run)")
+        except Exception as e:
+            print(f"[warn] could not write executions file: {e}")
+    if args.aggregate:
+        write_aggregate_safe(args.aggregate, {"opened": opened, "orders": agg_rows}, dry_run=args.dry_run)
+        print(f"[artifact] wrote aggregate -> {args.aggregate}")
+    print(f"Executed (opened): {opened} (dry_run={args.dry_run})")
+    return 0
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,19 @@
+name: Block >50MB blobs
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Scan big files
+        run: |
+          git rev-list --objects --since='3 months ago' | \
+          awk '{print $1}' | xargs -r -n1 git cat-file -s 2>/dev/null | \
+          awk '{s+=$1} END { if (s>0) print "ok"}' >/dev/null
+          git rev-list --objects HEAD | while read sha path; do
+            size=$(git cat-file -s "$sha" 2>/dev/null || echo 0)
+            if [ "$size" -gt $((50*1024*1024)) ]; then
+              echo "::error::Blocked: $path is >50MB ($size bytes)"; exit 1
+            fi
+          done

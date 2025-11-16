@@ -3,11 +3,18 @@
 Executor v6.7 — CSV-feature builder, robust symbol extraction, universe filter,
 model metadata guard, dry-run, strong price/size backfill + side inference.
 
-Includes:
-- stale-bar guard (skip plans with old last-bar timestamps)
-- safer csv lock (age-based stale cleanup)
-- tolerant idempotency + price tolerance
-- strict schema-only execution writes
+What's included:
+- Per-symbol/config-aware thresholds via tools.utils.get_threshold_for.
+- **Option A** applied: CLI flags (primary_thresh / finrl_thresh) OVERRIDE per-symbol config.
+- FinRL deep unwrap + generic adapter (predict_proba/decision_function/predict...).
+- LightGBM Booster special-case: disable shape check + auto feature-length alignment.
+- Grey-zone gate: FinRL fallback only if primary is near its threshold.
+- Reduced FinRL fallback size factor for extra caution.
+
+Extra flags (flow preserved):
+- --disable_finrl  (mute FinRL globally)
+- --grey_zone      (default 0.05; replaces hardcoded GREY=0.20)
+- --allow_symbols  (restrict universe to a given allowlist)
 """
 
 from __future__ import annotations
@@ -24,7 +31,6 @@ import traceback
 from datetime import datetime, timezone, timedelta
 from typing import Any, Dict, List, Optional, Tuple
 import hashlib
-import contextlib
 
 try:
     import joblib
@@ -43,7 +49,6 @@ except Exception:
 # --- repo path shim so "src/..." works when running from tools/ ---
 import os as _os_sys, sys
 REPO_ROOT = _os_sys.path.abspath(_os_sys.path.join(_os_sys.path.dirname(__file__), ".."))
-from zero_price_guard import guard as zero_guard
 if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
 
@@ -80,14 +85,6 @@ except Exception:
         if not _loaded:
             raise ModuleNotFoundError("Could not import align_features_for_lgb from tools.utils or utils")
 
-# === ZERO-PRICE GUARD IMPORT (idempotent insertion) ===
-# This import expects zero_price_guard.py at repo root (or on PYTHONPATH)
-try:
-    from zero_price_guard import guard as zero_guard
-except Exception:
-    # fallback: define a no-op guard (in case file missing) to avoid runtime crashes
-    def zero_guard(order, logger, artifact_orders):
-        return True
 # ======== Model metadata helpers & globals ========
 PRIMARY_META: dict = {}
 _STRICT_META: bool = False
@@ -108,118 +105,22 @@ def _feature_list_hash(names) -> Optional[str]:
     h.update(("\n".join([str(x) for x in names])).encode("utf-8"))
     return f"sha256:{h.hexdigest()}"
 
-# ===== Robust model loader & save helper (permanent fix) =====
 def load_model_and_meta(model_path: str):
-    """
-    Robust loader: accepts
-      - joblib file that contains raw model object
-      - joblib file that is a dict {'model':..., 'meta':...}
-      - object with .meta / .metadata attributes
-      - sidecar json files: <path>.meta.json or <path>.joblib.meta.json
-    Returns (model_obj_or_raw, meta_dict)
-    Ensures model object gets a 'timeframe' attribute when meta provides it (best-effort).
-    """
     if joblib is None:
         return None, {}
-    if not model_path or not os.path.exists(model_path):
-        return None, {}
-    try:
-        raw = joblib.load(model_path)
-    except Exception as e:
-        print(f"[meta] warn: failed joblib.load('{model_path}'): {e}")
-        return None, {}
-
-    meta = None
-    model = raw
-
-    # If the joblib contained a dict wrapper, prefer the common keys.
-    if isinstance(raw, dict):
-        meta = raw.get("meta") or raw.get("metadata") or {}
-        model = raw.get("model") or raw.get("estimator") or raw.get("net") or raw.get("policy") or raw
-    else:
-        # object may carry meta info as attributes
+    obj = joblib.load(model_path)
+    model = obj.get("model") if isinstance(obj, dict) and "model" in obj else obj
+    embedded_meta = obj.get("meta") if isinstance(obj, dict) and "meta" in obj else None
+    sidecar_path = _meta_path_for_model(model_path)
+    sidecar_meta = None
+    if os.path.exists(sidecar_path):
         try:
-            meta = getattr(raw, "meta", None) or getattr(raw, "metadata", None)
-        except Exception:
-            meta = None
-
-    # Sidecar metadata fallback (try several conventions)
-    cand_files = [
-        model_path + ".meta.json",
-        model_path + ".joblib.meta.json",
-        model_path + ".metadata.json",
-        os.path.splitext(model_path)[0] + ".meta.json",
-    ]
-    for cand in cand_files:
-        try:
-            if os.path.exists(cand):
-                with open(cand, "r", encoding="utf-8") as fh:
-                    meta_from_file = json.load(fh)
-                if not meta:
-                    meta = meta_from_file
-                break
-        except Exception:
-            continue
-
-    meta = meta or {}
-    # Normalize timeframe: prefer model attribute, then meta keys.
-    tf = None
-    try:
-        tf = getattr(model, "timeframe", None)
-    except Exception:
-        tf = None
-    if not tf:
-        tf = meta.get("timeframe") or meta.get("tf") or meta.get("timeframe_iso")
-    # Best-effort: set attribute on model if possible so downstream code expects it.
-    if tf and model is not None:
-        try:
-            if not getattr(model, "timeframe", None):
-                setattr(model, "timeframe", tf)
-        except Exception:
-            # model may be a dict or frozen object; ignore
-            pass
-
-    return model, meta
-
-def save_model_consistent(path: str, model_obj: Any, meta: dict):
-    """
-    Save model consistently:
-      - prefer to dump the model object (joblib.dump(model_obj, path))
-      - always write a sidecar meta file path + '.joblib.meta.json'
-      - attempt to set .timeframe and .meta attributes on model_obj if possible
-    """
-    try:
-        if meta and isinstance(meta, dict):
-            if meta.get("timeframe"):
-                try:
-                    if not getattr(model_obj, "timeframe", None):
-                        setattr(model_obj, "timeframe", meta.get("timeframe"))
-                except Exception:
-                    pass
-            try:
-                if not getattr(model_obj, "meta", None):
-                    setattr(model_obj, "meta", meta)
-            except Exception:
-                pass
-    except Exception:
-        pass
-
-    try:
-        joblib.dump(model_obj, path)
-    except Exception:
-        # fallback: try saving a dict wrapper
-        try:
-            joblib.dump({"model": model_obj, "meta": meta or {}}, path)
+            with open(sidecar_path, "r", encoding="utf-8") as f:
+                sidecar_meta = json.load(f)
         except Exception as e:
-            raise RuntimeError(f"Failed saving model to {path}: {e}")
-    # write sidecar meta
-    try:
-        side = path + ".joblib.meta.json"
-        with open(side, "w", encoding="utf-8") as fh:
-            json.dump(meta or {}, fh)
-    except Exception:
-        pass
-# ===== end robust loader & save helper =====
+            print(f"[meta] warn: failed reading sidecar '{sidecar_path}': {e}")
+    meta = sidecar_meta or embedded_meta or {}
+    return model, meta
 
 def print_model_banner(meta: dict, live_feat_names=None):
     global _BANNER_PRINTED
@@ -731,63 +632,6 @@ def _super_last_price_guess(sym: str, csv_dirs: List[str]) -> Optional[float]:
 
 # ------------------------- Plan filename → symbol fallback -------------------------
 import re as _re_path
-
-# === [TIMESTAMP GUARD HELPER] ===
-def _require_exec_timestamp(exec_row):
-    """Fail-safe: ensure executions carry an ISO-UTC timestamp."""
-    try:
-        ts = exec_row.get("timestamp") if isinstance(exec_row, dict) else None
-        if not ts:
-            try:
-                logger_append({"stage":"execution_reflex","error":"missing timestamp"})
-            except Exception:
-                pass
-            raise SystemExit("[FAIL:Execution Reflex Engine] missing timestamp")
-    except Exception as _e:
-        try:
-            logger_append({"stage":"execution_reflex","error":str(_e)})
-        except Exception:
-            pass
-        raise
-# === [END TIMESTAMP GUARD HELPER] ===
-
-
-# === [DECISION TS RESOLVER] ===
-_resolve_last_ts_cache = {}
-
-def _resolve_last_ts(sym, used_path):
-    """
-    Deterministic, cached: return ISO-UTC timestamp (last bar) for symbol.
-    Cache key = file path; no global I/O beyond first lookup per path.
-    """
-    try:
-        key = str(used_path)
-        if key in _resolve_last_ts_cache:
-            return _resolve_last_ts_cache[key]
-        # Fast, robust read with pandas; handle BOM
-        import pandas as _pd
-        try:
-            df = _pd.read_csv(used_path, encoding="utf-8")
-        except UnicodeDecodeError:
-            df = _pd.read_csv(used_path, encoding="utf-8-sig")
-        if df.empty:
-            ts = ""
-        else:
-            # accept 'timestamp' or 'time'
-            cols = {c.lower(): c for c in df.columns}
-            ts_col = cols.get("timestamp") or cols.get("time")
-            ts = "" if not ts_col else str(df[ts_col].iloc[-1])
-            if ts:
-                if "T" not in ts or not ts.endswith("Z"):
-                    ts = ts.replace(" ", "T")
-                    if not ts.endswith("Z"):
-                        ts += "Z"
-        _resolve_last_ts_cache[key] = ts
-        return ts
-    except Exception:
-        return ""
-# === [END DECISION TS RESOLVER] ===
-
 _TEMP_PREFIXES = ("EXECUTOR_TEMP_PLAN","EXECUTOR_TEMP","EXECUTOR")
 
 def _symbol_from_plan_path(plan_path: Optional[str]) -> Optional[str]:
@@ -889,11 +733,7 @@ def _read_tail_csv(path: str, nrows: int=400) -> pd.DataFrame:
     if len(df)>nrows: df=df.tail(nrows)
     return df.reset_index(drop=True)
 
-def build_feature_vector_from_csv(sym: str, csv_dirs: List[str], expected_features: List[str], verbose: bool=False) -> Optional[Tuple[List[float], str]]:
-    """
-    Returns (feature_vector, last_bar_iso_timestamp) or None on failure.
-    last_bar_iso is normalized to UTC and ends with 'Z' when possible.
-    """
+def build_feature_vector_from_csv(sym: str, csv_dirs: List[str], expected_features: List[str], verbose: bool=False) -> Optional[List[float]]:
     csv_path = find_csv_for_symbol(sym, csv_dirs)
     if not csv_path:
         if verbose: print(f"primary: CSV not found for {sym}")
@@ -904,20 +744,6 @@ def build_feature_vector_from_csv(sym: str, csv_dirs: List[str], expected_featur
         feats = _compute_features_from_df(norm)
         live_feat_names = list(feats.columns)
         assert_feature_names(expected_features, live_feat_names)
-
-        # last bar timestamp (zero-IO from the DataFrame you already have)
-        try:
-            last_dt = feats.index[-1]
-            # ensure tz-aware UTC
-            if getattr(last_dt, "tzinfo", None) is None:
-                try:
-                    last_dt = last_dt.tz_localize("UTC")
-                except Exception:
-                    last_dt = pd.to_datetime(last_dt).tz_localize("UTC")
-            last_ts_iso = last_dt.tz_convert("UTC").isoformat().replace("+00:00","Z")
-        except Exception:
-            last_ts_iso = ""
-
         last = feats.dropna()
         last_row = feats.iloc[-1] if last.empty else last.iloc[-1]
         fv: List[float]=[]
@@ -930,7 +756,7 @@ def build_feature_vector_from_csv(sym: str, csv_dirs: List[str], expected_featur
                 missing.append(name); fv.append(0.0)
         if verbose:
             print(f"[features] {sym} csv={os.path.basename(csv_path)} -> vector len={len(fv)} missing={missing}")
-        return (fv, last_ts_iso)
+        return fv
     except Exception as e:
         if verbose:
             print(f"primary: CSV features build failed: {e}")
@@ -941,26 +767,12 @@ def build_feature_vector_from_csv(sym: str, csv_dirs: List[str], expected_featur
 def _iso_now():
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
-def _stale_csv_guard(last_ts_iso: str, max_age_min: int = 15, future_tol_sec: int = 60) -> bool:
-    """
-    Return True when the timestamp is considered stale/unusable.
-
-    Logic:
-     - If timestamp is in the future beyond `future_tol_sec`, treat as stale.
-     - Otherwise if age > max_age_min minutes -> stale.
-     - On parse failure -> treat as stale (safe default).
-    """
+def _stale_csv_guard(last_ts_iso: str, max_age_min: int = 15) -> bool:
     try:
         ts = datetime.fromisoformat(last_ts_iso.replace("Z", "+00:00"))
-        now = datetime.now(timezone.utc)
-        # Future tolerance: if bar timestamp is too far ahead of now, treat stale.
-        if ts > (now + timedelta(seconds=int(future_tol_sec))):
-            return True
-        # Age check
-        return (now - ts) > timedelta(minutes=int(max_age_min))
+        return (datetime.now(timezone.utc) - ts) > timedelta(minutes=max_age_min)
     except Exception:
-        # be conservative: unknown format -> stale
-        return True
+        return True  # treat unknown as stale
 
 def _compute_stops(price: float, atr: float|None, side: str, rcfg: dict) -> tuple[float|None, float|None, str]:
     stop_mult = float(rcfg.get("stop_atr_mult", 1.5))
@@ -1037,7 +849,7 @@ def _load_model_and_features(path: Optional[str], verbose: bool=False) -> Tuple[
     try:
         model, meta = load_model_and_meta(path)
         PRIMARY_META = meta or {}
-        feats = list(PRIMARY_META.get("feature_names") or PRIMARY_META.get("features") or TRAIN_FEATURES_DEFAULT)
+        feats = list(PRIMARY_META.get("feature_names") or PRIMARY_META.get("features") or []) or TRAIN_FEATURES_DEFAULT
         if verbose:
             print(f"Loaded primary model from {path}")
             print(f"Primary feature count: {len(feats)}")
@@ -1164,12 +976,14 @@ def _finrl_infer_conf(finrl_model: Any, fv: List[float], verbose: bool=False) ->
         res = _try_call(m, [fv])
         if res is not None:
             prob = _to_prob(res)
+            if verbose: print(f"[finrl-debug] {m} -> {prob}")
             if prob is not None: return prob
     for attr in ("policy_output","last_action","last_logits"):
         try:
             val = getattr(finrl_model, attr, None)
             prob = _to_prob(val)
             if prob is not None:
+                if verbose: print(f"[finrl-debug] attr {attr} -> {prob}")
                 return prob
         except Exception:
             pass
@@ -1185,20 +999,8 @@ def get_confidences(plan: dict,
                     verbose: bool=False) -> Tuple[float, float]:
     sym = _extract_symbol_from_plan(plan, verbose=verbose)
     fv = None
-    last_ts_iso = ""
     if primary_model is not None and sym != "UNKNOWN":
-        built = build_feature_vector_from_csv(sym, csv_price_dirs, primary_features, verbose=verbose)
-        if built is not None:
-            fv, last_ts_iso = built
-
-    # persist bar ts on the plan (typed I/O only) if found
-    try:
-        if last_ts_iso:
-            # do not override an existing upstream timestamp
-            if not plan.get("_bar_ts_iso"):
-                plan["_bar_ts_iso"] = last_ts_iso
-    except Exception:
-        pass
+        fv = build_feature_vector_from_csv(sym, csv_price_dirs, primary_features, verbose=verbose)
 
     primary_conf = heuristic_confidence_from_score(plan)
     if primary_model is not None and fv is not None:
@@ -1220,15 +1022,7 @@ def get_confidences(plan: dict,
     if finrl_model is not None and sym != "UNKNOWN":
         try:
             if fv is None:
-                built = build_feature_vector_from_csv(sym, csv_price_dirs, primary_features, verbose=verbose)
-                if built is not None:
-                    fv, last_ts_iso2 = built
-                    # stash timestamp if not already present
-                    try:
-                        if last_ts_iso2 and not plan.get("_bar_ts_iso"):
-                            plan["_bar_ts_iso"] = last_ts_iso2
-                    except Exception:
-                        pass
+                fv = build_feature_vector_from_csv(sym, csv_price_dirs, primary_features, verbose=verbose)
             prob = _finrl_infer_conf(finrl_model, fv or [], verbose=verbose)
             if prob is not None:
                 finrl_conf = float(prob)
@@ -1310,55 +1104,6 @@ def append_execution(exec_path: str, row: dict):
     with open(exec_path,"a",encoding="utf-8",newline="") as f:
         writer=csv.DictWriter(f, fieldnames=EXEC_FIELDS); writer.writerow(row)
 
-# --- safer cross-platform lockfile context manager (age-based stale cleanup) ---
-@contextlib.contextmanager
-def _csv_lock(path: str, timeout: float = 5.0, poll: float = 0.02, stale_sec: float = 60.0):
-    """
-    Acquire a simple lock by creating `path + ".lock"` using O_CREAT|O_EXCL.
-    If a lock file exists and is older than `stale_sec`, remove it (stale).
-    Wait up to `timeout` seconds before raising TimeoutError.
-    """
-    lock = path + ".lock"
-    start = time.time()
-    fd = None
-    while True:
-        try:
-            fd = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-            try:
-                os.write(fd, str(os.getpid()).encode("utf-8"))
-            except Exception:
-                pass
-            break
-        except FileExistsError:
-            try:
-                mtime = os.path.getmtime(lock)
-                age = time.time() - mtime
-                if age > stale_sec:
-                    try:
-                        os.remove(lock)
-                        # retry immediately
-                        continue
-                    except Exception:
-                        pass
-            except Exception:
-                pass
-            if (time.time() - start) > timeout:
-                raise TimeoutError(f"Could not acquire CSV lock for {path} (timeout={timeout}s)")
-            time.sleep(poll)
-        except Exception:
-            raise
-    try:
-        yield
-    finally:
-        try:
-            if fd is not None:
-                try: os.close(fd)
-                except Exception: pass
-            try: os.remove(lock)
-            except Exception: pass
-        except Exception:
-            pass
-
 # ---- NEW: stable plan ordering + idempotent append choke -------------------
 def _stable_sort_plans(plans: List[dict]) -> List[dict]:
     def _key(p):
@@ -1372,39 +1117,18 @@ def _stable_sort_plans(plans: List[dict]) -> List[dict]:
         return plans
 
 def _exists_in_csv(exec_path: str, row: dict) -> bool:
-    """
-    Idempotency: treat rows with same (symbol, tf, side) and price within tolerance as duplicates.
-    tolerant to string/float formats and minor re-quote differences.
-    """
+    # Idempotent guard: avoid duplicate OPEN with same identity
     if not os.path.exists(exec_path) or os.path.getsize(exec_path) == 0:
         return False
-
-    def _norm_key(d: dict):
-        return (
-            (d.get("symbol","") or "").upper(),
-            (d.get("tf","") or "").upper(),
-            (d.get("side","") or "").lower(),
-        )
-    def _to_float(x):
-        try: return float(x)
-        except Exception:
-            try: return float(str(x or "0").strip())
-            except Exception: return 0.0
-
-    want_key = _norm_key(row)
-    want_px = _to_float(row.get("price"))
-    TOL = 1e-5  # acceptable price tolerance
-
     try:
         with open(exec_path, "r", encoding="utf-8", newline="") as f:
             rdr = csv.DictReader(f)
             for r in rdr:
-                if (r.get("status","").upper() != "OPEN"):
-                    continue
-                if _norm_key(r) != want_key:
-                    continue
-                existing_px = _to_float(r.get("price"))
-                if abs(existing_px - want_px) <= TOL:
+                if (r.get("status","").upper()=="OPEN"
+                    and r.get("symbol","")==row.get("symbol","")
+                    and r.get("tf","")==row.get("tf","")
+                    and r.get("side","")==row.get("side","")
+                    and r.get("price","")==row.get("price","")):
                     return True
     except Exception:
         return False
@@ -1413,35 +1137,13 @@ def _exists_in_csv(exec_path: str, row: dict) -> bool:
 def append_execution_safe(exec_path: str, row: dict, *, dry_run: bool):
     # Single choke point for all writes
     if dry_run:
-        return  # never touch disk in dry-run
-
-    # 1) Normalize time: prefer upstream 'timestamp' or 'ts', else fallback to now_utc_iso()
-    ts = row.get("timestamp") or row.get("ts") or now_utc_iso()
-    row["timestamp"] = ts
-    row["ts"] = row.get("ts") or ts
-
-    # 2) Normalize price precision (helps duplicate detection)
-    try:
-        row["price"] = f"{float(row['price']):.8f}"
-    except Exception:
-        pass
-
-    # 3) Ensure header exists and atomically avoid duplicates with lock
+        return  # hard stop: never touch disk in dry-run
     ensure_exec_header(exec_path)
-    try:
-        with _csv_lock(exec_path, timeout=5.0, stale_sec=60.0):
-            if _exists_in_csv(exec_path, row):
-                return
-            # 4) Deterministic, schema-only write
-            clean = {k: row.get(k, "") for k in EXEC_FIELDS}
-            append_execution(exec_path, clean)
-    except TimeoutError:
-        # fallback write if lock not acquired
-        if _exists_in_csv(exec_path, row):
-            return
-        clean = {k: row.get(k, "") for k in EXEC_FIELDS}
-        append_execution(exec_path, clean)
+    if _exists_in_csv(exec_path, row):
+        return
+    append_execution_safe(exec_path, row, dry_run=args.dry_run)
 
+# ------------------------- Main executor loop -------------------------
 def _normalize_agg_rows(rows: list[dict]) -> list[dict]:
     """Drop volatile fields and sort deterministically."""
     keep = ("symbol","tf","side","price","size","sl","tp","sl_type","status","plan_file")
@@ -1510,10 +1212,6 @@ def main():
     ap.add_argument("--disable_finrl", action="store_true", help="Skip all FinRL checks and fallbacks")
     ap.add_argument("--grey_zone", type=float, default=0.05, help="Primary score band for FinRL fallback (default 0.05)")
     ap.add_argument("--allow_symbols", nargs="*", default=[], help="If provided, restrict trading strictly to these symbols")
-
-    # New timing tolerance arguments (used in runs/tests)
-    ap.add_argument("--stale_max_minutes", type=int, default=15, help="Max allowed age (minutes) of last-csv-bar before treating stale")
-    ap.add_argument("--future_tolerance_sec", type=int, default=60, help="Allowable future timestamp tolerance in seconds")
 
     args = ap.parse_args()
     _STRICT_META = bool(args.strict_meta)
@@ -1666,20 +1364,6 @@ def main():
                 plan["price"]=px; price=px
                 if args.verbose: print(f"[price-last] {sym}: FOUND value={px}")
 
-        # ------------------ STALE-BAR GUARD (NEW) ------------------
-        # Prefer an upstream zero-I/O bar timestamp; if not present, try resolve via used_path.
-        last_ts = plan.get("_bar_ts_iso") or (_resolve_last_ts(sym, used_path) if used_path else "")
-        if last_ts:
-            # if the last bar is stale, skip the plan (protects both dry-run and live)
-            if _stale_csv_guard(last_ts,
-                                max_age_min=getattr(args, "stale_max_minutes", 15),
-                                future_tol_sec=getattr(args, "future_tolerance_sec", 60)):
-                if args.verbose: print(f"SKIP {sym}: stale bar ({last_ts})")
-                continue
-            # stash for downstream usage (do not overwrite existing plan _bar_ts_iso)
-            plan["_bar_ts_iso"] = plan.get("_bar_ts_iso") or last_ts
-        # ---------------- END STALE-BAR GUARD --------------------
-
         if args.require_csv_price and (price is None or price==0):
             if args.verbose: print(f"SKIP {sym}: require_csv_price True but no CSV price found.")
             continue
@@ -1730,7 +1414,7 @@ def main():
 
         order_id = f"{sym}-{int(time.time()*1000)}"
         row = {
-            "ts": "", "mode": args.mode, "symbol": sym, "tf": tf, "side": side,
+            "ts": now_utc_iso(), "mode": args.mode, "symbol": sym, "tf": tf, "side": side,
             "price": f"{price:.8f}", "size": f"{final_size:.8f}",
             "sl": "" if sl is None else f"{float(sl):.8f}",
             "tp": "" if tp is None else f"{float(tp):.8f}",
@@ -1738,80 +1422,20 @@ def main():
             "plan_file": plan.get("_plan_path") or (args.approved or args.plans),
         }
 
-        # prefer plan-stashed bar ts if present (zero-I/O)
-        if plan.get("_bar_ts_iso"):
-            row["timestamp"] = plan.get("_bar_ts_iso")
-
         agg_rows.append(row.copy())
-
-        # === ZERO-PRICE GUARD: skip execution but record artifact (idempotent) ===
-        # Use rows_out as artifact list so skipped orders are preserved for analysis.
-        try:
-            if not zero_guard(row, None, rows_out):
-                # mark aggregate row as skipped for clarity
-                try:
-                    if agg_rows and isinstance(agg_rows[-1], dict):
-                        agg_rows[-1]["status"] = "SKIPPED_ZERO_PRICE"
-                except Exception:
-                    pass
-                # continue to next plan (we logged and appended artifact inside guard)
-                continue
-        except Exception:
-            # guard failure should not stop executor; fallback to continuing
-            try:
-                print("zero-price guard exception; skipping order:", traceback.format_exc())
-            except Exception:
-                pass
-            continue
-
         # --- keep a copy for artifact writers (dry-run safe) ---
-        rows_out.append(row.copy())
-
-        # idempotency: short-circuit early (avoid extra file I/O)
-        if _exists_in_csv(args.executions, row):
-            if args.verbose: print(f"[idempotent-skip] {sym} {tf} {side} @ {row.get('price')}")
-            continue
+        rows_out.append(row)
 
         if args.dry_run:
-            decision_ts = row.get("timestamp") or row.get("ts") or (plan.get("_bar_ts_iso") or "")
-            ts_src = ("decision_ctx.bar_ts_iso" if plan.get("_bar_ts_iso")
-                      else "row.ts" if row.get("ts")
-                      else "missing")
-            if (os.environ.get("STRICT_NO_CSV_TS","0") == "1") and (ts_src == "missing"):
-                raise SystemExit("[FAIL:Execution Reflex Engine] timestamp fell back to csv_resolver with STRICT_NO_CSV_TS=1")
-            print(f"[DRY OPEN] {sym} {tf} {side} price={price:.6f} size={final_size:.6f}  -> {decision}: {reason}")
-            exec_row = {
-                "timestamp": (decision_ts or ""),
-                "symbol":       sym,
-                "side":         side,
-                "size":         final_size,
-                "price":        row.get("price"),
-                "primary_conf": locals().get("primary_conf"),
-                "finrl_conf":   locals().get("finrl_conf"),
-                "source":       "execution_reflex",
-            }
-            _require_exec_timestamp(exec_row)
+            if used_path:
+                print(f"[DRY OPEN] {sym} {tf} {side} price={price:.6f} size={final_size:.6f} (csv={used_path})  -> {decision}: {reason}")
+            else:
+                print(f"[DRY OPEN] {sym} {tf} {side} price={price:.6f} size={final_size:.6f}  -> {decision}: {reason}")
             opened += 1
             open_counts[sym] = open_counts.get(sym,0)+1
             continue
 
-        # ---- single choke for writes (idempotent + locked) ----
-        # === ZERO-PRICE GUARD (auto-inserted) ===
-        try:
-            if 'zero_guard' in globals() and callable(zero_guard):
-                try:
-                    ok = zero_guard(row, None, rows_out)
-                except Exception as _z:
-                    if args.verbose: print(f"zero-price-guard error -> {_z}")
-                    ok = True
-            else:
-                ok = True
-            if not ok:
-                if args.verbose: print(f"SKIP {sym}: zero-price guard triggered for row -> {row}")
-                continue
-        except Exception as _e:
-            if args.verbose: print(f"zero-price-guard outer error -> {_e}")
-        # === END ZERO-PRICE GUARD ===
+        # ---- single choke for writes (idempotent + no dry-run writes) ----
         append_execution_safe(args.executions, row, dry_run=args.dry_run)
         opened += 1
         open_counts[sym] = open_counts.get(sym,0)+1
@@ -1820,31 +1444,44 @@ def main():
         else:
             print(f"[OPEN] {sym} {tf} {side} price={price:.6f} size={final_size:.6f}  -> {decision}: {reason}")
 
-    # NOTE: Idempotency guard — do NOT write executions in dry_run unless explicitly allowed
+    # --- artifacts (does not change control flow) ---
+
+        try:
+            os.makedirs(os.path.dirname(args.aggregate), exist_ok=True)
+            agg = {
+                "ts": now_utc_iso(),
+                "dry_run": bool(args.dry_run),
+                "opened": int(opened),
+                "mode": args.mode,
+                "executions_path": args.executions,
+                "items": rows_out,
+            }
+            with open(args.aggregate, "w", encoding="utf-8") as f:
+                json.dump(agg, f, ensure_ascii=False, indent=2)
+            if args.verbose:
+                pass
+
+        except Exception as e:
+            print(f"[warn] aggregate write failed: {e}")
+
+    # NOTE: Idempotency guard — do NOT write executions in dry_run
     if args.dry_run and DRY_WRITE_ALLOWED and args.executions and rows_out:
         try:
             ensure_exec_header(args.executions)
             for r in rows_out:
-                # ensure both legacy 'ts' and guard 'timestamp' are present before append
-                r["timestamp"] = (r.get("timestamp") or r.get("ts") or now_utc_iso())
-                if not r["timestamp"]:
-                    raise SystemExit("[FAIL:Execution Reflex Engine] missing timestamp (pre-write batch)")
-                r["ts"] = r.get("ts") or r["timestamp"]
-                # normalize price string
-                try: r["price"] = f"{float(r['price']):.8f}"
-                except Exception: pass
-                # strict schema
-                clean = {k: r.get(k, "") for k in EXEC_FIELDS}
-                append_execution_safe(args.executions, clean, dry_run=args.dry_run)
+                append_execution_safe(args.executions, r, dry_run=args.dry_run)
             if args.verbose:
                 print(f"[artifact] wrote executions -> {args.executions} (dry_run)")
         except Exception as e:
             print(f"[warn] could not write executions file: {e}")
-    if args.aggregate:
-        write_aggregate_safe(args.aggregate, {"opened": opened, "orders": agg_rows}, dry_run=args.dry_run)
-        print(f"[artifact] wrote aggregate -> {args.aggregate}")
+if args.aggregate:
+    write_aggregate_safe(args.aggregate, {"opened": opened, "orders": agg_rows}, dry_run=args.dry_run)
+    print(f"[artifact] wrote aggregate -> {args.aggregate}")
+
     print(f"Executed (opened): {opened} (dry_run={args.dry_run})")
     return 0
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
