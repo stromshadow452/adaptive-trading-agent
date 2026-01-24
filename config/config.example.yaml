@@ -1,0 +1,83 @@
+# =============================================================================
+# ADAPTIVE TRADING AGENT - CONFIGURATION TEMPLATE
+# =============================================================================
+# Copy this file to local.yaml and customize for your environment.
+# NEVER commit local.yaml or any file with real credentials.
+# =============================================================================
+
+# Agent identification
+agent:
+  name: "adaptive-eurusd-m15"
+  version: "1.0"
+  asset: "EURUSD"
+  timeframe: "M15"
+
+# Data paths (relative to project root)
+data:
+  raw_dir: "./data/raw"
+  training_dir: "./data/training"
+  history_dir: "./data/history"
+
+# ML Brain settings
+ml:
+  model_path: "./models/xgb_primary.joblib"
+  buy_threshold: 0.55
+  sell_threshold: 0.55
+  high_confidence: 0.70
+
+# Quality Scorer
+quality_scorer:
+  enabled: true
+  grade_thresholds:
+    A: 70
+    B: 55
+    C: 40
+    D: 25
+    F: 0
+  size_multipliers:
+    A: 1.00
+    B: 0.95
+    C: 0.90
+    D: 0.75
+    F: 0.00
+  regime_aggression:
+    TREND: 1.15
+    RANGE: 1.00
+    DANGER: 0.70
+
+# Risk management
+risk:
+  max_risk_per_trade: 0.01  # 1% of equity
+  max_total_exposure: 0.03  # 3% total
+  default_sl_atr: 1.5
+  default_rr: 1.5
+
+# AdaptiveState
+adaptive_state:
+  enabled: true
+  caution_threshold: 0.45
+  defensive_threshold: 0.30
+
+# Backtest settings
+backtest:
+  initial_equity: 10000
+  start_date: "2021-01-01"
+  end_date: "2024-12-31"
+  cooldown_bars: 12
+
+# Logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  file: "./logs/agent.log"
+
+# =============================================================================
+# BROKER SETTINGS (EXAMPLE - DO NOT USE REAL CREDENTIALS HERE)
+# =============================================================================
+# Create a separate secrets.yaml or use environment variables for these.
+#
+# broker:
+#   type: "mt5"
+#   login: ${MT5_LOGIN}       # Use environment variable
+#   password: ${MT5_PASSWORD} # Use environment variable
+#   server: ${MT5_SERVER}     # Use environment variable
+# =============================================================================

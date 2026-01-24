@@ -1,0 +1,10 @@
+{
+  "type": "backtest",
+  "job_id": "bt_d8839d4b",
+  "created_at": "2025-11-26T18:31:55.171285",
+  "config": "config/mvp_v1.yaml",
+  "symbol": "EURUSD",
+  "start": "2023-01-01",
+  "end": "2023-01-07",
+  "initial_capital": 10000.0
+}

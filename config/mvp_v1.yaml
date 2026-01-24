@@ -1,0 +1,124 @@
+# SCOPUS MVP v1 Configuration
+
+# Feature Reactor Settings
+feature_reactor:
+  batch_size: 100  # Trades per batch for importance computation
+  
+  # Feature packs (regime-based selection)
+  packs:
+    ohlcv_base: [open, high, low, close, volume]
+    trend_pack: [sma_20, sma_50, ema_12, ema_26, trend_flag, slope_20]
+    momentum_pack: [rsi_14, macd, macd_signal, macd_hist, stoch_k, stoch_d]
+    volatility_pack: [atr_14, bb_width, bb_upper, bb_lower, volatility]
+    sr_pack: [sr_zone_id, sr_distance, sr_strength, pivot_point, pivot_r1, pivot_s1]
+  
+  # Pack selection by regime
+  pack_selection:
+    TREND: [ohlcv_base, trend_pack, momentum_pack]
+    RANGE: [ohlcv_base, sr_pack, volatility_pack]
+    CRASH: [ohlcv_base, volatility_pack]
+    UNCERTAIN: [ohlcv_base]
+  
+  # Offline pruning (NOT used in v1)
+  pruning:
+    enabled: false  # v1: disabled
+    min_importance: 0.01
+    min_features: 50
+    min_samples: 500
+
+# Regime Engine Settings
+regime_engine:
+  # Fixed thresholds (NO adaptation in v1)
+  trend_threshold: 0.015
+  range_threshold: 0.02
+  crash_threshold: 3.0
+  
+  # Hysteresis
+  hysteresis_buffer: 0.2
+
+# Risk Brain Settings
+risk_brain:
+  # Base parameters
+  base_sl_atr_mult: 2.0
+  base_tp_atr_mult: 3.0
+  base_risk_pct: 0.02  # 2% per trade
+  
+  # Regime multipliers
+  regime_multipliers:
+    TREND:
+      sl: 1.0
+      tp: 1.5
+    RANGE:
+      sl: 0.7
+      tp: 0.8
+    CRASH:
+      sl: 0.5
+      tp: 0.6
+    UNCERTAIN:
+      sl: 0.8
+      tp: 0.9
+
+# Meta-Gating Settings
+meta_gating:
+  # Fixed thresholds
+  min_signal_quality: 0.6
+  min_env_stability: 0.5
+  
+  # Regime adjustments
+  regime_adjustments:
+    CRASH: 0.15    # Raise threshold
+    TREND: -0.05   # Lower threshold
+    RANGE: 0.0
+    UNCERTAIN: 0.10
+  
+  # MetaJudge Self-Learning (NEW)
+  use_meta_judge: true
+  meta_judge_path: "test_output/quarterly_test/meta_judge_latest.joblib"
+  meta_block_threshold: 0.3   # Block if score < 0.3
+  meta_reduce_threshold: 0.6  # Reduce size if score < 0.6
+
+# Model Zoo (v1: minimal)
+models:
+  primary:
+    type: XGBoost
+    path: models/xgb_primary.joblib
+  
+  secondary:
+    type: MLP
+    path: models/mlp_secondary.joblib
+  
+  # v1: No regime routing, always use primary
+  routing:
+    default: primary
+    fallback: secondary
+
+# RL Brain (v1: static PPO with reward shaping)
+rl_brain:
+  enabled: false  # v1: disabled (comes in later phase)
+  agent_path: models/ppo_agent.zip
+  
+  # Reward shaping (when enabled)
+  reward_shaping:
+    TREND:
+      hold_bonus: 0.2
+    RANGE:
+      entry_penalty: -0.3
+    high_vol_loss_mult: 2.0
+
+# Risk Gates (v1: static)
+risk_gates:
+  max_drawdown: 0.20
+  max_positions: 3
+  daily_loss_limit: 0.05
+
+# Throttle Gates (v1: static)
+throttle_gates:
+  max_trades_per_day: 6
+  min_bars_between_trades: 4
+  loss_streak_cooldown_bars: 20
+
+# Logging
+logging:
+  feature_importance_path: logs/feature_importance.json
+  decisions_path: logs/decisions/
+  metrics_path: logs/metrics/

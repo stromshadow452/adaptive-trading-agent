@@ -1,99 +1,204 @@
-﻿# Python / venv
-.venv*/
-venv*/
-ENV*/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.egg-info/
-.cache/
-.ipynb_checkpoints/
+﻿# ==============================================================================
+# ADAPTIVE TRADING AGENT - PRIVATE REPOSITORY
+# ==============================================================================
+# This .gitignore is designed to prevent accidental commits of:
+# - Market data (Forex, Stocks, Crypto)
+# - Trained ML models (unless explicitly versioned)
+# - API keys, credentials, secrets
+# - Logs, cache, temporary files
+# ==============================================================================
 
-# Platform junk
-.DS_Store
-Thumbs.db
-
-# Binaries & libs
-*.dll
-*.lib
-*.so
-*.dylib
-*.exe
-*.pdb
-
-# Large data & exports
+# ==============================================================================
+# DATA - NEVER COMMIT
+# ==============================================================================
+# All market data directories
 data/
-datasets/
+/data/
+**/data/
+
+# Specific data folders
+raw_data/
+historical_data/
+market_data/
+forex_data/
+prices/
+candles/
+
+# Data file formats
 *.csv
 *.parquet
 *.feather
+*.h5
+*.hdf5
 *.zip
-*.tar
-*.gz
-*.7z
+*.tar.gz
+*.rar
 
-# Project-specific heavy dirs
-strategy_bank/external_raw/**
-tools/FX-1-Minute-Data/**
-tools/finrl_local/**
+# MT5/MT4 exports
+*.hst
+*.fxt
 
-# Logs / artifacts
+# Backup data
+*_backup/
+*_backup_*/
+forex_backup*/
+
+# ==============================================================================
+# ML MODELS - IGNORE BY DEFAULT
+# ==============================================================================
+# Model artifacts (large binary files)
+models/
+*.joblib
+*.pkl
+*.pickle
+*.pt
+*.pth
+*.onnx
+*.h5
+*.keras
+*.pb
+*.tflite
+
+# Exception: If you want to version specific models, use:
+# !models/production/model_v1.joblib
+
+# ==============================================================================
+# SECRETS & CREDENTIALS
+# ==============================================================================
+# Environment files
+.env
+.env.*
+*.env
+.envrc
+
+# Config files with secrets
+config/local.yaml
+config/secrets.yaml
+config/credentials.yaml
+config/production.yaml
+**/secrets/
+**/credentials/
+
+# API keys
+api_keys.txt
+api_keys.json
+*.pem
+*.key
+
+# ==============================================================================
+# LOGS & TEMP FILES
+# ==============================================================================
+# Logs
 logs/
-outputs/
-reports/executions/*.csv
-tmp_plans/
-# ignore large artifacts
-models/
-*.joblib
-*.pkl
-*.pt
-*.onnx
-*.h5
-models/
-*.joblib
-*.pkl
-*.pt
-*.onnx
-*.h5
+*.log
+*.log.*
+debug.log
+error.log
+trading.log
 
-models/
-.venv*/
-*.joblib
-*.pkl
-*.pt
-*.onnx
-*.h5
-*.dll
-*.lib
-*.so
-# already added:
-models/
-.venv*/
-*.joblib
-*.pkl
-*.pt
-*.onnx
-*.h5
-*.dll
-*.lib
-*.so
-# add common data:
-data/raw/
-*.csv
-*.parquet
-# Artifacts / reports
-reports/**/*
-!reports/.gitkeep
-# Wheels / build
-.wheelhouse/**/*
-dist/**/*
-build/**/*
-# Backups / temp
-*.bak
-*.autobak
+# Cache
 __pycache__/
-# Models & data (tracked elsewhere)
-models/**/*
-data/**/*
-!data/README.md
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+*.cache
+
+# Temp files
+tmp/
+temp/
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# ==============================================================================
+# BACKTEST OUTPUTS
+# ==============================================================================
+# Backtest results (regeneratable)
+data/history/bt_*/
+data/history/train_*/
+backtest_results/
+*_results.json
+equity_curves/
+
+# ==============================================================================
+# IDE & OS
+# ==============================================================================
+# IDEs
+.idea/
+.vscode/
+*.code-workspace
+.spyderproject
+.spyproject
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ==============================================================================
+# PYTHON BUILD
+# ==============================================================================
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+*.whl
+pip-wheel-metadata/
+
+# Virtual environments
+venv/
+.venv/
+.venv311/
+env/
+.env/
+ENV/
+
+# ==============================================================================
+# JUPYTER NOTEBOOKS (OPTIONAL)
+# ==============================================================================
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Notebook outputs (if you want clean notebooks)
+# *.ipynb  # Uncomment to ignore all notebooks
+
+# ==============================================================================
+# DOCUMENTATION BUILD
+# ==============================================================================
+docs/_build/
+site/
+
+# ==============================================================================
+# TRADING SPECIFIC
+# ==============================================================================
+# Trade logs
+trade_history/
+trades/
+orders/
+positions/
+
+# Performance reports
+reports/
+*.html  # Generated reports
+
+# Screenshots/charts
+charts/
+screenshots/
+
+# ==============================================================================
+# GEMINI/AGENT ARTIFACTS (LOCAL ONLY)
+# ==============================================================================
+.gemini/
+.agent/
+brain/

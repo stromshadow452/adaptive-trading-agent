@@ -1,0 +1,27 @@
+{
+  "start_date": "2022-01-01",
+  "end_date": "2022-03-31",
+  "symbols": [
+    "EURUSD"
+  ],
+  "initial_capital": 10000.0,
+  "final_equity": 9900.0,
+  "total_return": -0.01,
+  "total_trades": 1,
+  "winning_trades": 0,
+  "losing_trades": 1,
+  "winrate": 0.0,
+  "max_drawdown": 0.01,
+  "profit_factor": 0.0,
+  "avg_r_multiple": -1.0,
+  "execution_time": 0.9476432800292969,
+  "candles_processed": 6041,
+  "candles_per_second": 6374.761608411595,
+  "regime_breakdown": {
+    "RANGE": {
+      "trades": 1,
+      "wins": 0,
+      "pnl": -100.0
+    }
+  }
+}

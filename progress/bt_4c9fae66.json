@@ -1,0 +1,9 @@
+{
+  "job_id": "bt_4c9fae66",
+  "status": "running",
+  "progress_pct": 34,
+  "elapsed_sec": 2209.6,
+  "eta_sec": 4126.6,
+  "current_step": "Processing EURUSD: 1631/4677 candles",
+  "timestamp": "2025-12-06T10:24:04.541110Z"
+}

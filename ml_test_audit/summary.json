@@ -1,0 +1,25 @@
+{
+  "initial_equity": 10000.0,
+  "final_equity": 10613.868301166494,
+  "total_return": 0.061386830116649437,
+  "total_trades": 86,
+  "winning_trades": 39,
+  "losing_trades": 47,
+  "winrate": 0.45348837209302323,
+  "max_drawdown": 0.030365453064680838,
+  "ml_model_loaded": true,
+  "decision_sources": {
+    "ML_HIGH_CONF": 64,
+    "ML_TREND_LATE_ENTRY": 3,
+    "ML_RSI_NEUTRAL": 3,
+    "ML_TREND": 16
+  },
+  "symbols": [
+    "EURUSD"
+  ],
+  "start_date": "2022-01-01",
+  "end_date": "2022-03-31",
+  "execution_time": 1.7507970333099365,
+  "candles_processed": 6041,
+  "candles_per_second": 3450.428510596286
+}

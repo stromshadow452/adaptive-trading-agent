@@ -1,0 +1,63 @@
+# ============================================================================
+# SESSION-AWARE TRADING CONFIGURATION
+# ============================================================================
+# Controls when the agent is allowed to trade based on market sessions.
+# All times are in UTC.
+#
+# Sessions:
+#   SYDNEY:   21:00–23:00 UTC (Asian open)
+#   TOKYO:    00:00–03:00 UTC (Asian session)
+#   LONDON:   07:00–10:00 UTC (European open)
+#   NEW_YORK: 12:00–15:00 UTC (US open)
+#   OFF:      All other times (no trading)
+# ============================================================================
+
+enabled: true
+
+sessions:
+  SYDNEY:
+    start_hour: 21
+    end_hour: 23
+    policy: SELECTIVE  # Allow only high-quality setups
+    size_multiplier: 0.7
+    min_edge_score: 0.70
+    min_regime_strength: 0.75
+    description: "Sydney session - very selective"
+    
+  TOKYO:
+    start_hour: 0
+    end_hour: 3
+    policy: EXPLORATION  # Exploration mode with reduced size
+    size_multiplier: 0.5
+    min_edge_score: 0.50
+    min_regime_strength: 0.50
+    description: "Tokyo session - exploration mode"
+    
+  LONDON:
+    start_hour: 7
+    end_hour: 10
+    policy: FULL  # Full trading allowed
+    size_multiplier: 1.0
+    min_edge_score: 0.40
+    min_regime_strength: 0.40
+    description: "London session - full trading"
+    
+  NEW_YORK:
+    start_hour: 12
+    end_hour: 15
+    policy: FULL  # Full trading allowed
+    size_multiplier: 1.0
+    min_edge_score: 0.40
+    min_regime_strength: 0.40
+    description: "New York session - full trading"
+    
+  OFF:
+    policy: BLOCK  # No trading
+    size_multiplier: 0.0
+    description: "Off-session - no trading"
+
+# Logging settings
+logging:
+  log_allows: true
+  log_blocks: true
+  log_level: INFO

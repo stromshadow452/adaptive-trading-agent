@@ -1,0 +1,19 @@
+[
+    {
+        "symbol": "EURUSD",
+        "tf": "M15",
+        "side": "buy",
+        "price": 1.1000,
+        "size": 0.01,
+        "sl": 1.0950,
+        "tp": 1.1100,
+        "sl_type": "atr",
+        "decision": {
+            "final_score": 2.5,
+            "confidence": 0.95,
+            "reason": "JARVIS canary test - very high confidence signal"
+        },
+        "atr": 0.0015,
+        "atr14": 0.0015
+    }
+]

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCOPUS Trading Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">📊 SCOPUS</a>
+        <div class="navbar-links">
+            <a href="index.html" class="navbar-link active">Dashboard</a>
+            <a href="history.html" class="navbar-link">History</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>SCOPUS Trading Dashboard</h1>
+            <div class="status" id="connectionStatus">
+                <div class="status-dot"></div>
+                <span>Connecting...</span>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2 class="card-title">Backtest Configuration</h2>
+
+                <div class="form-group">
+                    <label class="form-label">Symbol</label>
+                    <select id="symbol" class="form-select">
+                        <option value="EURUSD">EURUSD</option>
+                        <option value="GBPUSD">GBPUSD</option>
+                        <option value="USDJPY">USDJPY</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Date Range</label>
+                    <div class="date-group">
+                        <input type="date" id="startDate" class="form-input" value="2023-01-01">
+                        <input type="date" id="endDate" class="form-input" value="2023-01-07">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Initial Capital ($)</label>
+                    <input type="number" id="capital" class="form-input" value="10000">
+                </div>
+
+                <button id="runBtn" class="btn" onclick="runBacktest()">Run Backtest</button>
+                <button id="trainBtn" class="btn btn-secondary" onclick="runTraining()" style="display:none;">🤖 Train
+                    Agent</button>
+
+                <div id="progressContainer" class="progress-container" style="display:none;">
+                    <div class="progress-bar">
+                        <div id="progressFill" class="progress-fill"></div>
+                    </div>
+                    <div id="progressText" class="progress-text"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div id="chart-container"></div>
+                <div id="chart-loading" class="loading-overlay">Loading Chart...</div>
+
+                <div id="resultsSummary"></div>
+                rightPriceScale: { borderColor: '#dfdfdf' },
+                timeScale: { borderColor: '#dfdfdf' },
+                equitySeries = equityChart.addLineSeries({ color: '#2962FF', lineWidth: 2 });
+
+                new ResizeObserver(entries => {
+                if (entries.length && entries[0].target === document.getElementById('chart-container')) {
+                const rect = entries[0].contentRect;
+                chart.applyOptions({ width: rect.width, height: rect.height });
+                }
+                }).observe(document.getElementById('chart-container'));
+
+                async function updateConnectionStatus() {
+                const connected = await checkConnection();
+                const statusEl = document.getElementById('connectionStatus');
+                if (connected) {
+                statusEl.classList.remove('disconnected');
+                statusEl.querySelector('span').textContent = 'Connected';
+                } else {
+                statusEl.classList.add('disconnected');
+                statusEl.querySelector('span').textContent = 'Disconnected';
+                }
+                }
+
+                async function runBacktest() {
+                const symbol = document.getElementById('symbol').value;
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+
+                document.getElementById('runBtn').disabled = true;
+                hideElement('trainBtn');
+                showElement('progressContainer');
+                document.getElementById('progressFill').style.width = '10%';
+                document.getElementById('progressText').textContent = 'Submitting job...';
+                showLoading('chart-loading');
+
+                try {
+                const data = await apiPost('/jobs/submit/backtest', {
+                symbols: [symbol],
+                start: startDate,
+                end: endDate,
+                config: 'config/mvp_v1.yaml'
+                });
+
+                currentJobId = data.job_id;
+                document.getElementById('progressText').textContent = `Job submitted: ${currentJobId}`;
+                startPolling(currentJobId);
+
+                const ohlcvData = await apiGet(`/api/ohlcv?symbol=${symbol}&from_date=${startDate}&to_date=${endDate}`);
+                renderCandles(ohlcvData);
+                } catch (error) {
+                showError(`Failed to start backtest: ${error.message}`);
+                document.getElementById('runBtn').disabled = false;
+                }
+                }
+
+                function startPolling(jobId) {
+                if (pollInterval) clearInterval(pollInterval);
+                let attempts = 0;
+
+                pollInterval = setInterval(async () => {
+                attempts++;
+                try {
+                const data = await apiGet('/backtests/history?limit=5');
+                const run = data.runs.find(r => r.run_id === jobId);
+
+                if (run) {
+                clearInterval(pollInterval);
+                currentRunId = run.run_id;
+                document.getElementById('progressFill').style.width = '100%';
+                document.getElementById('progressText').textContent = 'Completed!';
+                document.getElementById('runBtn').disabled = false;
+                showElement('trainBtn');
+
+                displayResults(run);
+
+                const trades = await apiGet(`/backtests/run/${run.run_id}/trades`);
+                plotTradeMarkers(trades);
+                renderEquityCurve(calculateEquity(trades, 10000));
+                } else if (attempts > 120) {
+                clearInterval(pollInterval);
+                showError("Timeout waiting for results. Check terminal.");
+                document.getElementById('runBtn').disabled = false;
+                } else {
+                document.getElementById('progressText').textContent = `Waiting... (${attempts}s)`;
+                }
+                } catch (error) {
+                console.error('Polling error:', error);
+                }
+                }, 2000);
+                }
+
+                function renderCandles(data) {
+                candlestickSeries.setData(data);
+                chart.timeScale().fitContent();
+                hideLoading('chart-loading');
+                }
+
+                function plotTradeMarkers(trades) {
+                const markers = [];
+                trades.sort((a, b) => new Date(a.timestamp_entry) - new Date(b.timestamp_entry));
+
+                trades.forEach(trade => {
+                const time = new Date(trade.timestamp_entry).getTime() / 1000;
+                markers.push({
+                time: time,
+                position: trade.side === 'buy' ? 'belowBar' : 'aboveBar',
+                color: trade.side === 'buy' ? '#2196F3' : '#E91E63',
+                shape: trade.side === 'buy' ? 'arrowUp' : 'arrowDown',
+                text: trade.side.toUpperCase()
+                });
+
+                const exitTime = new Date(trade.timestamp_exit).getTime() / 1000;
+                markers.push({
+                time: exitTime,
+                position: trade.side === 'buy' ? 'aboveBar' : 'belowBar',
+                color: trade.pnl > 0 ? '#4CAF50' : '#F44336',
+                shape: 'circle',
+                text: `$${trade.pnl.toFixed(0)}`
+                });
+                });
+
+                candlestickSeries.setMarkers(markers);
+                }
+
+                function calculateEquity(trades, initialCapital) {
+                let equity = initialCapital;
+                const data = [];
+                const sortedTrades = [...trades].sort((a, b) => new Date(a.timestamp_exit) - new
+                Date(b.timestamp_exit));
+
+                sortedTrades.forEach(t => {
+                equity += t.pnl;
+                data.push({
+                time: new Date(t.timestamp_exit).getTime() / 1000,
+                value: equity
+                });
+                });
+                return data;
+                }
+
+                function renderEquityCurve(data) {
+                equitySeries.setData(data);
+                equityChart.timeScale().fitContent();
+                }
+
+                function displayResults(run) {
+                const m = run.performance || run.metrics;
+                const html = `
+                <div class="results-grid">
+                    <div class="result-item">
+                        <div class="result-label">Total Trades</div>
+                        <div class="result-value">${m.total_trades || m.trades}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Win Rate</div>
+                        <div class="result-value">${((m.winrate || 0) * 100).toFixed(1)}%</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Total P&L</div>
+                        <div class="result-value ${(m.total_pnl || m.pnl) >= 0 ? 'positive' : 'negative'}">
+                            $${(m.total_pnl || m.pnl || 0).toFixed(2)}
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Sharpe Ratio</div>
+                        <div class="result-value">${(m.sharpe_ratio || m.sharpe || 0).toFixed(2)}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Max Drawdown</div>
+                        <div class="result-value negative">${((m.max_drawdown || m.max_dd || 0) * 100).toFixed(2)}%
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Profit Factor</div>
+                        <div class="result-value">${(m.profit_factor || 0).toFixed(2)}</div>
+                    </div>
+                </div>
+                `;
+                document.getElementById('resultsSummary').innerHTML = html;
+                }
+
+                async function runTraining() {
+                if (!currentRunId) return;
+
+                const btn = document.getElementById('trainBtn');
+                btn.disabled = true;
+                btn.textContent = "⏳ Training...";
+
+                try {
+                const data = await apiPost('/jobs/submit/training', {
+                run_id: currentRunId,
+                symbol: document.getElementById('symbol').value
+                });
+
+                const trainingId = data.job_id;
+                const trainingPoll = setInterval(async () => {
+                try {
+                const statusData = await apiGet(`/training/${trainingId}/status`);
+                if (statusData.status === 'completed') {
+                clearInterval(trainingPoll);
+                btn.textContent = "✅ Training Completed";
+                alert("Training Completed! Check History page.");
+                btn.disabled = false;
+                }
+                } catch (e) {
+                console.error("Training poll error", e);
+                }
+                }, 2000);
+                } catch (e) {
+                alert("Failed to start training: " + e.message);
+                btn.disabled = false;
+                btn.textContent = "🤖 Train Agent";
+                }
+                }
+
+                }
+                }
+
+                async function runBacktest() {
+                const symbol = document.getElementById('symbol').value;
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+
+                document.getElementById('runBtn').disabled = true;
+                hideElement('trainBtn');
+                showElement('progressContainer');
+                document.getElementById('progressFill').style.width = '10%';
+                document.getElementById('progressText').textContent = 'Submitting job...';
+                showLoading('chart-loading');
+
+                try {
+                const data = await apiPost('/jobs/submit/backtest', {
+                symbols: [symbol],
+                start: startDate,
+                end: endDate,
+                config: 'config/mvp_v1.yaml'
+                });
+
+                currentJobId = data.job_id;
+                document.getElementById('progressText').textContent = `Job submitted: ${currentJobId}`;
+                startPolling(currentJobId);
+
+                const ohlcvData = await apiGet(`/api/ohlcv?symbol=${symbol}&from_date=${startDate}&to_date=${endDate}`);
+                renderCandles(ohlcvData);
+                } catch (error) {
+                showError(`Failed to start backtest: ${error.message}`);
+                document.getElementById('runBtn').disabled = false;
+                }
+                }
+
+                function startPolling(jobId) {
+                if (pollInterval) clearInterval(pollInterval);
+                let attempts = 0;
+
+                pollInterval = setInterval(async () => {
+                attempts++;
+                try {
+                const data = await apiGet('/backtests/history?limit=5');
+                const run = data.runs.find(r => r.run_id === jobId);
+
+                if (run) {
+                clearInterval(pollInterval);
+                currentRunId = run.run_id;
+                document.getElementById('progressFill').style.width = '100%';
+                document.getElementById('progressText').textContent = 'Completed!';
+                document.getElementById('runBtn').disabled = false;
+                showElement('trainBtn');
+
+                displayResults(run);
+
+                const trades = await apiGet(`/backtests/run/${run.run_id}/trades`);
+                plotTradeMarkers(trades);
+                renderEquityCurve(calculateEquity(trades, 10000));
+                } else if (attempts > 120) {
+                clearInterval(pollInterval);
+                showError("Timeout waiting for results. Check terminal.");
+                document.getElementById('runBtn').disabled = false;
+                } else {
+                document.getElementById('progressText').textContent = `Waiting... (${attempts}s)`;
+                }
+                } catch (error) {
+                console.error('Polling error:', error);
+                }
+                }, 2000);
+                }
+
+                function renderCandles(data) {
+                candlestickSeries.setData(data);
+                chart.timeScale().fitContent();
+                hideLoading('chart-loading');
+                }
+
+                function plotTradeMarkers(trades) {
+                const markers = [];
+                trades.sort((a, b) => new Date(a.timestamp_entry) - new Date(b.timestamp_entry));
+
+                trades.forEach(trade => {
+                const time = new Date(trade.timestamp_entry).getTime() / 1000;
+                markers.push({
+                time: time,
+                position: trade.side === 'buy' ? 'belowBar' : 'aboveBar',
+                color: trade.side === 'buy' ? '#2196F3' : '#E91E63',
+                shape: trade.side === 'buy' ? 'arrowUp' : 'arrowDown',
+                text: trade.side.toUpperCase()
+                });
+
+                const exitTime = new Date(trade.timestamp_exit).getTime() / 1000;
+                markers.push({
+                time: exitTime,
+                position: trade.side === 'buy' ? 'aboveBar' : 'belowBar',
+                color: trade.pnl > 0 ? '#4CAF50' : '#F44336',
+                shape: 'circle',
+                text: `$${trade.pnl.toFixed(0)}`
+                });
+                });
+
+                candlestickSeries.setMarkers(markers);
+                }
+
+                function calculateEquity(trades, initialCapital) {
+                let equity = initialCapital;
+                const data = [];
+                const sortedTrades = [...trades].sort((a, b) => new Date(a.timestamp_exit) - new
+                Date(b.timestamp_exit));
+
+                sortedTrades.forEach(t => {
+                equity += t.pnl;
+                data.push({
+                time: new Date(t.timestamp_exit).getTime() / 1000,
+                value: equity
+                });
+                });
+                return data;
+                }
+
+                function renderEquityCurve(data) {
+                equitySeries.setData(data);
+                equityChart.timeScale().fitContent();
+                }
+
+                function displayResults(run) {
+                const m = run.performance || run.metrics;
+                const html = `
+                <div class="results-grid">
+                    <div class="result-item">
+                        <div class="result-label">Total Trades</div>
+                        <div class="result-value">${m.total_trades || m.trades}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Win Rate</div>
+                        <div class="result-value">${((m.winrate || 0) * 100).toFixed(1)}%</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Total P&L</div>
+                        <div class="result-value ${(m.total_pnl || m.pnl) >= 0 ? 'positive' : 'negative'}">
+                            $${(m.total_pnl || m.pnl || 0).toFixed(2)}
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Sharpe Ratio</div>
+                        <div class="result-value">${(m.sharpe_ratio || m.sharpe || 0).toFixed(2)}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Max Drawdown</div>
+                        <div class="result-value negative">${((m.max_drawdown || m.max_dd || 0) * 100).toFixed(2)}%
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Profit Factor</div>
+                        <div class="result-value">${(m.profit_factor || 0).toFixed(2)}</div>
+                    </div>
+                </div>
+                `;
+                document.getElementById('resultsSummary').innerHTML = html;
+                }
+
+                async function runTraining() {
+                if (!currentRunId) return;
+
+                const btn = document.getElementById('trainBtn');
+                btn.disabled = true;
+                btn.textContent = "⏳ Training...";
+
+                try {
+                const data = await apiPost('/jobs/submit/training', {
+                run_id: currentRunId,
+                symbol: document.getElementById('symbol').value
+                });
+
+                const trainingId = data.job_id;
+                const trainingPoll = setInterval(async () => {
+                try {
+                const statusData = await apiGet(`/training/${trainingId}/status`);
+                if (statusData.status === 'completed') {
+                clearInterval(trainingPoll);
+                btn.textContent = "✅ Training Completed";
+                alert("Training Completed! Check History page.");
+                btn.disabled = false;
+                }
+                } catch (e) {
+                console.error("Training poll error", e);
+                }
+                }, 2000);
+                } catch (e) {
+                alert("Failed to start training: " + e.message);
+                btn.disabled = false;
+                btn.textContent = "🤖 Train Agent";
+                }
+                }
+
+                function showError(msg) {
+                document.getElementById('resultsSummary').innerHTML = `<div class="error">${msg}</div>`;
+                hideElement('progressContainer');
+                }
+
+                console.log('[DASHBOARD] Calling updateConnectionStatus...');
+                updateConnectionStatus();
+                setInterval(updateConnectionStatus, 5000);
+                </script>
+</body>
+
+</html>

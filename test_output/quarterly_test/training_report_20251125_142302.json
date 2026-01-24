@@ -1,0 +1,33 @@
+{
+  "symbol": "EURUSD",
+  "start_date": "2023-01-01",
+  "end_date": "2023-03-03",
+  "trained_at": "2025-11-25T14:23:02.156052",
+  "stages": {
+    "performance_analysis": {
+      "total_trades": 206,
+      "good_trades": 61,
+      "bad_trades": 145,
+      "winrate": 0.2961165048543689
+    },
+    "pattern_mining": {
+      "edges_found": 2,
+      "mistakes_found": 2,
+      "top_edge": "Edge: exit_reason=TP_HIT | Winrate: 100.0% | Avg R: 1.71 | Support: 61 trades",
+      "top_mistake": "Mistake: bad_rr | Winrate: 0.0% | Avg Loss: $-0.49 | Support: 145 trades"
+    },
+    "meta_judge_training": {
+      "model_path": "test_output\\quarterly_test\\meta_judge_latest.joblib",
+      "auc": 1.0,
+      "accuracy": 0.7142857142857143,
+      "precision": 0.0,
+      "recall": 0.0
+    },
+    "ml_brain_finetuning": {
+      "status": "disabled"
+    },
+    "rl_brain_finetuning": {
+      "status": "disabled"
+    }
+  }
+}

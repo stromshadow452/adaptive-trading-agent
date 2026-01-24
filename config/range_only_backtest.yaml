@@ -1,0 +1,128 @@
+# config/range_only_backtest.yaml
+# ==================================
+# RANGE-ONLY Micro Strategy Configuration
+# Trades ONLY in RANGE regime with SCALPEL strategies
+# ==================================
+
+backtest:
+  name: "RANGE_SCALPEL_SHADOW"
+  description: "Trade only in RANGE regime with SCALPEL strategies"
+  mode: "shadow"  # Shadow mode for observation
+
+# Regime Filter - CRITICAL
+regime_filter:
+  enabled: true
+  allowed_regimes:
+    - "RANGE"                  # ONLY trade in RANGE
+  blocked_regimes:
+    - "TREND"
+    - "DANGER"
+  min_regime_strength: 0.6     # Require 60% confidence
+  use_exact_detection: true    # Use ExactRangeDetector
+  
+  # Exact RANGE detection parameters
+  range_detection:
+    structure_lookback: 20     # 5 hours of 15m candles
+    structure_threshold: 0.25  # Max 25% directional breaks
+    atr_compression_ratio: 0.80
+    slope_threshold: 0.0001
+    ema_period: 20
+
+# Strategy Configuration
+strategies:
+  rifle:
+    enabled: false             # DISABLED for RANGE-only
+    
+  scalpel:
+    enabled: true              # ENABLED - micro mean-reversion
+    strategies:
+      - range_micro_mr         # Mean reversion at range boundaries
+      - liquidity_sweep_fade   # Fade liquidity sweeps
+    min_edge_score: 0.60
+    max_size_pct: 0.12         # 12% max position
+    
+  sniper:
+    enabled: false             # DISABLED
+
+# Risk Management - Tight for Mean Reversion
+risk_management:
+  # Tight SL/TP for mean-reversion style
+  default_sl_atr_mult: 0.8     # SL = 0.8 × ATR (tight)
+  default_tp_atr_mult: 1.2     # TP = 1.2 × ATR → 1.5 RR
+  
+  # Position limits
+  max_position_size_pct: 0.12  # 12% of capital max
+  max_concurrent_trades: 2     # Max 2 SCALPEL trades at once
+  
+  # Daily limits
+  max_daily_trades: 5
+  max_daily_loss_pct: 1.0      # Stop trading after 1% daily loss
+  
+  # Correlation
+  max_correlated_positions: 1
+
+# MARK-2 Integration
+mark2:
+  enabled: true
+  cooldown_on_loss: true
+  min_cooldown_minutes: 15
+  max_cooldown_minutes: 45
+  pain_decay_alpha: 0.15
+  
+  # More aggressive for RANGE trades
+  danger_threshold: 2.0        # Lower threshold for RANGE
+
+# Session Gate
+session_gate:
+  enabled: true
+  preferred_sessions:
+    - "LONDON"
+    - "NEW_YORK"
+  tokyo_size_multiplier: 0.5
+  sydney_size_multiplier: 0.6
+  off_hours_block: true
+
+# Experience Reasoning Module (ERM)
+erm:
+  enabled: true
+  mode: "ACTIVE"               # Apply sizing adjustments
+  regime_separation: true      # CRITICAL: Separate RANGE/TREND memories
+  
+  # Decision thresholds
+  ignore_confidence_threshold: 0.70
+  reduce_confidence_threshold: 0.40
+  min_pattern_trades: 3
+
+# EDGE Requirements
+edge:
+  min_edge_score: 0.60
+  min_edge_tier: "B"
+  a_grade_boost: 1.2           # Boost for A-grade setups
+
+# Evaluation Metrics (Targets)
+evaluation:
+  primary_metrics:
+    win_rate:
+      target: 0.55             # > 55% win rate
+      weight: 0.3
+    profit_factor:
+      target: 1.5              # > 1.5 PF
+      weight: 0.3
+    avg_r_multiple:
+      target: 0.3              # > 0.3 R average
+      weight: 0.4
+      
+  secondary_metrics:
+    max_drawdown:
+      target: 0.05             # < 5% max DD
+    sharpe_ratio:
+      target: 2.0              # > 2.0 Sharpe
+    exposure_pct:
+      target: 0.10             # < 10% market exposure
+
+# Data Settings
+data:
+  symbols:
+    - "EURUSD"
+  timeframe: "15m"
+  lookback_days: 90            # 3 months of data

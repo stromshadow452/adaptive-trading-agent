@@ -1,0 +1,21 @@
+[
+  "close",
+  "ret",
+  "sma5",
+  "sma20",
+  "sma_ratio",
+  "sma50",
+  "sma100",
+  "sma_ratio_long",
+  "atr14",
+  "hl_range",
+  "body",
+  "ret_5",
+  "ret_20",
+  "rsi14",
+  "boll_z",
+  "atr_pct",
+  "vol_norm",
+  "hod",
+  "dow"
+]

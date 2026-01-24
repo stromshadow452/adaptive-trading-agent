@@ -1,0 +1,19 @@
+[
+    {
+        "symbol": "EURUSD",
+        "tf": "M15",
+        "side": "buy",
+        "price": 1.1000,
+        "size": 0.01,
+        "sl": 1.0950,
+        "tp": 1.1100,
+        "sl_type": "atr",
+        "decision": {
+            "final_score": 1.2,
+            "confidence": 0.55,
+            "reason": "Grey-zone test - should trigger RL fallback if RL model available"
+        },
+        "atr": 0.0015,
+        "atr14": 0.0015
+    }
+]

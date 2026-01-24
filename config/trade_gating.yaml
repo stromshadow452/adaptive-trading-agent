@@ -1,0 +1,15 @@
+# SCOPUS Trade Gating & Throttling Configuration
+
+# Meta-Gating Brain - Confidence Thresholds
+min_confidence_normal: 0.60
+min_confidence_uncertain: 0.75
+
+# Risk + Throttle Gates - Hard Trade Limits
+max_trades_per_day_per_symbol: 5
+max_trades_per_day_total: 15  # Note: Enforced per-symbol in current architecture
+min_bars_between_trades: 12   # 12 * 15m = 3 hours
+max_open_positions: 3
+
+# Loss-Streak Cooldown
+loss_streak_cooldown_trades: 3  # Number of consecutive losses to trigger cooldown
+loss_streak_cooldown_bars: 24   # Duration of cooldown in bars (24 * 15m = 6 hours)

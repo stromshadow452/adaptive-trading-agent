@@ -1,0 +1,18 @@
+{
+  "initial_equity": 10000.0,
+  "final_equity": 9900.000000000002,
+  "total_return": -0.009999999999999818,
+  "total_trades": 1,
+  "winning_trades": 0,
+  "losing_trades": 1,
+  "winrate": 0.0,
+  "max_drawdown": 0.009999999999999818,
+  "symbols": [
+    "EURUSD"
+  ],
+  "start_date": "2022-01-01",
+  "end_date": "2022-03-31",
+  "execution_time": 0.9213070869445801,
+  "candles_processed": 6041,
+  "candles_per_second": 6556.988528151187
+}

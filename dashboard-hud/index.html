@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCOPUS Trading Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">📊 SCOPUS</a>
+        <div class="navbar-links">
+            <a href="index.html" class="navbar-link active">Dashboard</a>
+            <a href="history.html" class="navbar-link">History</a>
+        </div>
+        <div class="connection-status" id="connectionStatus">Connected</div>
+    </nav>
+
+    <div class="container">
+        <h2 class="section-title">Configuration</h2>
+
+        <div class="form-group">
+            <label class="form-label">Symbol</label>
+            <select id="symbol" class="form-select">
+                <option value="EURUSD">EURUSD</option>
+                <option value="GBPUSD">GBPUSD</option>
+                <option value="USDJPY">USDJPY</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Date Range</label>
+            <div class="date-row">
+                <div class="form-group">
+                    <input type="date" id="startDate" class="form-input" value="2023-01-01">
+                </div>
+                <span>to</span>
+                <div class="form-group">
+                    <input type="date" id="endDate" class="form-input" value="2023-01-31">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Initial Capital ($)</label>
+            <input type="number" id="capital" class="form-input" value="10000">
+        </div>
+
+        <button id="runBtn" class="btn btn-primary" onclick="runBacktest()">RUN BACKTEST</button>
+        <button id="trainBtn" class="btn btn-success" onclick="runTraining()" style="display:none;">TRAIN AGENT</button>
+
+        <div id="progressContainer" class="progress-container" style="display:none;">
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+            </div>
+            <div id="progressText" class="progress-text"></div>
+        </div>
+
+        <div id="errorContainer"></div>
+
+        <div id="resultsSection" class="results-section" style="display:none;">
+            <h2 class="section-title">Performance Metrics</h2>
+            <div id="resultsSummary" class="results-grid"></div>
+        </div>
+
+        <div class="console-section">
+            <h2 class="section-title">Execution Console</h2>
+            <div id="console" class="console"></div>
+        </div>
+
+        <div id="chartSection" class="chart-section" style="display:none;">
+            <h2 class="section-title">Price Chart & Trade Markers</h2>
+            <div id="chart-container">
+                <div id="chartLoading" class="loading-overlay">Loading Chart...</div>
+            </div>
+            <h3 class="equity-title">Equity Curve</h3>
+            <div id="equity-chart"></div>
+        </div>
+    </div>
+
+    <script src="shared.js"></script>
+    <script>
+        let chart, candlestickSeries, equityChart, equitySeries;
+        let currentJobId = null;
+        let currentRunId = null;
+        let pollInterval = null;
+        let streamClient = null;  // SSE streaming client
+
+        function log(msg, type = 'info') {
+            const consoleEl = document.getElementById('console');
+
+            // Buffer limiting: keep only last 100 entries to prevent memory/paint slowdown
+            while (consoleEl.children.length > 100) {
+                consoleEl.removeChild(consoleEl.firstChild);
+            }
+
+            const time = new Date().toLocaleTimeString('en-US', { hour12: false });
+            const colorClass = type;
+            const div = document.createElement('div');
+            div.className = 'console-line';
+            div.innerHTML = `<span class="time">[${time}]</span> <span class="${colorClass}">${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span> ${msg}`;
+            consoleEl.appendChild(div);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        function initCharts() {
+            chart = LightweightCharts.createChart(document.getElementById('chart-container'), {
+                layout: { background: { color: '#fff' }, textColor: '#333' },
+                grid: { vertLines: { color: '#f0f0f0' }, horzLines: { color: '#f0f0f0' } },
+                height: 400,
+                rightPriceScale: {
+                    borderColor: '#ccc',
+                    scaleMargins: { top: 0.1, bottom: 0.1 }
+                }
+            });
+            candlestickSeries = chart.addCandlestickSeries({
+                upColor: '#26a69a',
+                downColor: '#ef5350',
+                borderVisible: false,
+                priceFormat: { type: 'price', precision: 5, minMove: 0.00001 }
+            });
+
+            equityChart = LightweightCharts.createChart(document.getElementById('equity-chart'), {
+                layout: { background: { color: '#fff' }, textColor: '#333' },
+                grid: { vertLines: { color: '#f0f0f0' }, horzLines: { color: '#f0f0f0' } },
+                height: 150
+            });
+            equitySeries = equityChart.addLineSeries({ color: '#10b981', lineWidth: 2 });
+        }
+
+        async function updateConnectionStatus() {
+            const el = document.getElementById('connectionStatus');
+            const connected = await checkConnection();
+            if (connected) {
+                el.className = 'connection-status';
+                el.textContent = 'Connected';
+            } else {
+                el.className = 'connection-status disconnected';
+                el.textContent = 'Connecting...';
+            }
+        }
+
+        async function runBacktest() {
+            const symbol = document.getElementById('symbol').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+
+            document.getElementById('runBtn').disabled = true;
+            document.getElementById('trainBtn').style.display = 'none';
+            document.getElementById('progressContainer').style.display = 'block';
+            document.getElementById('progressFill').style.width = '5%';
+            document.getElementById('progressText').textContent = 'Connecting...';
+            document.getElementById('errorContainer').innerHTML = '';
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('chartSection').style.display = 'none';
+            document.getElementById('console').innerHTML = '';
+
+            // Show progress container
+            document.getElementById('progressContainer').style.display = 'block';
+            document.getElementById('progressFill').style.width = '0%';
+            document.getElementById('progressText').innerHTML = '<strong>0%</strong> Initializing...';
+
+            // Clear progress log keys
+            for (let i = 0; i <= 100; i += 10) {
+                window[`progress_${i}`] = false;
+            }
+
+            log('Submitting streaming backtest...', 'info');
+
+            try {
+                // Load OHLCV data first
+                const ohlcv = await apiGet(`/api/ohlcv?symbol=${symbol}&from_date=${startDate}&to_date=${endDate}`);
+                log(`Price data loaded: ${ohlcv.length} candles`, 'success');
+
+                // Show chart section and initialize
+                document.getElementById('chartSection').style.display = 'block';
+                if (!chart) {
+                    initCharts();
+                }
+                candlestickSeries.setData(ohlcv);
+                chart.timeScale().fitContent();
+
+                // Submit streaming backtest
+                streamClient = await submitStreamingBacktest({
+                    symbol: symbol,
+                    start: startDate,
+                    end: endDate,
+                    capital: parseFloat(document.getElementById('capital').value) || 10000,
+                    config: 'config/mvp_v1.yaml'
+                }, {
+                    onConnected: (data) => {
+                        log(`Connected to stream: ${data.job_id}`, 'success');
+                        currentJobId = data.job_id;
+                        document.getElementById('progressText').textContent = 'Running...';
+                    },
+
+                    onLog: (data) => {
+                        // Filter out noisy messages that cause browser freeze
+                        const msg = data.message;
+                        if (msg.includes('No data') ||
+                            msg.includes('skipping') ||
+                            msg.includes('Building Registry') ||
+                            msg.includes('Still running')) {
+                            return; // Skip noisy logs
+                        }
+                        log(msg, data.level.toLowerCase());
+                    },
+
+                    onProgress: (data) => {
+                        // Use requestAnimationFrame for non-blocking DOM updates
+                        if (!window.progressRAFPending) {
+                            window.pendingProgressData = data;
+                            window.progressRAFPending = true;
+                            requestAnimationFrame(() => {
+                                const d = window.pendingProgressData;
+                                const pct = Math.min(d.percent, 99);
+                                document.getElementById('progressFill').style.width = `${pct}%`;
+                                document.getElementById('progressText').innerHTML =
+                                    `<strong>${pct.toFixed(1)}%</strong> (${d.current}/${d.total} candles)`;
+                                window.progressRAFPending = false;
+                            });
+                        } else {
+                            // Just update pending data, RAF will use latest
+                            window.pendingProgressData = data;
+                        }
+
+                        // Log progress every 10%
+                        const pct = Math.min(data.percent, 99);
+                        if (Math.floor(pct) % 10 === 0 && pct > 0) {
+                            const logKey = `progress_${Math.floor(pct)}`;
+                            if (!window[logKey]) {
+                                window[logKey] = true;
+                                log(`Progress: ${pct.toFixed(0)}% complete`, 'info');
+                            }
+                        }
+                    },
+
+                    onHeartbeat: (data) => {
+                        // Update last activity indicator (optional)
+                        console.log('[Heartbeat]', data.timestamp);
+                    },
+
+                    onResult: (data) => {
+                        currentRunId = data.job_id;
+                        document.getElementById('progressFill').style.width = '100%';
+                        document.getElementById('progressText').innerHTML = '✅ Completed!';
+                        document.getElementById('runBtn').disabled = false;
+                        document.getElementById('trainBtn').style.display = 'block';
+
+                        log(`Backtest completed: ${data.metrics.total_trades} trades`, 'success');
+                        log(`Winrate: ${(data.metrics.winrate * 100).toFixed(1)}%, P&L: $${data.metrics.total_pnl.toFixed(2)}`, 'success');
+
+                        // Display results
+                        displayResultsFromMetrics(data.metrics);
+
+                        // Use embedded trades if available (instant), fallback to API otherwise
+                        if (data.metrics.trades && data.metrics.trades.length > 0) {
+                            console.log(`[SSE] Using ${data.metrics.trades.length} embedded trades (instant)`);
+                            plotMarkers(data.metrics.trades);
+                            renderEquity(data.metrics.trades);
+                        } else {
+                            console.log('[SSE] No embedded trades, calling API');
+                            loadTrades(data.job_id);
+                        }
+                    },
+
+                    onError: (data) => {
+                        log(`Error: ${data.message}`, 'error');
+                        document.getElementById('runBtn').disabled = false;
+                        document.getElementById('progressText').innerHTML = '❌ Failed';
+                    },
+
+                    onDisconnect: () => {
+                        console.log('[SSE] Disconnected');
+                    }
+                });
+
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+                document.getElementById('runBtn').disabled = false;
+            }
+        }
+
+        function displayResultsFromMetrics(m) {
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('resultsSummary').innerHTML = `
+                <div class="result-card"><div class="result-label">Trades</div><div class="result-value">${m.total_trades || 0}</div></div>
+                <div class="result-card"><div class="result-label">Win Rate</div><div class="result-value">${((m.winrate || 0) * 100).toFixed(1)}%</div></div>
+                <div class="result-card"><div class="result-label">Total P&L</div><div class="result-value ${(m.total_pnl || 0) >= 0 ? 'positive' : 'negative'}">$${(m.total_pnl || 0).toFixed(2)}</div></div>
+                <div class="result-card"><div class="result-label">Sharpe</div><div class="result-value">${(m.sharpe_ratio || 0).toFixed(2)}</div></div>
+                <div class="result-card"><div class="result-label">Max DD</div><div class="result-value negative">${((m.max_drawdown || 0) * 100).toFixed(2)}%</div></div>
+                <div class="result-card"><div class="result-label">Profit Factor</div><div class="result-value">${(m.profit_factor || 0).toFixed(2)}</div></div>`;
+        }
+
+        function displayResults(run) {
+            const m = run.performance || run.metrics || {};
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('resultsSummary').innerHTML = `
+                <div class="result-card"><div class="result-label">Trades</div><div class="result-value">${m.total_trades || m.trades || 0}</div></div>
+                <div class="result-card"><div class="result-label">Win Rate</div><div class="result-value">${((m.winrate || 0) * 100).toFixed(1)}%</div></div>
+                <div class="result-card"><div class="result-label">Total P&L</div><div class="result-value ${(m.total_pnl || m.pnl || 0) >= 0 ? 'positive' : 'negative'}">$${(m.total_pnl || m.pnl || 0).toFixed(2)}</div></div>
+                <div class="result-card"><div class="result-label">Sharpe</div><div class="result-value">${(m.sharpe_ratio || m.sharpe || 0).toFixed(2)}</div></div>
+                <div class="result-card"><div class="result-label">Max DD</div><div class="result-value negative">${((m.max_drawdown || 0) * 100).toFixed(2)}%</div></div>
+                <div class="result-card"><div class="result-label">Profit Factor</div><div class="result-value">${(m.profit_factor || 0).toFixed(2)}</div></div>`;
+
+            log(`Results: ${m.total_trades || 0} trades, ${((m.winrate || 0) * 100).toFixed(1)}% winrate, $${(m.total_pnl || 0).toFixed(2)} P&L`, 'success');
+        }
+
+        async function loadTrades(runId) {
+            try {
+                const trades = await apiGet(`/backtests/run/${runId}/trades`);
+                log(`Loaded ${trades.length} trades`, 'info');
+                plotMarkers(trades);
+                renderEquity(trades);
+            } catch (e) {
+                log(`Error loading trades: ${e.message}`, 'error');
+            }
+        }
+
+        function plotMarkers(trades) {
+            const markers = [];
+            trades.sort((a, b) => new Date(a.timestamp_entry) - new Date(b.timestamp_entry));
+            trades.forEach(t => {
+                markers.push({
+                    time: new Date(t.timestamp_entry).getTime() / 1000,
+                    position: t.side === 'buy' ? 'belowBar' : 'aboveBar',
+                    color: t.side === 'buy' ? '#2196F3' : '#E91E63',
+                    shape: t.side === 'buy' ? 'arrowUp' : 'arrowDown',
+                    text: t.side.toUpperCase()
+                });
+                markers.push({
+                    time: new Date(t.timestamp_exit).getTime() / 1000,
+                    position: t.side === 'buy' ? 'aboveBar' : 'belowBar',
+                    color: t.pnl > 0 ? '#4CAF50' : '#F44336',
+                    shape: 'circle',
+                    text: `$${t.pnl.toFixed(0)}`
+                });
+            });
+            candlestickSeries.setMarkers(markers);
+        }
+
+        function renderEquity(trades) {
+            let equity = parseFloat(document.getElementById('capital').value) || 10000;
+            const data = [];
+            trades.sort((a, b) => new Date(a.timestamp_exit) - new Date(b.timestamp_exit));
+            trades.forEach(t => {
+                equity += t.pnl;
+                data.push({ time: new Date(t.timestamp_exit).getTime() / 1000, value: equity });
+            });
+            equitySeries.setData(data);
+            equityChart.timeScale().fitContent();
+        }
+
+        async function runTraining() {
+            if (!currentRunId) return;
+            const btn = document.getElementById('trainBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ TRAINING...';
+            log('Starting agent training...', 'info');
+
+            try {
+                await apiPost('/jobs/submit/training', {
+                    run_id: currentRunId,
+                    symbol: document.getElementById('symbol').value
+                });
+                btn.textContent = '✅ TRAINING SUBMITTED';
+                log('Training job submitted successfully!', 'success');
+            } catch (e) {
+                btn.textContent = '❌ FAILED';
+                btn.disabled = false;
+                log(`Training failed: ${e.message}`, 'error');
+            }
+        }
+
+        // Charts are initialized on-demand when section is visible
+        updateConnectionStatus();
+        setInterval(updateConnectionStatus, 5000);
+        log('Dashboard ready. Configure and click RUN BACKTEST to start.', 'info');
+    </script>
+</body>
+
+</html>

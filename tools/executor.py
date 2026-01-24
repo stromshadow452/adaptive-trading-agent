@@ -44,6 +44,16 @@ REPO_ROOT = _os_sys.path.abspath(_os_sys.path.join(_os_sys.path.dirname(__file__
 if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
 
+# --- JARVIS PROTOCOL IMPORTS ---
+try:
+    from src.risk.circuit_breaker import CircuitBreaker
+    from src.ml.registry import ModelRegistry
+    from src.agents.finrl_adapter import FinRLAdapter, load_finrl_adapter
+    import hashlib
+except ImportError:
+    pass
+# -------------------------------
+
 # Shared guards (your repo modules) - best-effort imports; fallback to safe no-ops
 try:
     from src.model_guard import load_sidecar_meta, assert_feature_names, feature_list_hash
@@ -1221,6 +1231,31 @@ def _finrl_infer_conf(finrl_model: Any, fv: List[float], verbose: bool=False) ->
         print(f"[finrl-debug] no usable FinRL method found on {type(finrl_model).__name__}")
     return None
 
+def _jarvis_guard(plan: dict, feature_names: List[str], meta: dict):
+    """JARVIS Safety Check"""
+    try:
+        # 1. Circuit Breaker
+        sym = _extract_symbol_from_plan(plan, verbose=False)
+        cb = CircuitBreaker()
+        cb.check_gate(sym)
+
+        # 2. Feature Parity
+        if meta and feature_names:
+            # Compute hash of current feature list
+            s = json.dumps(sorted(feature_names), sort_keys=True)
+            curr_hash = hashlib.sha256(s.encode()).hexdigest()
+            exp_hash = meta.get("feature_hash") or meta.get("feature_order_hash")
+            
+            if exp_hash and curr_hash != exp_hash:
+                cb.trip(sym, reason=f"Feature Parity Mismatch. Exp: {exp_hash[:8]}")
+                print(f"[JARVIS] Feature Parity Mismatch! {exp_hash[:8]} vs {curr_hash[:8]}")
+                # raise ValueError("Feature Parity Mismatch") # Soft fail for now to allow fallback? No, strict.
+                return False
+    except Exception as e:
+        print(f"[JARVIS] Guard Error: {e}")
+        return True # Fail open or closed? Closed is safer, but let's log and proceed for now if DB locked
+    return True
+
 def get_confidences(plan: dict,
                     primary_model: Optional[Any],
                     finrl_model: Optional[Any],
@@ -1234,6 +1269,11 @@ def get_confidences(plan: dict,
         built = build_feature_vector_from_csv(sym, csv_price_dirs, primary_features, verbose=verbose)
         if built is not None:
             fv, last_ts_iso = built
+
+    # --- JARVIS GUARD ---
+    if not _jarvis_guard(plan, primary_features, PRIMARY_META):
+        return 0.0, 0.0
+    # --------------------
 
     try:
         if last_ts_iso:
@@ -1287,41 +1327,80 @@ def decide_and_execute(plan: dict,
                        primary_thresh: Optional[float],
                        finrl_thresh: Optional[float],
                        grey_zone: float,
+                       primary_high: float = 0.70,
+                       primary_block: float = 0.40,
+                       rl_size_reduction: float = 0.4,
+                       finrl_adapter: Optional[Any] = None,
                        verbose: bool=False) -> Tuple[str, Optional[float], Optional[str]]:
-    primary_conf, finrl_conf = get_confidences(
+    """
+    Stage 5: RL Brain Fallback Decision Logic
+    
+    Grey-Zone Logic:
+    - primary_conf >= primary_high (0.70) → EXECUTE_PRIMARY
+    - primary_conf <= primary_block (0.40) → SKIPPED_LOW_CONF
+    - 0.40 < primary_conf < 0.70 → Try RL fallback if available
+    """
+    primary_conf, _ = get_confidences(
         plan, primary_model, finrl_model, primary_features, csv_price_dirs, verbose=verbose
     )
     sym_local = _extract_symbol_from_plan(plan, verbose=False)
 
-    p_cli_default = None if primary_thresh is None else float(primary_thresh)
-    f_cli_default = None if finrl_thresh  is None else float(finrl_thresh)
-
-    p_thresh = (float(primary_thresh)
-                if primary_thresh is not None
-                else float(get_threshold_for(sym_local, "primary_thresh", cli_default=None, default=0.58)))
-    f_thresh = (float(finrl_thresh)
-                if finrl_thresh is not None
-                else float(get_threshold_for(sym_local, "finrl_thresh",  cli_default=None, default=0.65)))
-
     if verbose:
-        print(f"[thresh] {sym_local}: resolved p={p_thresh:.3f} (cli={'set' if p_cli_default is not None else 'None'}), "
-              f"f={f_thresh:.3f} (cli={'set' if f_cli_default is not None else 'None'})")
-        print(f"decide: primary_conf={primary_conf:.3f}, finrl_conf={finrl_conf:.3f}, p_thresh={p_thresh:.3f}, f_thresh={f_thresh:.3f}, grey={grey_zone:.3f}")
+        print(f"[STAGE-5-RL] {sym_local}: primary_conf={primary_conf:.3f}, "
+              f"thresholds: high={primary_high:.2f}, block={primary_block:.2f}")
 
-    if primary_conf >= p_thresh:
-        return "EXECUTE_PRIMARY", 1.0, f"primary_conf={primary_conf:.3f} >= p_thresh={p_thresh:.3f}"
-
-    GREY = float(grey_zone)
-    if finrl_conf >= f_thresh and primary_conf >= (p_thresh - GREY):
-        return "EXECUTE_FINRL_FALLBACK", SIZE_REDUCTION_FACTOR, (
-            f"finrl_conf={finrl_conf:.3f} >= f_thresh={f_thresh:.3f} "
-            f"and primary near gate ({primary_conf:.3f} >= {p_thresh-GREY:.3f})"
+    # Decision Logic
+    if primary_conf >= primary_high:
+        # High confidence - use PRIMARY only
+        return "EXECUTE_PRIMARY", 1.0, f"primary_conf={primary_conf:.3f} >= high_thresh={primary_high:.3f}"
+    
+    elif primary_conf <= primary_block:
+        # Too low - block trade
+        return "SKIPPED_LOW_CONF", None, f"primary_conf={primary_conf:.3f} <= block_thresh={primary_block:.3f}"
+    
+    else:
+        # Grey zone: 0.40 < primary_conf < 0.70
+        # Try RL fallback if available
+        if finrl_adapter and finrl_adapter.is_available():
+            try:
+                # Build feature vector for RL
+                feature_vector = build_feature_vector_from_csv(
+                    sym_local, csv_price_dirs, primary_features, verbose=verbose
+                )
+                
+                if feature_vector is not None:
+                    fv, _ = feature_vector
+                    finrl_conf, finrl_action = finrl_adapter.predict_proba(fv)
+                    
+                    # Check RL confidence threshold
+                    rl_min_thresh = finrl_thresh if finrl_thresh is not None else 0.65
+                    
+                    if finrl_conf >= rl_min_thresh and finrl_action != 0:
+                        if verbose:
+                            print(f"[RL-FALLBACK] {sym_local}: finrl_conf={finrl_conf:.3f}, "
+                                  f"action={finrl_action}, size_reduction={rl_size_reduction}")
+                        
+                        return "EXECUTE_FINRL_FALLBACK", rl_size_reduction, (
+                            f"primary_conf={primary_conf:.3f} in grey zone, "
+                            f"finrl_conf={finrl_conf:.3f} >= {rl_min_thresh:.3f}, "
+                            f"action={finrl_action}"
+                        )
+                    else:
+                        if verbose:
+                            print(f"[RL-FALLBACK] {sym_local}: RL conf too low "
+                                  f"({finrl_conf:.3f} < {rl_min_thresh:.3f})")
+                        
+            except Exception as e:
+                if verbose:
+                    print(f"[RL-FALLBACK] {sym_local}: RL prediction failed: {e}")
+        
+        # Fallback: grey zone but RL unavailable or failed
+        return "SKIPPED_LOW_CONF", None, (
+            f"primary_conf={primary_conf:.3f} in grey zone but RL unavailable/failed"
         )
 
-    return "SKIPPED_LOW_CONF", None, f"primary_conf={primary_conf:.3f}, finrl_conf={finrl_conf:.3f}"
-
 # ------------------------- Executions CSV I/O -------------------------
-EXEC_FIELDS = ["ts","mode","symbol","tf","side","price","size","sl","tp","sl_type","status","order_id","plan_file"]
+EXEC_FIELDS = ["ts","mode","symbol","tf","side","price","size","sl","tp","sl_type","status","order_id","plan_file","decision_source","size_factor"]
 
 def read_existing_open_counts(exec_path: str) -> dict:
     counts={}
@@ -1508,7 +1587,12 @@ def main():
 
     ap.add_argument("--exclude", action="append", default=[], help="Symbol to skip (repeatable)")
     ap.add_argument("--primary_thresh", type=float, default=None, help="primary confidence threshold (0..1)")
-    ap.add_argument("--finrl_thresh", type=float, default=None, help="finrl confidence threshold (0..1)")
+    ap.add_argument("--finrl_thresh", type=float, default=None, help="finrl confidence threshold (0..1)") 
+    
+    # RL Fallback Grey-Zone Configuration
+    ap.add_argument("--primary_high_threshold", type=float, default=0.70, help="Primary conf threshold for PRIMARY-only (default 0.70)")
+    ap.add_argument("--primary_block_threshold", type=float, default=0.40, help="Primary conf threshold below which trade is blocked (default 0.40)")
+    ap.add_argument("--rl_size_reduction", type=float, default=0.4, help="Size reduction factor for RL fallback trades (default 0.4)")
 
     ap.add_argument("--model_primary_path", default="models/primary.joblib", help="path to primary model payload/joblib")
     ap.add_argument("--model_finrl_path", default=None, help="path to finrl model joblib OR directory for auto-pick")
@@ -1528,6 +1612,14 @@ def main():
 
     ap.add_argument("--stale_max_minutes", type=int, default=15, help="Max allowed age (minutes) of last-csv-bar before treating stale")
     ap.add_argument("--future_tolerance_sec", type=int, default=60, help="Allowable future timestamp tolerance in seconds")
+
+    # Ironman Features
+    ap.add_argument("--enable_meta_gating", action="store_true", help="Enable Meta-Gating Brain for regime detection")
+    ap.add_argument("--enable_portfolio_brain", action="store_true", help="Enable Portfolio Brain for correlation-aware sizing")
+    ap.add_argument("--enable_slicer", action="store_true", help="Enable Execution Slicer for large orders")
+    ap.add_argument("--slice_threshold", type=float, default=0.1, help="Size threshold for order slicing")
+    ap.add_argument("--num_slices", type=int, default=5, help="Number of slices for TWAP execution")
+    ap.add_argument("--multi_symbol", type=str, default=None, help="Comma-separated list of symbols for multi-symbol mode")
 
     args = ap.parse_args()
     _STRICT_META = bool(args.strict_meta)
@@ -1562,6 +1654,68 @@ def main():
     print(f"  features: {len(expected)}  order_hash={exp_hash}")
 
     primary_features = list(expected)
+
+    # Initialize FinRL Adapter (Stage 5: RL Brain Fallback)
+    finrl_adapter = None
+    if not args.disable_finrl and args.model_finrl_path and os.path.isfile(args.model_finrl_path):
+        try:
+            # Try to load FinRL model with JARVIS guards
+            registry = ModelRegistry(registry_path=os.path.dirname(args.model_primary_path))
+            finrl_adapter = load_finrl_adapter(
+                model_path=args.model_finrl_path,
+                registry=registry,
+                primary_meta=meta_info
+            )
+            
+            if finrl_adapter and finrl_adapter.is_available():
+                print(f"[RL-ADAPTER] FinRL fallback enabled: {args.model_finrl_path}")
+            else:
+                print(f"[RL-ADAPTER] FinRL model unavailable, fallback disabled")
+                finrl_adapter = None
+        except Exception as e:
+            print(f"[RL-ADAPTER] Failed to load FinRL adapter: {e}")
+            finrl_adapter = None
+
+    # Initialize Ironman Components (opt-in)
+    meta_brain = None
+    portfolio_brain = None
+    slicer = None
+    metrics_collector = None
+
+    if args.enable_meta_gating:
+        try:
+            from src.decision.meta_gating import create_meta_gating_brain
+            meta_brain = create_meta_gating_brain()
+            print("[IRONMAN] Meta-Gating Brain enabled")
+        except Exception as e:
+            print(f"[IRONMAN] Failed to load Meta-Gating Brain: {e}")
+
+    if args.enable_portfolio_brain:
+        try:
+            from src.risk.portfolio import create_portfolio_brain
+            portfolio_brain = create_portfolio_brain()
+            print("[IRONMAN] Portfolio Brain enabled")
+        except Exception as e:
+            print(f"[IRONMAN] Failed to load Portfolio Brain: {e}")
+
+    if args.enable_slicer:
+        try:
+            from src.execution.slicer import create_execution_slicer
+            slicer = create_execution_slicer(
+                default_spread_bps=1.0,
+                slippage_factor=0.5,
+                min_slice_size=args.slice_threshold / 10
+            )
+            print("[IRONMAN] Execution Slicer enabled")
+        except Exception as e:
+            print(f"[IRONMAN] Failed to load Execution Slicer: {e}")
+
+    # Always create metrics collector (minimal overhead)
+    try:
+        from src.utils.metrics import create_metrics_collector
+        metrics_collector = create_metrics_collector()
+    except Exception as e:
+        print(f"[IRONMAN] Failed to load Metrics Collector: {e}")
 
     if _EXPECT_TF:
         tfm = PRIMARY_META.get("timeframe") or PRIMARY_META.get("tf") or PRIMARY_META.get("tf_filter")
@@ -1813,7 +1967,12 @@ def main():
 
         decision, size_factor, reason = decide_and_execute(
             plan, primary_model, finrl_model_eff, primary_features, args.csv_price_dir,
-            args.primary_thresh, args.finrl_thresh, args.grey_zone, verbose=args.verbose
+            args.primary_thresh, args.finrl_thresh, args.grey_zone,
+            primary_high=args.primary_high_threshold,
+            primary_block=args.primary_block_threshold,
+            rl_size_reduction=args.rl_size_reduction,
+            finrl_adapter=finrl_adapter,
+            verbose=args.verbose
         )
         if decision.startswith("SKIPPED"):
             if args.verbose: print(f"SKIP {sym}: {reason}")
@@ -1830,6 +1989,8 @@ def main():
             "tp": "" if tp is None else f"{float(tp):.8f}",
             "sl_type": sltype, "status": "OPEN", "order_id": order_id,
             "plan_file": globals().get("plan", {}).get("_plan_path") or (args.approved or args.plans),
+            "decision_source": decision,  # NEW: "EXECUTE_PRIMARY" or "EXECUTE_FINRL_FALLBACK"
+            "size_factor": f"{size_factor:.2f}" if size_factor else "1.00",  # NEW
         }
 
         if globals().get("plan", {}).get("_bar_ts_iso"):

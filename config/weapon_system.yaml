@@ -1,0 +1,44 @@
+# ============================================================================
+# WEAPON SYSTEM CONFIGURATION
+# ============================================================================
+# Controls the strategy routing system for MARK-3.3 shadow run.
+# 
+# WARNING: SNIPER must remain DISABLED until MARK-4 validation complete.
+# ============================================================================
+
+enabled: true                      # Master switch for weapon system
+shadow_mode: true                  # Log only, observe behavior
+
+# Strategy class controls
+enable_rifle: true                 # Primary ML-driven strategy
+enable_micro_strategies: true      # SCALPEL strategies (micro trades)
+enable_sniper: false               # A-grade boost - DISABLED
+
+# Safety caps
+max_scalpel_size: 0.15             # Never exceed 15%
+max_concurrent_micro: 1            # One micro trade at a time
+
+# Logging
+log_all_decisions: true            # Log every routing decision
+log_format: jsonl                  # csv or jsonl
+log_path: logs/weapon_system
+
+# Strategy-specific settings
+strategies:
+  range_micro_mr:
+    enabled: true
+    min_edge_tier: C
+    max_regime_strength: 0.75
+    
+  liquidity_sweep_fade:
+    enabled: true
+    min_edge_tier: C
+    max_regime_strength: 0.65
+
+# Retirement thresholds
+retirement:
+  min_trades: 20
+  min_win_rate: 0.40
+  min_avg_r: 0.05
+  max_consecutive_loss: 6
+  cooldown_hours: 48

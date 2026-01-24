@@ -1,0 +1,41 @@
+{
+  "generated_at": "2025-11-25T14:23:02.278407",
+  "total_mistakes": 2,
+  "mistakes": [
+    {
+      "pattern_type": "error_type",
+      "error_type": "bad_rr",
+      "condition": "error_type == 'bad_rr'",
+      "stats": {
+        "support": 145,
+        "winrate": 0.0,
+        "avg_pnl": -0.4878241379310493,
+        "total_pnl": -70.73450000000214,
+        "avg_r_multiple": -0.993103448275862,
+        "max_r_multiple": 0.0,
+        "min_r_multiple": -1.0,
+        "std_pnl": 0.30460252180227704
+      },
+      "description": "Mistake: bad_rr | Winrate: 0.0% | Avg Loss: $-0.49 | Support: 145 trades"
+    },
+    {
+      "pattern_type": "multi_dim",
+      "dimensions": {
+        "error_type": "bad_rr",
+        "regime": "RANGE"
+      },
+      "condition": "error_type == 'bad_rr' AND regime == 'RANGE'",
+      "stats": {
+        "support": 145,
+        "winrate": 0.0,
+        "avg_pnl": -0.4878241379310493,
+        "total_pnl": -70.73450000000214,
+        "avg_r_multiple": -0.993103448275862,
+        "max_r_multiple": 0.0,
+        "min_r_multiple": -1.0,
+        "std_pnl": 0.30460252180227704
+      },
+      "description": "bad_rr in RANGE regime: 0.0% winrate, $-0.49 avg loss"
+    }
+  ]
+}

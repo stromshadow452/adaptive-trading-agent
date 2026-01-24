@@ -1,0 +1,40 @@
+{
+  "generated_at": "2025-11-25T14:23:02.278407",
+  "total_edges": 2,
+  "edges": [
+    {
+      "pattern_type": "single_dim",
+      "dimension": "exit_reason",
+      "value": "TP_HIT",
+      "condition": "exit_reason == 'TP_HIT'",
+      "stats": {
+        "support": 61,
+        "winrate": 1.0,
+        "avg_pnl": 0.9617564402810623,
+        "total_pnl": 58.6671428571448,
+        "avg_r_multiple": 1.7142857142856427,
+        "max_r_multiple": 1.714285714286404,
+        "min_r_multiple": 1.7142857142847734,
+        "std_pnl": 0.7354008557253419
+      },
+      "description": "Edge: exit_reason=TP_HIT | Winrate: 100.0% | Avg R: 1.71 | Support: 61 trades"
+    },
+    {
+      "pattern_type": "single_dim",
+      "dimension": "error_type",
+      "value": "none",
+      "condition": "error_type == 'none'",
+      "stats": {
+        "support": 61,
+        "winrate": 1.0,
+        "avg_pnl": 0.9617564402810623,
+        "total_pnl": 58.6671428571448,
+        "avg_r_multiple": 1.7142857142856427,
+        "max_r_multiple": 1.714285714286404,
+        "min_r_multiple": 1.7142857142847734,
+        "std_pnl": 0.7354008557253419
+      },
+      "description": "Edge: error_type=none | Winrate: 100.0% | Avg R: 1.71 | Support: 61 trades"
+    }
+  ]
+}

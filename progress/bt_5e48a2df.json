@@ -1,0 +1,9 @@
+{
+  "job_id": "bt_5e48a2df",
+  "status": "completed",
+  "progress_pct": 100,
+  "elapsed_sec": 548.2,
+  "eta_sec": 0,
+  "current_step": "Backtest completed successfully",
+  "timestamp": "2025-11-26T17:39:56.267189Z"
+}

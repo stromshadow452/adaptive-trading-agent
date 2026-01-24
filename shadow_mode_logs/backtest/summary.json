@@ -1,0 +1,53 @@
+{
+  "start_date": "2022-03-02T00:00:00+00:00",
+  "end_date": "2022-04-05T00:00:00+00:00",
+  "symbols": [
+    "EURUSD"
+  ],
+  "initial_capital": 10000.0,
+  "final_equity": 10000.615846434976,
+  "total_trades": 3,
+  "winning_trades": 3,
+  "losing_trades": 0,
+  "winrate": 1.0,
+  "total_return": 6.158464349755377e-05,
+  "max_drawdown": 3.380340262083337e-07,
+  "sharpe_ratio": 14.36635944317992,
+  "sortino_ratio": 0.0,
+  "profit_factor": 0.0,
+  "avg_r_multiple": 1.2380952380951522,
+  "avg_trade_duration_minutes": 25.0,
+  "exposure_pct": 0.0021767522855899,
+  "regime_breakdown": {
+    "RANGE": {
+      "trades": 1,
+      "wins": 1,
+      "total_pnl": 0.035735025622320636,
+      "winrate": 1.0,
+      "avg_pnl": 0.035735025622320636
+    },
+    "DANGER": {
+      "trades": 2,
+      "wins": 2,
+      "total_pnl": 0.5801114093538857,
+      "winrate": 1.0,
+      "avg_pnl": 0.29005570467694286
+    }
+  },
+  "decision_source_breakdown": {
+    "PRIMARY": {
+      "trades": 3,
+      "wins": 3,
+      "total_pnl": 0.6158464349762064,
+      "winrate": 1.0,
+      "avg_pnl": 0.2052821449920688
+    }
+  },
+  "execution_time": 2305.008893251419,
+  "config": {
+    "enable_meta_gating": false,
+    "enable_portfolio_brain": false,
+    "enable_slicer": false,
+    "enable_rl_fallback": false
+  }
+}

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCOPUS Dashboard Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #EF4444;
+        }
+
+        .status.connected .status-dot {
+            background: #10B981;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>SCOPUS API Test</h1>
+
+    <div class="status" id="connectionStatus">
+        <div class="status-dot"></div>
+        <span>Connecting...</span>
+    </div>
+
+    <button onclick="testOHLCV()">Test OHLCV Endpoint</button>
+    <button onclick="testHistory()">Test History Endpoint</button>
+
+    <div id="result"></div>
+
+    <script>
+        const API_BASE = "http://127.0.0.1:8000";
+
+        async function checkConnection() {
+            const statusEl = document.getElementById("connectionStatus");
+            const dot = statusEl.querySelector(".status-dot");
+            const span = statusEl.querySelector("span");
+
+            try {
+                console.log("[health] Checking connection...");
+                const res = await fetch(`${API_BASE}/backtests/history?limit=1`);
+                console.log("[health] Response:", res.status, res.ok);
+
+                if (res.ok) {
+                    statusEl.classList.add("connected");
+                    span.textContent = "Connected";
+                    dot.style.background = "#10B981";
+                } else {
+                    statusEl.classList.remove("connected");
+                    span.textContent = `Error ${res.status}`;
+                    dot.style.background = "#EF4444";
+                }
+            } catch (err) {
+                console.error("[health] Failed:", err);
+                statusEl.classList.remove("connected");
+                span.textContent = "Disconnected";
+                dot.style.background = "#EF4444";
+            }
+        }
+
+        async function testOHLCV() {
+            const resultEl = document.getElementById("result");
+            resultEl.innerHTML = "Testing OHLCV endpoint...";
+
+            try {
+                const url = `${API_BASE}/api/ohlcv?symbol=EURUSD&from_date=2023-01-01&to_date=2023-01-07`;
+                console.log("[test] Fetching:", url);
+
+                const res = await fetch(url);
+                const data = await res.json();
+
+                if (res.ok) {
+                    resultEl.innerHTML = `<strong>✅ OHLCV Success!</strong><br>
+                        Status: ${res.status}<br>
+                        Candles: ${data.length}<br>
+                        First: ${JSON.stringify(data[0])}`;
+                } else {
+                    resultEl.innerHTML = `<strong>❌ OHLCV Failed</strong><br>
+                        Status: ${res.status}<br>
+                        Error: ${JSON.stringify(data)}`;
+                }
+            } catch (err) {
+                resultEl.innerHTML = `<strong>❌ Error:</strong> ${err.message}`;
+            }
+        }
+
+        async function testHistory() {
+            const resultEl = document.getElementById("result");
+            resultEl.innerHTML = "Testing History endpoint...";
+
+            try {
+                const url = `${API_BASE}/backtests/history?limit=3`;
+                console.log("[test] Fetching:", url);
+
+                const res = await fetch(url);
+                const data = await res.json();
+
+                if (res.ok) {
+                    resultEl.innerHTML = `<strong>✅ History Success!</strong><br>
+                        Status: ${res.status}<br>
+                        Runs: ${data.runs.length}<br>
+                        First run: ${data.runs[0]?.run_id || 'none'}<br>
+                        Has performance: ${!!data.runs[0]?.performance}<br>
+                        Has metrics: ${!!data.runs[0]?.metrics}`;
+                } else {
+                    resultEl.innerHTML = `<strong>❌ History Failed</strong><br>
+                        Status: ${res.status}<br>
+                        Error: ${JSON.stringify(data)}`;
+                }
+            } catch (err) {
+                resultEl.innerHTML = `<strong>❌ Error:</strong> ${err.message}`;
+            }
+        }
+
+        // Run connection check on load and every 5 seconds
+        console.log("[init] Starting connection check...");
+        checkConnection();
+        setInterval(checkConnection, 5000);
+    </script>
+</body>
+
+</html>

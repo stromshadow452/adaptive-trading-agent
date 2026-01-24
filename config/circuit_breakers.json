@@ -1,0 +1,15 @@
+{
+  "global_trip": false,
+  "symbols": {
+    "EURUSD": {
+      "tripped": true,
+      "reset_time": 1763664866.4684467,
+      "reason": "Test circuit breaker"
+    },
+    "UNKNOWN": {
+      "tripped": false,
+      "reset_time": 1763649657.0660496,
+      "reason": "Feature Parity Mismatch. Exp: sha256:5"
+    }
+  }
+}

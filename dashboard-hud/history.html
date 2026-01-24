@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCOPUS History</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">📊 SCOPUS</a>
+        <div class="navbar-links">
+            <a href="index.html" class="navbar-link">Dashboard</a>
+            <a href="history.html" class="navbar-link active">History</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>Run History</h1>
+            <div class="status" id="connectionStatus">
+                <div class="status-dot"></div>
+                <span>Connecting...</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('backtest')">Backtests</button>
+                <button class="tab" onclick="switchTab('training')">Training</button>
+            </div>
+
+            <div id="backtestTab" class="tab-content active">
+                <div class="filters">
+                    <div class="filter-group">
+                        <label class="filter-label">Symbol</label>
+                        <select id="btSymbol" class="filter-select">
+                            <option value="">All</option>
+                            <option value="EURUSD">EURUSD</option>
+                            <option value="GBPUSD">GBPUSD</option>
+                            <option value="USDJPY">USDJPY</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">From</label>
+                        <input type="date" id="btFrom" class="filter-input">
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">To</label>
+                        <input type="date" id="btTo" class="filter-input">
+                    </div>
+                    <div class="filter-group" style="display:flex;align-items:flex-end;">
+                        <button class="btn" onclick="loadBacktests()">Apply</button>
+                    </div>
+                </div>
+                <div id="btTable"></div>
+            </div>
+
+            <div id="trainingTab" class="tab-content">
+                <div class="filters">
+                    <div class="filter-group">
+                        <label class="filter-label">Symbol</label>
+                        <select id="trSymbol" class="filter-select">
+                            <option value="">All</option>
+                            <option value="EURUSD">EURUSD</option>
+                            <option value="GBPUSD">GBPUSD</option>
+                            <option value="USDJPY">USDJPY</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">From</label>
+                        <input type="date" id="trFrom" class="filter-input">
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">To</label>
+                        <input type="date" id="trTo" class="filter-input">
+                    </div>
+                    <div class="filter-group" style="display:flex;align-items:flex-end;">
+                        <button class="btn" onclick="loadTraining()">Apply</button>
+                    </div>
+                </div>
+                <div id="trTable"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="detailCard" class="detail-card">
+        <div class="detail-header">
+            <div class="detail-title" id="detailTitle">Details</div>
+            <button class="close-btn" onclick="closeDetail()">×</button>
+        </div>
+        <div id="detailContent"></div>
+    </div>
+
+    <script src="shared.js"></script>
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            if (tab === 'backtest') {
+                document.querySelectorAll('.tab')[0].classList.add('active');
+                document.getElementById('backtestTab').classList.add('active');
+                loadBacktests();
+            } else {
+                document.querySelectorAll('.tab')[1].classList.add('active');
+                document.getElementById('trainingTab').classList.add('active');
+                loadTraining();
+            }
+            closeDetail();
+        }
+
+        async function loadBacktests() {
+            const container = document.getElementById('btTable');
+            container.innerHTML = '<div class="empty-state">Loading...</div>';
+            try {
+                const data = await apiGet('/backtests/history?limit=100');
+                if (!data.runs || data.runs.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div>No backtests found</div>';
+                    return;
+                }
+                container.innerHTML = `
+                    <table class="history-table">
+                        <thead><tr><th>Time</th><th>Symbol</th><th>Period</th><th>Trades</th><th>Winrate</th><th>P&L</th><th>Max DD</th><th>Sharpe</th><th>Flags</th></tr></thead>
+                        <tbody>${data.runs.map(r => {
+                    const m = r.performance || r.metrics || {};
+                    return `<tr onclick="showBacktestDetail('${r.run_id}')">
+                                <td>${formatDateTime(r.created_at)}</td>
+                                <td><strong>${r.symbol}</strong></td>
+                                <td>${r.start_date} → ${r.end_date}</td>
+                                <td>${m.total_trades || m.trades || 0}</td>
+                                <td>${((m.winrate || 0) * 100).toFixed(1)}%</td>
+                                <td style="color:${(m.total_pnl || m.pnl || 0) >= 0 ? '#059669' : '#dc2626'}">$${(m.total_pnl || m.pnl || 0).toFixed(2)}</td>
+                                <td>${((m.max_drawdown || 0) * 100).toFixed(2)}%</td>
+                                <td>${(m.sharpe_ratio || m.sharpe || 0).toFixed(2)}</td>
+                                <td>${r.config_flags?.use_meta_judge ? '<span class="badge meta">META</span>' : ''}${r.config_flags?.use_finrl ? '<span class="badge finrl">FINRL</span>' : ''}</td>
+                            </tr>`;
+                }).join('')}</tbody>
+                    </table>`;
+            } catch (e) {
+                container.innerHTML = `<div class="error">Error: ${e.message}</div>`;
+            }
+        }
+
+        async function loadTraining() {
+            const container = document.getElementById('trTable');
+            container.innerHTML = '<div class="empty-state">Loading...</div>';
+            try {
+                const data = await apiGet('/training/history?limit=50');
+                if (!data.runs || data.runs.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div>No training runs found</div>';
+                    return;
+                }
+                container.innerHTML = `
+                    <table class="history-table">
+                        <thead><tr><th>Time</th><th>Symbol</th><th>Period</th><th>Trades</th><th>Edges</th><th>Mistakes</th><th>Meta AUC</th><th>Accuracy</th></tr></thead>
+                        <tbody>${data.runs.map(r => `<tr onclick="showTrainingDetail('${r.training_id}')">
+                            <td>${formatDateTime(r.created_at)}</td>
+                            <td><strong>${r.symbol}</strong></td>
+                            <td>${r.period_from} → ${r.period_to}</td>
+                            <td>${r.total_trades || 0}</td>
+                            <td>${r.edges_found || 0}</td>
+                            <td>${r.mistakes_found || 0}</td>
+                            <td>${(r.meta_auc || 0).toFixed(3)}</td>
+                            <td>${((r.accuracy || 0) * 100).toFixed(1)}%</td>
+                        </tr>`).join('')}</tbody>
+                    </table>`;
+            } catch (e) {
+                container.innerHTML = `<div class="error">Error: ${e.message}</div>`;
+            }
+        }
+
+        async function showBacktestDetail(runId) {
+            try {
+                const run = await apiGet(`/backtests/run/${runId}`);
+                const m = run.performance || run.metrics || {};
+                document.getElementById('detailTitle').textContent = `Backtest: ${run.symbol}`;
+                document.getElementById('detailContent').innerHTML = `
+                    <div class="detail-section">
+                        <div class="detail-section-title">Run Info</div>
+                        <div class="detail-grid">
+                            <div class="detail-item"><div class="detail-item-label">Run ID</div><div class="detail-item-value" style="font-size:10px">${run.run_id}</div></div>
+                            <div class="detail-item"><div class="detail-item-label">Symbol</div><div class="detail-item-value">${run.symbol}</div></div>
+                            <div class="detail-item"><div class="detail-item-label">Start</div><div class="detail-item-value">${run.start_date}</div></div>
+                            <div class="detail-item"><div class="detail-item-label">End</div><div class="detail-item-value">${run.end_date}</div></div>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-section-title">Performance</div>
+                        <div class="detail-grid">
+                            <div class="detail-item"><div class="detail-item-label">Trades</div><div class="detail-item-value">${m.total_trades || m.trades || 0}</div></div>
+                            <div class="detail-item"><div class="detail-item-label">Winrate</div><div class="detail-item-value">${((m.winrate || 0) * 100).toFixed(1)}%</div></div>
+                            <div class="detail-item"><div class="detail-item-label">P&L</div><div class="detail-item-value">$${(m.total_pnl || m.pnl || 0).toFixed(2)}</div></div>
+                            <div class="detail-item"><div class="detail-item-label">Sharpe</div><div class="detail-item-value">${(m.sharpe_ratio || m.sharpe || 0).toFixed(2)}</div></div>
+                            <div class="detail-item"><div class="detail-item-label">Max DD</div><div class="detail-item-value">${((m.max_drawdown || 0) * 100).toFixed(2)}%</div></div>
+                            <div class="detail-item"><div class="detail-item-label">Profit Factor</div><div class="detail-item-value">${(m.profit_factor || 0).toFixed(2)}</div></div>
+                        </div>
+                    </div>`;
+                document.getElementById('detailCard').classList.add('show');
+            } catch (e) {
+                console.error('Detail error:', e);
+            }
+        }
+
+        async function showTrainingDetail(trainingId) {
+            try {
+                const run = await apiGet(`/training/run/${trainingId}`);
+                document.getElementById('detailTitle').textContent = `Training: ${run.symbol}`;
+                document.getElementById('detailContent').innerHTML = `
+                    <div class="detail-section">
+                        <div class="detail-section-title">Training Info</div>
+                        <div class="detail-grid">
+                            <div class="detail-item"><div class="detail-item-label">ID</div><div class="detail-item-value" style="font-size:10px">${run.training_id}</div></div>
+                            <div class="detail-item"><div class="detail-item-label">Symbol</div><div class="detail-item-value">${run.symbol}</div></div>
+                            <div class="detail-item"><div class="detail-item-label">Period</div><div class="detail-item-value">${run.period_from} → ${run.period_to}</div></div>
+                            <div class="detail-item"><div class="detail-item-label">Status</div><div class="detail-item-value">${run.status}</div></div>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-section-title">Results</div>
+                        <div class="detail-grid">
+                            <div class="detail-item"><div class="detail-item-label">Total Trades</div><div class="detail-item-value">${run.total_trades || 0}</div></div>
+                            <div class="detail-item"><div class="detail-item-label">Edges Found</div><div class="detail-item-value">${run.edges_found || 0}</div></div>
+                            <div class="detail-item"><div class="detail-item-label">Mistakes Found</div><div class="detail-item-value">${run.mistakes_found || 0}</div></div>
+                            <div class="detail-item"><div class="detail-item-label">Meta AUC</div><div class="detail-item-value">${(run.meta_auc || 0).toFixed(3)}</div></div>
+                        </div>
+                    </div>`;
+                document.getElementById('detailCard').classList.add('show');
+            } catch (e) {
+                console.error('Detail error:', e);
+            }
+        }
+
+        function closeDetail() {
+            document.getElementById('detailCard').classList.remove('show');
+        }
+
+        async function updateConnectionStatus() {
+            const el = document.getElementById('connectionStatus');
+            const connected = await checkConnection();
+            if (connected) {
+                el.className = 'status';
+                el.innerHTML = '<div class="status-dot"></div><span>Connected</span>';
+            } else {
+                el.className = 'status disconnected';
+                el.innerHTML = '<div class="status-dot"></div><span>Disconnected</span>';
+            }
+        }
+
+        loadBacktests();
+        updateConnectionStatus();
+        setInterval(updateConnectionStatus, 5000);
+    </script>
+</body>
+
+</html>
