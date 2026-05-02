@@ -1,11 +1,20 @@
-import lightgbm as lgb
-import optuna
 import joblib
 import json
 import hashlib
 import hmac
 import os
 from datetime import datetime
+
+try:
+    import lightgbm as lgb
+except ImportError:
+    lgb = None  # type: ignore
+
+try:
+    import optuna
+except ImportError:
+    optuna = None  # type: ignore
+
 
 MODEL_HMAC_KEY = os.environ.get("MODEL_HMAC_KEY", "dev_key_do_not_use_in_prod").encode()
 

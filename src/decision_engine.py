@@ -1778,9 +1778,14 @@ def decide_and_execute(plan: Dict[str, Any],
 
         else:
 
-            LOG.info("SKIP: primary_conf=%.3f finrl_conf=%.3f thresholds (%.3f, %.3f)", primary_conf, finrl_conf, primary_conf_threshold, finrl_conf_threshold)
+            # Soft gating: allow low confidence with reduced size instead of hard skip
+            LOG.info("SOFT_GATE: primary_conf=%.3f finrl_conf=%.3f thresholds (%.3f, %.3f) - reducing size by 50%%", primary_conf, finrl_conf, primary_conf_threshold, finrl_conf_threshold)
 
-            return ExecResult(status="SKIPPED_LOW_CONF", reason=f"primary={primary_conf:.3f},finrl={finrl_conf:.3f}", size=0.0, sl=None, tp=None)
+            final_conf = primary_conf * 0.5  # Reduce confidence weighting
+
+            size = size * 0.5  # 50% size for low confidence
+
+            decision_tag = "EXECUTE_SOFT_GATED"
 
 
 

@@ -127,7 +127,7 @@ class RiskBrainV1:
         # Regime multipliers for SL/TP width
         self.regime_multipliers = config.get('regime_multipliers', {
             'TREND': {'sl': 1.0, 'tp': 1.5},
-            'RANGE': {'sl': 0.7, 'tp': 0.8},
+            'RANGE': {'sl': 0.7, 'tp': 1.0},  # Keep TP at 1.5R even in RANGE
             'DANGER': {'sl': 0.5, 'tp': 0.5},
             'UNCERTAIN': {'sl': 0.8, 'tp': 0.9}
         })

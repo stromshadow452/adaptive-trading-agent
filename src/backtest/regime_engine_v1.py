@@ -47,8 +47,12 @@ class RegimeEngineV1:
         # Base thresholds (adjusted by volatility level)
         self.base_trend_threshold = config.get('trend_threshold', 0.015)
         self.base_range_threshold = config.get('range_threshold', 0.02)
-        self.danger_threshold = config.get('danger_threshold', 2.5)
-        self.vol_change_danger = config.get('vol_change_danger', 0.5)
+        self.danger_threshold = config.get('danger_threshold', 3.2)
+        self.vol_change_danger = config.get('vol_change_danger', 0.9)
+        self.extreme_adx_threshold = config.get('extreme_adx_threshold', 40.0)
+        self.extreme_atr_pctile = config.get('extreme_atr_pctile', 0.95)
+        self.danger_instability_bb_mult = config.get('danger_instability_bb_mult', 1.5)
+        self.max_danger_bars = config.get('max_danger_bars', 10)
         
         # Hysteresis to prevent flipping
         self.hysteresis_buffer = config.get('hysteresis_buffer', 0.2)
@@ -56,8 +60,11 @@ class RegimeEngineV1:
         # State
         self.current_regime = 'UNKNOWN'
         self.current_confidence = 0.0
+        self.current_reason = 'UNKNOWN'
         self.prev_atr = None
         self.atr_history = []
+        self.danger_bar_count = 0
+        self.last_danger_reason = None
         
         # Exact RANGE detector (optional enhancement)
         self.use_exact_range = config.get('use_exact_range', False)
@@ -103,14 +110,45 @@ class RegimeEngineV1:
         atr_zscore = self._compute_atr_zscore(features)
         bb_width = features.get('bb_width', 0)
         
+        adx_val = features.get('adx_14', features.get('M5_adx_14', features.get('adx14', 0.0)))
+        atr_pctile = features.get('atr_pctile', features.get('M5_atr_pctile', 0.5))
+
+        adx_val = float(adx_val)
+        atr_pctile = float(atr_pctile)
+
+        # === HARD ADX HIERARCHY (non-bypassable) ===
+        if adx_val >= 30.0:
+            regime = 'TREND'
+            confidence = min(1.0, max(0.6, adx_val / 40.0))
+            reason = 'ADX_HARD_TREND'
+            self.current_regime = regime
+            self.current_confidence = confidence
+            self.current_reason = reason
+            if adaptive_state:
+                adaptive_state.update_regime(regime)
+            return regime, confidence
+
+        if adx_val <= 20.0:
+            regime = 'RANGE'
+            confidence = min(1.0, max(0.6, (20.0 - adx_val) / 20.0 + 0.6))
+            reason = 'ADX_HARD_RANGE'
+            self.current_regime = regime
+            self.current_confidence = confidence
+            self.current_reason = reason
+            if adaptive_state:
+                adaptive_state.update_regime(regime)
+            return regime, confidence
+
         # === ADAPTIVE CLASSIFICATION ===
-        regime, confidence = self._classify_adaptive(
+        regime, confidence, reason = self._classify_adaptive(
             kalman_slope=kalman_slope,
             bb_width=bb_width,
             atr_zscore=atr_zscore,
             vol_level=vol_level,
             vol_change=vol_change,
-            vol_percentile=vol_percentile
+            vol_percentile=vol_percentile,
+            adx_val=adx_val,
+            atr_pctile=atr_pctile,
         )
         
         # === LEARNING MODE: Soft DANGER handling ===
@@ -124,10 +162,30 @@ class RegimeEngineV1:
         
         # Apply hysteresis
         regime = self._apply_hysteresis(regime, confidence)
-        
+
+        if regime == 'DANGER':
+            if self.current_regime == 'DANGER':
+                self.danger_bar_count += 1
+            else:
+                self.danger_bar_count = 1
+            self.last_danger_reason = reason
+
+            if self.danger_bar_count > self.max_danger_bars:
+                logger.info("DANGER timeout reached (%s bars) -> downgrade to NEUTRAL", self.max_danger_bars)
+                regime = 'NEUTRAL'
+                confidence = 0.35
+                reason = 'danger_timeout_neutral'
+                self.danger_bar_count = 0
+                self.last_danger_reason = reason
+        else:
+            self.danger_bar_count = 0
+            if regime != 'UNKNOWN':
+                self.last_danger_reason = None
+
         # Update state
         self.current_regime = regime
         self.current_confidence = confidence
+        self.current_reason = reason
         
         # Update AdaptiveState if provided
         if adaptive_state:
@@ -142,24 +200,44 @@ class RegimeEngineV1:
         atr_zscore: float,
         vol_level: str,
         vol_change: float,
-        vol_percentile: float
-    ) -> Tuple[str, float]:
+        vol_percentile: float,
+        adx_val: float,
+        atr_pctile: float,
+    ) -> Tuple[str, float, str]:
         """
         Classify regime with adaptive thresholds.
         
         Priority: DANGER > TREND > RANGE
         """
         # === DANGER Detection (Priority 1) ===
-        # DANGER = extreme volatility OR rapid volatility increase
-        if atr_zscore > self.danger_threshold:
-            confidence = min(1.0, atr_zscore / self.danger_threshold)
-            logger.debug(f"DANGER: ATR zscore {atr_zscore:.2f} > {self.danger_threshold}")
-            return 'DANGER', confidence
-        
-        if vol_change > self.vol_change_danger:
-            confidence = min(1.0, vol_change / self.vol_change_danger)
-            logger.debug(f"DANGER: Vol change {vol_change:.2f} > {self.vol_change_danger}")
-            return 'DANGER', confidence
+        # DANGER requires stronger confirmation to avoid over-defensive paralysis.
+        vol_spike = atr_zscore > self.danger_threshold
+        rapid_vol_expansion = vol_change > self.vol_change_danger
+        regime_instability = (
+            vol_percentile > 0.80
+            and bb_width > (self.base_range_threshold * self.danger_instability_bb_mult)
+            and abs(kalman_slope) < (self.base_trend_threshold * 1.2)
+        )
+        extreme_trend_vol = adx_val > self.extreme_adx_threshold and atr_pctile > self.extreme_atr_pctile
+
+        if (vol_spike and regime_instability) or (rapid_vol_expansion and regime_instability):
+            trigger_strength = max(
+                atr_zscore / max(self.danger_threshold, 1e-6),
+                vol_change / max(self.vol_change_danger, 1e-6),
+            )
+            confidence = min(1.0, trigger_strength)
+            reason = (
+                f"danger_confirmed: vol_spike={vol_spike} "
+                f"vol_change={vol_change:.2f} instability={regime_instability}"
+            )
+            logger.debug("DANGER: %s", reason)
+            return 'DANGER', confidence, reason
+
+        if extreme_trend_vol:
+            confidence = min(1.0, max(adx_val / self.extreme_adx_threshold, atr_pctile / self.extreme_atr_pctile) - 0.5)
+            reason = f"danger_extreme_combo: adx={adx_val:.2f} atr_pctile={atr_pctile:.2f}"
+            logger.debug("DANGER: %s", reason)
+            return 'DANGER', confidence, reason
         
         # === Adaptive Trend Threshold ===
         # Lower threshold in low vol (clearer signals), higher in high vol
@@ -172,19 +250,19 @@ class RegimeEngineV1:
         # === TREND Detection ===
         if abs(kalman_slope) > trend_thresh:
             confidence = min(1.0, abs(kalman_slope) / trend_thresh)
-            return 'TREND', confidence
+            return 'TREND', confidence, 'trend_strength'
         
         # === RANGE Detection ===
         # Clearer in low volatility
         if vol_level == 'LOW' and abs(kalman_slope) < 0.008:
-            return 'RANGE', 0.75
-        
+            return 'RANGE', 0.75, 'low_vol_range'
+
         if bb_width < self.base_range_threshold and bb_width > 0:
             confidence = 1.0 - (bb_width / self.base_range_threshold)
-            return 'RANGE', max(0.5, confidence)
-        
-        # === Default: RANGE with medium confidence ===
-        return 'RANGE', 0.5
+            return 'RANGE', max(0.5, confidence), 'compressed_range'
+
+        # === Default: NEUTRAL with medium confidence ===
+        return 'NEUTRAL', 0.5, 'neutral_default'
     
     def _compute_slope(self, features: pd.Series) -> float:
         """Compute trend slope from SMAs (fallback if no Kalman)"""
@@ -264,4 +342,7 @@ class RegimeEngineV1:
         return {
             'regime': self.current_regime,
             'confidence': self.current_confidence,
+            'regime_reason': self.current_reason,
+            'danger_reason': self.last_danger_reason,
+            'danger_duration_bars': self.danger_bar_count,
         }

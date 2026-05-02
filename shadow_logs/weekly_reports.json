@@ -1,0 +1,169 @@
+[
+  {
+    "week_number": 1,
+    "start_date": "2023-06-01",
+    "end_date": "2023-06-07",
+    "per_asset": {
+      "EURJPY": {
+        "trades": 22,
+        "pf": 1.38,
+        "wr": 54.5
+      },
+      "AUDUSD": {
+        "trades": 8,
+        "pf": 2.78,
+        "wr": 62.5
+      }
+    },
+    "combined_pf": 1.72,
+    "combined_dd": 0.03,
+    "combined_wr": 56.7,
+    "max_consecutive_losses": 2,
+    "total_trades": 30,
+    "kill_triggered": false,
+    "pause_assets": [],
+    "go_nogo_status": {
+      "pf_pass": "True",
+      "dd_pass": "True",
+      "wr_pass": true,
+      "streak_pass": true
+    }
+  },
+  {
+    "week_number": 2,
+    "start_date": "2023-06-08",
+    "end_date": "2023-06-14",
+    "per_asset": {
+      "EURJPY": {
+        "trades": 32,
+        "pf": 0.44,
+        "wr": 18.8
+      },
+      "AUDUSD": {
+        "trades": 33,
+        "pf": 2.53,
+        "wr": 54.5
+      }
+    },
+    "combined_pf": 1.44,
+    "combined_dd": 4.64,
+    "combined_wr": 36.9,
+    "max_consecutive_losses": 9,
+    "total_trades": 65,
+    "kill_triggered": false,
+    "pause_assets": [
+      "EURJPY"
+    ],
+    "go_nogo_status": {
+      "pf_pass": "True",
+      "dd_pass": "True",
+      "wr_pass": false,
+      "streak_pass": false
+    }
+  },
+  {
+    "week_number": 3,
+    "start_date": "2023-06-15",
+    "end_date": "2023-06-21",
+    "per_asset": {
+      "EURJPY": {
+        "trades": 18,
+        "pf": 2.14,
+        "wr": 61.1
+      },
+      "AUDUSD": {
+        "trades": 13,
+        "pf": 1.02,
+        "wr": 53.8
+      },
+      "EURUSD": {
+        "trades": 2,
+        "pf": 5.0,
+        "wr": 100.0
+      }
+    },
+    "combined_pf": 1.77,
+    "combined_dd": 4.66,
+    "combined_wr": 60.6,
+    "max_consecutive_losses": 9,
+    "total_trades": 33,
+    "kill_triggered": false,
+    "pause_assets": [],
+    "go_nogo_status": {
+      "pf_pass": "True",
+      "dd_pass": "True",
+      "wr_pass": true,
+      "streak_pass": false
+    }
+  },
+  {
+    "week_number": 4,
+    "start_date": "2023-06-22",
+    "end_date": "2023-06-28",
+    "per_asset": {
+      "EURJPY": {
+        "trades": 21,
+        "pf": 2.37,
+        "wr": 47.6
+      },
+      "AUDUSD": {
+        "trades": 29,
+        "pf": 0.65,
+        "wr": 34.5
+      },
+      "EURUSD": {
+        "trades": 3,
+        "pf": 0.0,
+        "wr": 0.0
+      }
+    },
+    "combined_pf": 1.22,
+    "combined_dd": 4.66,
+    "combined_wr": 37.7,
+    "max_consecutive_losses": 11,
+    "total_trades": 53,
+    "kill_triggered": false,
+    "pause_assets": [
+      "AUDUSD",
+      "EURUSD"
+    ],
+    "go_nogo_status": {
+      "pf_pass": "True",
+      "dd_pass": "True",
+      "wr_pass": false,
+      "streak_pass": false
+    }
+  },
+  {
+    "week_number": 5,
+    "start_date": "2023-06-29",
+    "end_date": "2023-06-30",
+    "per_asset": {
+      "EURJPY": {
+        "trades": 3,
+        "pf": 1.11,
+        "wr": 33.3
+      },
+      "AUDUSD": {
+        "trades": 5,
+        "pf": 0.0,
+        "wr": 0.0
+      }
+    },
+    "combined_pf": 0.32,
+    "combined_dd": 4.66,
+    "combined_wr": 12.5,
+    "max_consecutive_losses": 11,
+    "total_trades": 8,
+    "kill_triggered": false,
+    "pause_assets": [
+      "AUDUSD"
+    ],
+    "go_nogo_status": {
+      "pf_pass": "False",
+      "dd_pass": "True",
+      "wr_pass": false,
+      "streak_pass": false
+    }
+  }
+]

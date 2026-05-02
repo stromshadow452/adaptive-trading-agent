@@ -331,10 +331,16 @@ class MetaGatingV1:
             logger.info(f"Meta BLOCK: Low confidence ({confidence:.2f} < 0.65)")
             return False, f'BLOCKED: Low confidence ({confidence:.2f})'
         
-        # === Block 1: DANGER Regime → BLOCK ALL ===
+        # === Block 1: DANGER Regime → MR-only defensive mode ===
         if regime == 'DANGER':
-            logger.info("Meta BLOCK: DANGER regime - capital preservation")
-            return False, 'BLOCKED: DANGER regime'
+            strategy = str(context.get('strategy_route', 'UNKNOWN')).upper()
+            if strategy != 'MEAN_REVERSION':
+                logger.info("Meta BLOCK: DANGER regime allows MEAN_REVERSION only")
+                return False, 'BLOCKED: DANGER regime non-MR'
+            if confidence < max(0.75, effective_min_conf):
+                logger.info(f"Meta BLOCK: DANGER MR needs conf >= {max(0.75, effective_min_conf):.2f} ({confidence:.2f})")
+                return False, 'BLOCKED: DANGER regime + LOW confidence'
+            logger.info("Meta PASS: DANGER regime MR-only defensive mode")
         
         # === Block 2: RANGE Regime → Allow with HIGH confidence only ===
         if regime == 'RANGE' and confidence < 0.75:

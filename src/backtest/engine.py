@@ -23,6 +23,7 @@ import time
 from .broker import BacktestBroker
 from .pipeline import TradingPipeline, PipelineConfigV2, Decision
 from src.market_data import MarketDataStore, Symbol, Timeframe
+from src.ml.probability_filter import ProbabilityBasedMLFilter
 
 logger = logging.getLogger(__name__)
 
@@ -47,6 +48,11 @@ class BacktestResult:
     sharpe_ratio: float
     sortino_ratio: float
     profit_factor: float
+    expectancy: float
+    avg_win: float
+    avg_loss: float
+    max_win_streak: int
+    max_loss_streak: int
     avg_r_multiple: float
     avg_trade_duration_minutes: float
     exposure_pct: float
@@ -58,11 +64,13 @@ class BacktestResult:
     
     # Breakdowns
     regime_breakdown: Dict[str, Dict]
+    strategy_breakdown: Dict[str, Dict]
     decision_source_breakdown: Dict[str, Dict]
     
     # Metadata
     execution_time: float
     config: Dict
+    filter_diagnostics: Dict[str, Any]
 
 
 def load_and_filter_csv(
@@ -171,6 +179,11 @@ def calculate_metrics(
             'sharpe_ratio': 0.0,
             'sortino_ratio': 0.0,
             'profit_factor': 0.0,
+            'expectancy': 0.0,
+            'avg_win': 0.0,
+            'avg_loss': 0.0,
+            'max_win_streak': 0,
+            'max_loss_streak': 0,
             'avg_r_multiple': 0.0,
             'avg_trade_duration_minutes': 0.0,
             'exposure_pct': 0.0
@@ -212,6 +225,26 @@ def calculate_metrics(
     gross_profit = pnls[pnls > 0].sum()
     gross_loss = abs(pnls[pnls < 0].sum())
     profit_factor = gross_profit / gross_loss if gross_loss > 0 else 0.0
+    avg_win = float(pnls[pnls > 0].mean()) if np.any(pnls > 0) else 0.0
+    avg_loss = float(pnls[pnls < 0].mean()) if np.any(pnls < 0) else 0.0
+    expectancy = float(pnls.mean()) if len(pnls) > 0 else 0.0
+
+    max_win_streak = 0
+    max_loss_streak = 0
+    current_win_streak = 0
+    current_loss_streak = 0
+    for pnl in pnls:
+        if pnl > 0:
+            current_win_streak += 1
+            current_loss_streak = 0
+        elif pnl < 0:
+            current_loss_streak += 1
+            current_win_streak = 0
+        else:
+            current_win_streak = 0
+            current_loss_streak = 0
+        max_win_streak = max(max_win_streak, current_win_streak)
+        max_loss_streak = max(max_loss_streak, current_loss_streak)
     
     # R-multiples
     r_multiples = [t['r_multiple'] for t in trades]
@@ -237,6 +270,11 @@ def calculate_metrics(
         'sharpe_ratio': float(sharpe),
         'sortino_ratio': float(sortino),
         'profit_factor': float(profit_factor),
+        'expectancy': float(expectancy),
+        'avg_win': float(avg_win),
+        'avg_loss': float(avg_loss),
+        'max_win_streak': int(max_win_streak),
+        'max_loss_streak': int(max_loss_streak),
         'avg_r_multiple': float(avg_r),
         'avg_trade_duration_minutes': float(avg_duration),
         'exposure_pct': float(exposure_pct)
@@ -246,6 +284,7 @@ def calculate_metrics(
 def calculate_breakdowns(trades: List[Dict]) -> tuple:
     """Calculate regime and decision source breakdowns"""
     regime_breakdown = {}
+    strategy_breakdown = {}
     decision_breakdown = {}
     
     for trade in trades:
@@ -258,6 +297,14 @@ def calculate_breakdowns(trades: List[Dict]) -> tuple:
         regime_breakdown[regime]['total_pnl'] += trade['pnl']
         if trade['pnl'] > 0:
             regime_breakdown[regime]['wins'] += 1
+
+        strategy = trade.get('strategy', 'UNKNOWN')
+        if strategy not in strategy_breakdown:
+            strategy_breakdown[strategy] = {'trades': 0, 'wins': 0, 'total_pnl': 0.0}
+        strategy_breakdown[strategy]['trades'] += 1
+        strategy_breakdown[strategy]['total_pnl'] += trade['pnl']
+        if trade['pnl'] > 0:
+            strategy_breakdown[strategy]['wins'] += 1
             
         # Decision source breakdown
         source = trade['decision_source']
@@ -277,8 +324,12 @@ def calculate_breakdowns(trades: List[Dict]) -> tuple:
     for s in decision_breakdown.values():
         s['winrate'] = s['wins'] / s['trades'] if s['trades'] > 0 else 0.0
         s['avg_pnl'] = s['total_pnl'] / s['trades'] if s['trades'] > 0 else 0.0
-        
-    return regime_breakdown, decision_breakdown
+
+    for s in strategy_breakdown.values():
+        s['winrate'] = s['wins'] / s['trades'] if s['trades'] > 0 else 0.0
+        s['avg_pnl'] = s['total_pnl'] / s['trades'] if s['trades'] > 0 else 0.0
+
+    return regime_breakdown, strategy_breakdown, decision_breakdown
 
 
 def run_backtest(
@@ -286,10 +337,10 @@ def run_backtest(
     start_date: datetime,
     end_date: datetime,
     initial_capital: float = 10000.0,
-    enable_meta_gating: bool = False,
+    enable_meta_gating: bool = True,
     enable_portfolio_brain: bool = False,
     enable_slicer: bool = False,
-    enable_rl_fallback: bool = False,
+    enable_rl_fallback: bool = True,
     csv_price_dir: str = "data/raw/forex_kaggle_multiTF",
     output_dir: str = "logs/backtest",
     primary_model_path: Optional[str] = None,
@@ -350,6 +401,8 @@ def run_backtest(
             enable_meta_gating=enable_meta_gating,
             enable_portfolio_brain=enable_portfolio_brain,
             enable_rl_fallback=enable_rl_fallback,
+            enable_weapon_system=True,
+            enable_micro_strategies=True,
             verbose=False
         )
         pipeline = TradingPipeline(pipeline_config)
@@ -359,8 +412,26 @@ def run_backtest(
     broker = BacktestBroker(initial_capital=initial_capital)
     
     total_candles = 0
-    
-    # Process each symbol
+
+    # Portfolio-style multi-symbol simulation (single timeline).
+    if use_real_pipeline and pipeline and len(symbols) > 1:
+        result = run_portfolio_backtest(
+            symbols=symbols,
+            start_date=start_date,
+            end_date=end_date,
+            initial_capital=initial_capital,
+            enable_meta_gating=enable_meta_gating,
+            enable_portfolio_brain=enable_portfolio_brain,
+            enable_slicer=enable_slicer,
+            enable_rl_fallback=enable_rl_fallback,
+            csv_price_dir=csv_price_dir,
+            output_dir=output_dir,
+            primary_model_path=primary_model_path,
+            finrl_policies_path=finrl_policies_path,
+        )
+        return result
+
+    # Process each symbol (single-symbol backtest mode)
     for symbol_str in symbols:
         # Convert to type-safe Symbol enum
         try:
@@ -388,22 +459,25 @@ def run_backtest(
         logger.info(f"Processing {symbol.value}: {len(df)} candles")
         total_candles += len(df)
         
-        # Candle-by-candle iteration with progress bar
-        try:
-            from tqdm import tqdm
-            pbar = tqdm(
-                df.iterrows(),
-                total=len(df),
-                desc=f"🔮 {symbol.value}",
-                unit="candle",
-                miniters=50,  # Update every 50 candles for performance
-                ncols=80,     # Fixed width for clean display
-                leave=True    # Keep bar after completion
-            )
-        except ImportError:
-            pbar = df.iterrows()
-            
-        for idx, candle in pbar:
+        # Candle-by-candle iteration with tqdm
+        from tqdm import tqdm
+        
+        # Disable logging debug prints that mess up tqdm
+        import logging
+        logging.getLogger().setLevel(logging.WARNING)
+
+        iterator = tqdm(
+            df.iterrows(),
+            total=len(df),
+            desc=f"Backtest Progress",
+            dynamic_ncols=True,
+            leave=True,
+            mininterval=0.5,
+            ascii=True
+        )
+
+        for idx, candle in iterator:
+
             timestamp = candle['timestamp']
             
             # Update existing positions (check SL/TP hits)
@@ -432,6 +506,16 @@ def run_backtest(
                         loss_streak=0  # Will be calculated by Ego Control internally
                     )
 
+                    # === EXECUTION INTELLIGENCE: Feed performance memory (System 2) ===
+                    trade_strategy = trade.get("strategy", "UNKNOWN")
+                    pipeline.record_strategy_result(
+                        trade_strategy,
+                        trade.get("regime", "UNKNOWN"),
+                        is_win,
+                        timestamp,
+                    )
+                    pipeline.record_probability_trade_result(trade)
+
             
             # Make decision for new trade (if no position open for this symbol)
             if symbol.value not in broker.positions:
@@ -452,12 +536,24 @@ def run_backtest(
                     
                     # 2. Bars since last trade
                     bars_since_last_trade = 9999
+                    bars_since_last_exit = 9999
+                    last_trade_result = 'NONE'
                     if symbol_trades:
                         last_trade = symbol_trades[-1]
                         last_entry = datetime.fromisoformat(last_trade['timestamp_entry'])
                         delta = timestamp - last_entry
                         bars_since_last_trade = int(delta.total_seconds() / (15 * 60))
-                    
+                        last_exit = datetime.fromisoformat(last_trade['timestamp_exit'])
+                        delta_exit = timestamp - last_exit
+                        bars_since_last_exit = int(delta_exit.total_seconds() / (15 * 60))
+                        if last_trade['pnl'] > 0:
+                            last_trade_result = 'WIN'
+                        elif last_trade['pnl'] < 0:
+                            last_trade_result = 'LOSS'
+                        last_trade_r_multiple = float(last_trade.get('r_multiple', 0.0))
+                    else:
+                        last_trade_r_multiple = 0.0
+
                     # 3. Consecutive losses & time since last loss
                     consecutive_losses = 0
                     bars_since_last_loss = 9999
@@ -481,9 +577,14 @@ def run_backtest(
                         'symbol': symbol.value,
                         'timeframe': 'M15',
                         'history': df.iloc[:idx+1],  # Historical data up to current candle
+                        'full_history': df,
+                        'history_index': idx,
                         'open_positions': list(broker.positions.keys()),
                         'trades_today': trades_today,
                         'bars_since_last_trade': bars_since_last_trade,
+                        'bars_since_last_exit': bars_since_last_exit,
+                        'last_trade_result': last_trade_result,
+                        'last_trade_r_multiple': last_trade_r_multiple,
                         'consecutive_losses': consecutive_losses,
                         'bars_since_last_loss': bars_since_last_loss
                     }
@@ -523,10 +624,44 @@ def run_backtest(
                         timestamp=timestamp,
                         metadata={
                             'decision_source': decision_obj.decision_source,
+                            'strategy': decision_obj.metadata.get('strategy', 'UNKNOWN') if decision_obj.metadata else 'UNKNOWN',
                             'regime': decision_obj.regime,
-                            'confidence': decision_obj.confidence
+                            'regime_reason': decision_obj.metadata.get('regime_reason') if decision_obj.metadata else None,
+                            'confidence': decision_obj.confidence,
+                            'strategy_reason': decision_obj.metadata.get('strategy_reason', '') if decision_obj.metadata else '',
+                            'strategy_confidence': decision_obj.metadata.get('strategy_confidence', 0.0) if decision_obj.metadata else 0.0,
+                            'strategy_status': decision_obj.metadata.get('strategy_status', 'NEUTRAL') if decision_obj.metadata else 'NEUTRAL',
+                            'strategy_winrate': decision_obj.metadata.get('strategy_winrate', 0.0) if decision_obj.metadata else 0.0,
+                            'strategy_trade_count': decision_obj.metadata.get('strategy_trade_count', 0) if decision_obj.metadata else 0,
+                            'strategy_regime_key': decision_obj.metadata.get('strategy_regime_key') if decision_obj.metadata else None,
+                            'regime_aware_winrate': decision_obj.metadata.get('regime_aware_winrate', 0.0) if decision_obj.metadata else 0.0,
+                            'ml_conf_raw': decision_obj.metadata.get('ml_conf_raw') if decision_obj.metadata else None,
+                            'ml_conf_calibrated': decision_obj.metadata.get('ml_conf_calibrated') if decision_obj.metadata else None,
+                            'edge_score': decision_obj.metadata.get('edge_score') if decision_obj.metadata else None,
+                            'skip_reason': decision_obj.metadata.get('skip_reason') if decision_obj.metadata else None,
+                            'entry_mode': decision_obj.metadata.get('entry_mode') if decision_obj.metadata else None,
+                            'cooldown_active': decision_obj.metadata.get('cooldown_active', False) if decision_obj.metadata else False,
+                            'soft_filter_score': decision_obj.metadata.get('soft_filter_score') if decision_obj.metadata else None,
+                            'neutral_regime_size_reduction': decision_obj.metadata.get('neutral_regime_size_reduction', False) if decision_obj.metadata else False,
+                            'danger_size_reduction': decision_obj.metadata.get('danger_size_reduction', False) if decision_obj.metadata else False,
+                            'danger_reason': decision_obj.metadata.get('danger_reason') if decision_obj.metadata else None,
+                            'danger_duration_bars': decision_obj.metadata.get('danger_duration_bars', 0) if decision_obj.metadata else 0,
+                            'signal_quality': decision_obj.metadata.get('signal_quality') if decision_obj.metadata else None,
+                            'probability_of_success': decision_obj.metadata.get('probability_of_success') if decision_obj.metadata else None,
+                            'ml_filter_pass': decision_obj.metadata.get('ml_filter_pass') if decision_obj.metadata else None,
+                            'ml_filter_enabled': decision_obj.metadata.get('ml_filter_enabled') if decision_obj.metadata else None,
+                            'shadow_logged': decision_obj.metadata.get('shadow_logged', False) if decision_obj.metadata else False,
+                            'virtual_r_multiple': decision_obj.metadata.get('virtual_r_multiple') if decision_obj.metadata else None,
+                            'atr_trailing_active': decision_obj.metadata.get('atr_trailing_active', False) if decision_obj.metadata else False,
+                            'boll_z': decision_obj.metadata.get('boll_z') if decision_obj.metadata else None,
+                            'atr_pctile': decision_obj.metadata.get('atr_pctile') if decision_obj.metadata else None,
+                            'adx': decision_obj.metadata.get('adx') if decision_obj.metadata else None,
+                            'session': decision_obj.metadata.get('session') if decision_obj.metadata else None,
+                            'atr_value': decision_obj.metadata.get('atr_value') if decision_obj.metadata else None,
                         }
                     )
+
+        tqdm.write(f"{symbol.value} Backtest Completed")
     
     # Close any remaining open positions at end
     for symbol_str in list(broker.positions.keys()):
@@ -572,7 +707,8 @@ def run_backtest(
     metrics = calculate_metrics(trades, equity_curve, initial_capital, total_candles)
     
     # Calculate breakdowns
-    regime_breakdown, decision_breakdown = calculate_breakdowns(trades)
+    regime_breakdown, strategy_breakdown, decision_breakdown = calculate_breakdowns(trades)
+    filter_diagnostics = pipeline.get_filter_diagnostics() if use_real_pipeline and pipeline else {}
     
     execution_time = time.time() - start_time
     
@@ -582,6 +718,26 @@ def run_backtest(
     logger.info(f"  Total return: {metrics['total_return']*100:.2f}%")
     logger.info(f"  Max drawdown: {metrics['max_drawdown']*100:.2f}%")
     logger.info(f"  Sharpe ratio: {metrics['sharpe_ratio']:.2f}")
+    if filter_diagnostics.get('skip_reason_counts'):
+        top_blocker = max(filter_diagnostics['skip_reason_counts'].items(), key=lambda x: x[1])
+        logger.info(f"  Top blocking filter: {top_blocker[0]} ({top_blocker[1]})")
+
+    # Pipeline debug summary (mandatory for diagnosing near-zero trade flow)
+    pipeline_debug = filter_diagnostics.get("pipeline_debug", {})
+    if pipeline_debug:
+        print(f"TOTAL_SIGNALS_GENERATED={pipeline_debug.get('TOTAL_SIGNALS_GENERATED', 0)}", flush=True)
+        print(f"TOTAL_SIGNALS_ACCEPTED={pipeline_debug.get('TOTAL_SIGNALS_ACCEPTED', 0)}", flush=True)
+        print(f"TOTAL_SIGNALS_REJECTED={pipeline_debug.get('TOTAL_SIGNALS_REJECTED', 0)}", flush=True)
+        gate_rejections = pipeline_debug.get("gate_rejections", {}) or {}
+        for key in sorted(gate_rejections.keys()):
+            print(f"{key}={gate_rejections[key]}", flush=True)
+        execution_path = pipeline_debug.get("execution_path", {}) or {}
+        for key in sorted(execution_path.keys()):
+            print(f"{key}={execution_path[key]}", flush=True)
+
+    # Print comprehensive pipeline debug summary
+    if use_real_pipeline and pipeline and hasattr(pipeline, 'print_pipeline_debug_summary'):
+        pipeline.print_pipeline_debug_summary()
     
     # Create result object
     result = BacktestResult(
@@ -600,12 +756,18 @@ def run_backtest(
         sharpe_ratio=metrics['sharpe_ratio'],
         sortino_ratio=metrics['sortino_ratio'],
         profit_factor=metrics['profit_factor'],
+        expectancy=metrics['expectancy'],
+        avg_win=metrics['avg_win'],
+        avg_loss=metrics['avg_loss'],
+        max_win_streak=metrics['max_win_streak'],
+        max_loss_streak=metrics['max_loss_streak'],
         avg_r_multiple=metrics['avg_r_multiple'],
         avg_trade_duration_minutes=metrics['avg_trade_duration_minutes'],
         exposure_pct=metrics['exposure_pct'],
         trades=trades,
         equity_curve=equity_curve,
         regime_breakdown=regime_breakdown,
+        strategy_breakdown=strategy_breakdown,
         decision_source_breakdown=decision_breakdown,
         execution_time=execution_time,
         total_candles=total_candles,
@@ -614,12 +776,266 @@ def run_backtest(
             'enable_portfolio_brain': enable_portfolio_brain,
             'enable_slicer': enable_slicer,
             'enable_rl_fallback': enable_rl_fallback
-        }
+        },
+        filter_diagnostics=filter_diagnostics,
     )
     
     # Save outputs
     save_backtest_outputs(result, output_dir)
     
+    return result
+
+
+def _symbol_group(symbol: str) -> str:
+    """Simple correlation bucket to enforce one trade per group."""
+    s = str(symbol).upper()
+    mapping = {
+        "EURUSD": "USD_EUR_GBP",
+        "GBPUSD": "USD_EUR_GBP",
+        "AUDUSD": "USD_COMMOD",
+        "NZDUSD": "USD_COMMOD",
+        "USDCAD": "USD_CAD",
+    }
+    return mapping.get(s, s)
+
+
+def run_portfolio_backtest(
+    symbols: List[str],
+    start_date: datetime,
+    end_date: datetime,
+    initial_capital: float = 10000.0,
+    enable_meta_gating: bool = True,
+    enable_portfolio_brain: bool = False,
+    enable_slicer: bool = False,
+    enable_rl_fallback: bool = True,
+    csv_price_dir: str = "data/raw/forex_kaggle_multiTF",
+    output_dir: str = "logs/backtest",
+    primary_model_path: Optional[str] = None,
+    finrl_policies_path: Optional[str] = None,
+) -> BacktestResult:
+    """Run a synchronized multi-symbol portfolio backtest with shared broker state."""
+    start_time = time.time()
+
+    store = MarketDataStore(data_roots=[Path(csv_price_dir), Path("data/raw/forex_backup_2020_2025")])
+
+    pipeline_config = PipelineConfigV2(
+        primary_model_path=primary_model_path,
+        finrl_policies_path=finrl_policies_path,
+        enable_meta_gating=enable_meta_gating,
+        enable_portfolio_brain=enable_portfolio_brain,
+        enable_rl_fallback=enable_rl_fallback,
+        enable_weapon_system=True,
+        enable_micro_strategies=True,
+        verbose=False,
+    )
+    pipeline = TradingPipeline(pipeline_config)
+    broker = BacktestBroker(initial_capital=initial_capital)
+
+    # Load and normalize per-symbol data.
+    dfs = {}
+    dfs_reset = {}
+    pos_index = {}
+    timeline = set()
+    for symbol_str in symbols:
+        symbol = Symbol(symbol_str)
+        df = store.load_ohlcv(symbol=symbol, timeframe=Timeframe.M15, start=start_date, end=end_date)
+        if df.empty:
+            continue
+        df = df.reset_index()
+        df = df.rename(columns={'index': 'timestamp'} if 'index' in df.columns else {})
+        df = df.sort_values('timestamp').reset_index(drop=True)
+        dfs_reset[symbol.value] = df
+        df_idx = df.set_index('timestamp')
+        dfs[symbol.value] = df_idx
+        pos_index[symbol.value] = {ts: i for i, ts in enumerate(df_idx.index)}
+        timeline.update(df_idx.index.tolist())
+
+    timeline = sorted(timeline)
+    total_candles = len(timeline)
+
+    # Per-symbol execution context state
+    last_entry = {s: None for s in dfs.keys()}
+    last_exit = {s: None for s in dfs.keys()}
+    last_trade_result = {s: None for s in dfs.keys()}
+    last_trade_r_multiple = {s: 0.0 for s in dfs.keys()}
+    consecutive_losses = {s: 0 for s in dfs.keys()}
+    last_loss_exit = {s: None for s in dfs.keys()}
+    trades_today = {}
+
+    for ts in timeline:
+        current_prices = {}
+        for s, df_idx in dfs.items():
+            if ts in df_idx.index:
+                candle = df_idx.loc[ts]
+                current_prices[s] = {'high': candle.get('high', candle.get('close')),
+                                     'low': candle.get('low', candle.get('close')),
+                                     'close': candle.get('close')}
+
+        closed_trades = broker.update_positions(current_prices, ts)
+        if closed_trades:
+            for trade in closed_trades:
+                sym = trade.get('symbol')
+                if sym in last_exit:
+                    last_exit[sym] = datetime.fromisoformat(trade['timestamp_exit'])
+                    last_trade_result[sym] = 'WIN' if trade['pnl'] > 0 else 'LOSS' if trade['pnl'] < 0 else None
+                    last_trade_r_multiple[sym] = float(trade.get('r_multiple', 0.0))
+                    if trade['pnl'] < 0:
+                        consecutive_losses[sym] = consecutive_losses.get(sym, 0) + 1
+                        last_loss_exit[sym] = last_exit[sym]
+                    else:
+                        consecutive_losses[sym] = 0
+
+                is_win = trade['pnl'] > 0
+                pipeline.mark2.record_trade_result(
+                    entry_price=trade['entry_price'],
+                    atr=abs(trade['entry_price'] - trade['sl_price']),
+                    regime=trade.get('regime', 'RANGE'),
+                    side=trade['side'].upper(),
+                    is_win=is_win,
+                    confidence=trade.get('confidence', 0.5),
+                    r_multiple=trade.get('r_multiple', 0.0),
+                    loss_streak=0,
+                )
+                pipeline.record_strategy_result(trade.get("strategy", "UNKNOWN"), trade.get("regime", "UNKNOWN"), is_win, ts)
+                pipeline.record_probability_trade_result(trade)
+
+        for sym, df_reset in dfs_reset.items():
+            if sym in broker.positions:
+                continue
+            df_idx = dfs[sym]
+            if ts not in df_idx.index:
+                continue
+            idx = pos_index[sym][ts]
+            candle = df_reset.iloc[idx]
+
+            day_key = ts.date().isoformat()
+            trades_today_key = (sym, day_key)
+            trades_today_count = trades_today.get(trades_today_key, 0)
+
+            bars_since_last_trade = 9999
+            if last_entry.get(sym) is not None:
+                bars_since_last_trade = int((ts - last_entry[sym]).total_seconds() / (15 * 60))
+
+            bars_since_last_exit = 9999
+            if last_exit.get(sym) is not None:
+                bars_since_last_exit = int((ts - last_exit[sym]).total_seconds() / (15 * 60))
+
+            bars_since_last_loss = 9999
+            if last_loss_exit.get(sym) is not None:
+                bars_since_last_loss = int((ts - last_loss_exit[sym]).total_seconds() / (15 * 60))
+
+            open_positions = list(broker.positions.keys())
+            open_groups = [_symbol_group(s) for s in open_positions]
+
+            context = {
+                'symbol': sym,
+                'timeframe': 'M15',
+                'history': df_reset.iloc[:idx + 1],
+                'full_history': df_reset,
+                'history_index': idx,
+                'open_positions': open_positions,
+                'trades_today': trades_today_count,
+                'bars_since_last_trade': bars_since_last_trade,
+                'bars_since_last_exit': bars_since_last_exit,
+                'last_trade_result': last_trade_result.get(sym),
+                'last_trade_r_multiple': last_trade_r_multiple.get(sym, 0.0),
+                'consecutive_losses': consecutive_losses.get(sym, 0),
+                'bars_since_last_loss': bars_since_last_loss,
+                'portfolio_max_positions': 3,
+                'portfolio_symbol_group': _symbol_group(sym),
+                'portfolio_open_groups': open_groups,
+            }
+
+            decision_obj = pipeline.decide(candle, context)
+            if decision_obj and decision_obj.action == 'open':
+                ok = broker.open_position(
+                    symbol=sym,
+                    side=decision_obj.side,
+                    entry_price=decision_obj.entry_price,
+                    size=decision_obj.size,
+                    sl_price=decision_obj.sl_price,
+                    tp_price=decision_obj.tp_price,
+                    timestamp=ts,
+                    metadata={
+                        'decision_source': decision_obj.decision_source,
+                        'strategy': decision_obj.metadata.get('strategy', 'UNKNOWN') if decision_obj.metadata else 'UNKNOWN',
+                        'regime': decision_obj.regime,
+                        'regime_reason': decision_obj.metadata.get('regime_reason') if decision_obj.metadata else None,
+                        'confidence': decision_obj.confidence,
+                        'strategy_reason': decision_obj.metadata.get('strategy_reason', '') if decision_obj.metadata else '',
+                        'strategy_confidence': decision_obj.metadata.get('strategy_confidence', 0.0) if decision_obj.metadata else 0.0,
+                        'ml_conf_raw': decision_obj.metadata.get('ml_conf_raw') if decision_obj.metadata else None,
+                        'ml_conf_calibrated': decision_obj.metadata.get('ml_conf_calibrated') if decision_obj.metadata else None,
+                        'edge_score': decision_obj.metadata.get('edge_score') if decision_obj.metadata else None,
+                        'skip_reason': decision_obj.metadata.get('skip_reason') if decision_obj.metadata else None,
+                        'entry_mode': decision_obj.metadata.get('entry_mode') if decision_obj.metadata else None,
+                        'cooldown_active': decision_obj.metadata.get('cooldown_active', False) if decision_obj.metadata else False,
+                        'soft_filter_score': decision_obj.metadata.get('soft_filter_score') if decision_obj.metadata else None,
+                        'signal_quality': decision_obj.metadata.get('signal_quality') if decision_obj.metadata else None,
+                        'probability_of_success': decision_obj.metadata.get('probability_of_success') if decision_obj.metadata else None,
+                        'ml_filter_pass': decision_obj.metadata.get('ml_filter_pass') if decision_obj.metadata else None,
+                        'ml_filter_enabled': decision_obj.metadata.get('ml_filter_enabled') if decision_obj.metadata else None,
+                        'boll_z': decision_obj.metadata.get('boll_z') if decision_obj.metadata else None,
+                        'atr_pctile': decision_obj.metadata.get('atr_pctile') if decision_obj.metadata else None,
+                        'adx': decision_obj.metadata.get('adx') if decision_obj.metadata else None,
+                        'session': decision_obj.metadata.get('session') if decision_obj.metadata else None,
+                        'atr_value': decision_obj.metadata.get('atr_value') if decision_obj.metadata else None,
+                    },
+                )
+                if ok:
+                    last_entry[sym] = ts
+                    trades_today[trades_today_key] = trades_today_count + 1
+
+    trades = broker.get_trades()
+    equity_history = broker.get_equity_curve()
+    equity_curve = [{'timestamp': ts.isoformat(), 'equity': eq, 'drawdown': 0.0} for ts, eq in equity_history]
+    if equity_curve:
+        equities = [e['equity'] for e in equity_curve]
+        running_max = np.maximum.accumulate(equities)
+        for i, e in enumerate(equity_curve):
+            e['drawdown'] = (e['equity'] - running_max[i]) / running_max[i] if running_max[i] > 0 else 0.0
+            e['drawdown_pct'] = e['drawdown'] * 100
+
+    metrics = calculate_metrics(trades, equity_curve, initial_capital, total_candles)
+    regime_breakdown, strategy_breakdown, decision_breakdown = calculate_breakdowns(trades)
+    filter_diagnostics = pipeline.get_filter_diagnostics()
+    execution_time = time.time() - start_time
+
+    result = BacktestResult(
+        start_date=start_date.isoformat(),
+        end_date=end_date.isoformat(),
+        symbols=symbols,
+        initial_capital=initial_capital,
+        final_equity=broker.cash,
+        total_trades=metrics['total_trades'],
+        winning_trades=metrics['winning_trades'],
+        losing_trades=metrics['losing_trades'],
+        winrate=metrics['winrate'],
+        total_pnl=metrics['total_pnl'],
+        total_return=metrics['total_return'],
+        max_drawdown=metrics['max_drawdown'],
+        sharpe_ratio=metrics['sharpe_ratio'],
+        sortino_ratio=metrics['sortino_ratio'],
+        profit_factor=metrics['profit_factor'],
+        expectancy=metrics['expectancy'],
+        avg_win=metrics['avg_win'],
+        avg_loss=metrics['avg_loss'],
+        max_win_streak=metrics['max_win_streak'],
+        max_loss_streak=metrics['max_loss_streak'],
+        avg_r_multiple=metrics['avg_r_multiple'],
+        avg_trade_duration_minutes=metrics['avg_trade_duration_minutes'],
+        exposure_pct=metrics['exposure_pct'],
+        trades=trades,
+        equity_curve=equity_curve,
+        regime_breakdown=regime_breakdown,
+        strategy_breakdown=strategy_breakdown,
+        decision_source_breakdown=decision_breakdown,
+        execution_time=execution_time,
+        total_candles=total_candles,
+        config={'portfolio_mode': True, 'max_open_positions': 3},
+        filter_diagnostics=filter_diagnostics,
+    )
+    save_backtest_outputs(result, output_dir)
     return result
 
 
@@ -640,6 +1056,10 @@ def save_backtest_outputs(result: BacktestResult, output_dir: str):
         equity_csv = os.path.join(output_dir, 'equity.csv')
         equity_df.to_csv(equity_csv, index=False)
         logger.info(f"Saved equity curve to {equity_csv}")
+
+    ml_artifacts = ProbabilityBasedMLFilter.export_training_artifacts(result.trades, output_dir)
+    logger.info(f"Saved ML dataset to {ml_artifacts['dataset_path']}")
+    logger.info(f"Saved ML report to {ml_artifacts['report_path']}")
     
     # Save summary.json
     summary = {
@@ -657,11 +1077,20 @@ def save_backtest_outputs(result: BacktestResult, output_dir: str):
         'sharpe_ratio': result.sharpe_ratio,
         'sortino_ratio': result.sortino_ratio,
         'profit_factor': result.profit_factor,
+        'expectancy': result.expectancy,
+        'avg_win': result.avg_win,
+        'avg_loss': result.avg_loss,
+        'max_win_streak': result.max_win_streak,
+        'max_loss_streak': result.max_loss_streak,
         'avg_r_multiple': result.avg_r_multiple,
         'avg_trade_duration_minutes': result.avg_trade_duration_minutes,
         'exposure_pct': result.exposure_pct,
         'regime_breakdown': result.regime_breakdown,
+        'strategy_breakdown': result.strategy_breakdown,
         'decision_source_breakdown': result.decision_source_breakdown,
+        'debug_counters': result.filter_diagnostics.get('debug_counters', {}),
+        'filter_diagnostics': result.filter_diagnostics,
+        'ml_training': ml_artifacts['report'],
         'execution_time': result.execution_time,
         'config': result.config
     }

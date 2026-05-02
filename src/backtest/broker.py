@@ -17,6 +17,16 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def _normalize_side(side: str) -> Optional[str]:
+    """Normalize side to broker-safe lowercase values."""
+    if side is None:
+        return None
+    normalized = str(side).strip().lower()
+    if normalized in {"buy", "sell"}:
+        return normalized
+    return None
+
+
 @dataclass
 class Position:
     """Represents an open position"""
@@ -29,6 +39,14 @@ class Position:
     entry_timestamp: datetime
     metadata: Dict  # decision_source, regime, etc.
     
+    # Trailing tracking
+    initial_sl_price: float = None
+    max_r_multiple: float = 0.0
+    trailing_active: bool = False
+    last_trailing_r: float = 0.0
+    locked_r_level: float = 0.0
+    atr_trailing_active: bool = False
+    
     # Track excursions
     max_favorable_price: float = None
     max_adverse_price: float = None
@@ -38,6 +56,8 @@ class Position:
             self.max_favorable_price = self.entry_price
         if self.max_adverse_price is None:
             self.max_adverse_price = self.entry_price
+        if self.initial_sl_price is None:
+            self.initial_sl_price = self.sl_price
     
     def update_excursions(self, current_price: float):
         """Update MAE/MFE tracking"""
@@ -122,6 +142,11 @@ class BacktestBroker:
         """
         if self.start_timestamp is None:
             self.start_timestamp = timestamp
+
+        normalized_side = _normalize_side(side)
+        if normalized_side is None:
+            logger.warning(f"Invalid trade side for {symbol}: {side!r}")
+            return False
         
         # Check if position already exists for this symbol
         if symbol in self.positions:
@@ -131,7 +156,7 @@ class BacktestBroker:
         # Create position
         position = Position(
             symbol=symbol,
-            side=side,
+            side=normalized_side,
             entry_price=entry_price,
             size=size,
             sl_price=sl_price,
@@ -174,8 +199,72 @@ class BacktestBroker:
             low = candle.get('low', candle.get('close'))
             close = candle['close']
             
-            # Update excursions with current close
-            position.update_excursions(close)
+            # Update excursions with intrabar extremes so MFE/MAE reflect what the candle actually touched
+            position.update_excursions(high if position.side == 'buy' else low)
+            position.update_excursions(low if position.side == 'buy' else high)
+            
+            # --- Strict Exit Logic: structure lock first, ATR trail only after 2R ---
+            initial_risk = abs(position.entry_price - position.initial_sl_price)
+            if initial_risk > 0:
+                locked_r_level = position.locked_r_level
+                atr_value = abs(float(position.metadata.get('atr_value', 0.0) or 0.0))
+                if position.side == 'buy':
+                    # Step 1-2: intrabar R and max R tracking for longs.
+                    current_r = (high - position.entry_price) / initial_risk
+                    position.max_r_multiple = max(position.max_r_multiple, current_r)
+
+                    # Step 3: structure lock.
+                    if position.max_r_multiple >= 1.8:
+                        position.trailing_active = True
+                        position.sl_price = max(position.sl_price, position.entry_price)
+                        locked_r_level = max(locked_r_level, 0.0)
+                    if position.max_r_multiple >= 2.0:
+                        position.sl_price = max(position.sl_price, position.entry_price + initial_risk)
+                        locked_r_level = max(locked_r_level, 1.0)
+                        position.atr_trailing_active = True
+                    if position.max_r_multiple >= 3.0:
+                        position.sl_price = max(position.sl_price, position.entry_price + 2.0 * initial_risk)
+                        locked_r_level = max(locked_r_level, 2.0)
+
+                    # Step 4-5: ATR trailing activates only after 2R and can only tighten.
+                    if position.max_r_multiple >= 2.0 and atr_value > 0:
+                        position.atr_trailing_active = True
+                        atr_buffer = atr_value * 2.0
+                        dynamic_sl = close - atr_buffer
+                        position.sl_price = max(position.sl_price, dynamic_sl)
+                else:  # short
+                    # Step 1-2: intrabar R and max R tracking for shorts.
+                    current_r = (position.entry_price - low) / initial_risk
+                    position.max_r_multiple = max(position.max_r_multiple, current_r)
+
+                    # Step 3: structure lock.
+                    if position.max_r_multiple >= 1.8:
+                        position.trailing_active = True
+                        position.sl_price = min(position.sl_price, position.entry_price)
+                        locked_r_level = max(locked_r_level, 0.0)
+                    if position.max_r_multiple >= 2.0:
+                        position.sl_price = min(position.sl_price, position.entry_price - initial_risk)
+                        locked_r_level = max(locked_r_level, 1.0)
+                        position.atr_trailing_active = True
+                    if position.max_r_multiple >= 3.0:
+                        position.sl_price = min(position.sl_price, position.entry_price - 2.0 * initial_risk)
+                        locked_r_level = max(locked_r_level, 2.0)
+
+                    # Step 4-5: ATR trailing activates only after 2R and can only tighten.
+                    if position.max_r_multiple >= 2.0 and atr_value > 0:
+                        position.atr_trailing_active = True
+                        atr_buffer = atr_value * 2.0
+                        dynamic_sl = close + atr_buffer
+                        position.sl_price = min(position.sl_price, dynamic_sl)
+
+                position.locked_r_level = locked_r_level
+                position.last_trailing_r = locked_r_level
+                position.metadata['atr_trailing_active'] = position.atr_trailing_active
+                logger.debug(
+                    f"[TRAIL] {symbol}: side={position.side} max_r_multiple={position.max_r_multiple:.2f} "
+                    f"sl_price={position.sl_price:.5f} locked_r_level={position.locked_r_level:.1f} "
+                    f"atr_trailing_active={position.atr_trailing_active}"
+                )
             
             # Check SL/TP hits
             sl_hit = False
@@ -186,21 +275,33 @@ class BacktestBroker:
                 if low <= position.sl_price:
                     sl_hit = True
                     exit_price = position.sl_price
-                    exit_reason = 'SL_HIT'
-                elif high >= position.tp_price:
+                    if position.sl_price >= position.entry_price:
+                        exit_reason = 'TRAILING_PROFIT'
+                        exit_type = 'PROFIT_LOCK'
+                    else:
+                        exit_reason = 'SL_HIT'
+                        exit_type = 'LOSS'
+                elif high >= position.tp_price and not position.trailing_active:
                     tp_hit = True
                     exit_price = position.tp_price
                     exit_reason = 'TP_HIT'
+                    exit_type = 'PROFIT'
             else:
                 # Short position
                 if high >= position.sl_price:
                     sl_hit = True
                     exit_price = position.sl_price
-                    exit_reason = 'SL_HIT'
-                elif low <= position.tp_price:
+                    if position.sl_price <= position.entry_price:
+                        exit_reason = 'TRAILING_PROFIT'
+                        exit_type = 'PROFIT_LOCK'
+                    else:
+                        exit_reason = 'SL_HIT'
+                        exit_type = 'LOSS'
+                elif low <= position.tp_price and not position.trailing_active:
                     tp_hit = True
                     exit_price = position.tp_price
                     exit_reason = 'TP_HIT'
+                    exit_type = 'PROFIT'
             
             if sl_hit or tp_hit:
                 # Close position
@@ -208,7 +309,8 @@ class BacktestBroker:
                     symbol=symbol,
                     exit_price=exit_price,
                     exit_timestamp=timestamp,
-                    exit_reason=exit_reason
+                    exit_reason=exit_reason,
+                    exit_type=exit_type
                 )
                 closed_this_update.append(trade)
                 symbols_to_close.append(symbol)
@@ -256,7 +358,8 @@ class BacktestBroker:
         symbol: str,
         exit_price: float,
         exit_timestamp: datetime,
-        exit_reason: str
+        exit_reason: str,
+        exit_type: str = 'UNKNOWN'
     ) -> Dict:
         """Internal method to close position and record trade"""
         position = self.positions[symbol]
@@ -294,11 +397,40 @@ class BacktestBroker:
             'pnl': pnl,
             'pnl_pct': pnl_pct,
             'r_multiple': r_multiple,
+            'max_r_multiple_reached': position.max_r_multiple,
+            'locked_r_level': position.locked_r_level,
+            'trailing_active': position.trailing_active,
+            'final_sl_price': position.sl_price,
             'sl_price': position.sl_price,
             'tp_price': position.tp_price,
             'exit_reason': exit_reason,
+            'exit_type': exit_type,
             'decision_source': position.metadata.get('decision_source', 'UNKNOWN'),
+            'strategy': position.metadata.get('strategy', 'UNKNOWN'),
             'regime': position.metadata.get('regime', 'UNKNOWN'),
+            'regime_reason': position.metadata.get('regime_reason'),
+            'ml_conf_raw': position.metadata.get('ml_conf_raw'),
+            'ml_conf_calibrated': position.metadata.get('ml_conf_calibrated'),
+            'edge_score': position.metadata.get('edge_score'),
+            'skip_reason': position.metadata.get('skip_reason'),
+            'cooldown_active': position.metadata.get('cooldown_active', False),
+            'soft_filter_score': position.metadata.get('soft_filter_score'),
+            'signal_quality': position.metadata.get('signal_quality'),
+            'probability_of_success': position.metadata.get('probability_of_success'),
+            'ml_filter_pass': position.metadata.get('ml_filter_pass'),
+            'ml_filter_enabled': position.metadata.get('ml_filter_enabled'),
+            'shadow_logged': position.metadata.get('shadow_logged', False),
+            'virtual_r_multiple': position.metadata.get('virtual_r_multiple'),
+            'atr_trailing_active': position.atr_trailing_active or position.metadata.get('atr_trailing_active', False),
+            'boll_z': position.metadata.get('boll_z'),
+            'atr_pctile': position.metadata.get('atr_pctile'),
+            'adx': position.metadata.get('adx'),
+            'session': position.metadata.get('session'),
+            'atr_value': position.metadata.get('atr_value'),
+            'neutral_regime_size_reduction': position.metadata.get('neutral_regime_size_reduction', False),
+            'danger_size_reduction': position.metadata.get('danger_size_reduction', False),
+            'danger_reason': position.metadata.get('danger_reason'),
+            'danger_duration_bars': position.metadata.get('danger_duration_bars', 0),
             'mfe': mfe,
             'mae': mae,
             'duration_minutes': int(duration_minutes),

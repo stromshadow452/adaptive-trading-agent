@@ -1,4 +1,7 @@
-import zmq
+try:
+    import zmq
+except ImportError:
+    zmq = None  # type: ignore  # ZMQ optional — only required for live streaming
 import sqlite3
 import json
 import time

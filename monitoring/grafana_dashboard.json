@@ -1,0 +1,267 @@
+{
+  "__scopus_version__": "week12",
+  "description": "Grafana dashboard — SCOPUS Shadow Trading Monitor. Import via Grafana UI: Dashboards → Import → Paste JSON.",
+  "uid": "scopus-shadow-v2",
+  "title": "SCOPUS Shadow Monitor",
+  "tags": ["scopus", "trading", "shadow"],
+  "timezone": "browser",
+  "schemaVersion": 38,
+  "refresh": "30s",
+  "time": {"from": "now-6h", "to": "now"},
+  "templating": {"list": []},
+  "annotations": {"list": []},
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "Net PnL (USD)",
+      "gridPos": {"x": 0, "y": 0, "w": 4, "h": 4},
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {"steps": [
+            {"color": "red",    "value": null},
+            {"color": "yellow", "value": 0},
+            {"color": "green",  "value": 50}
+          ]},
+          "unit": "currencyUSD"
+        }
+      },
+      "targets": [{"expr": "scopus_net_pnl_usd", "legendFormat": "PnL"}]
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Profit Factor",
+      "gridPos": {"x": 4, "y": 0, "w": 4, "h": 4},
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {"steps": [
+            {"color": "red",    "value": null},
+            {"color": "yellow", "value": 1.0},
+            {"color": "green",  "value": 1.3}
+          ]},
+          "unit": "short",
+          "decimals": 2
+        }
+      },
+      "targets": [{"expr": "scopus_profit_factor", "legendFormat": "PF"}]
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Win Rate",
+      "gridPos": {"x": 8, "y": 0, "w": 4, "h": 4},
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {"steps": [
+            {"color": "red",    "value": null},
+            {"color": "yellow", "value": 0.45},
+            {"color": "green",  "value": 0.55}
+          ]},
+          "unit": "percentunit"
+        }
+      },
+      "targets": [{"expr": "scopus_win_rate", "legendFormat": "WR"}]
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Max Drawdown %",
+      "gridPos": {"x": 12, "y": 0, "w": 4, "h": 4},
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {"steps": [
+            {"color": "green",  "value": null},
+            {"color": "yellow", "value": 5},
+            {"color": "red",    "value": 10}
+          ]},
+          "unit": "percent"
+        }
+      },
+      "targets": [{"expr": "scopus_max_drawdown_pct", "legendFormat": "DD%"}]
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "Sharpe Ratio",
+      "gridPos": {"x": 16, "y": 0, "w": 4, "h": 4},
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {"steps": [
+            {"color": "red",    "value": null},
+            {"color": "yellow", "value": 0.5},
+            {"color": "green",  "value": 1.0}
+          ]},
+          "unit": "short",
+          "decimals": 2
+        }
+      },
+      "targets": [{"expr": "scopus_sharpe_ratio", "legendFormat": "Sharpe"}]
+    },
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "Equity (USD)",
+      "gridPos": {"x": 20, "y": 0, "w": 4, "h": 4},
+      "fieldConfig": {
+        "defaults": {"unit": "currencyUSD"}
+      },
+      "targets": [{"expr": "scopus_equity_usd", "legendFormat": "Equity"}]
+    },
+    {
+      "id": 10,
+      "type": "timeseries",
+      "title": "Equity Curve",
+      "gridPos": {"x": 0, "y": 4, "w": 12, "h": 8},
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD",
+          "color": {"mode": "fixed", "fixedColor": "blue"}
+        }
+      },
+      "targets": [{"expr": "scopus_equity_usd", "legendFormat": "Equity"}]
+    },
+    {
+      "id": 11,
+      "type": "timeseries",
+      "title": "Rolling Profit Factor",
+      "gridPos": {"x": 12, "y": 4, "w": 12, "h": 8},
+      "fieldConfig": {
+        "defaults": {"unit": "short"},
+        "overrides": [{
+          "matcher": {"id": "byName", "options": "PF"},
+          "properties": [{"id": "thresholds", "value": {
+            "steps": [{"color": "red", "value": null}, {"color": "green", "value": 1.0}]
+          }}]
+        }]
+      },
+      "targets": [{"expr": "scopus_profit_factor", "legendFormat": "PF"}]
+    },
+    {
+      "id": 20,
+      "type": "stat",
+      "title": "Max Feature PSI",
+      "description": "Alert if > 0.25",
+      "gridPos": {"x": 0, "y": 12, "w": 4, "h": 4},
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {"steps": [
+            {"color": "green",  "value": null},
+            {"color": "yellow", "value": 0.10},
+            {"color": "red",    "value": 0.25}
+          ]},
+          "unit": "short",
+          "decimals": 4
+        }
+      },
+      "targets": [{"expr": "scopus_feature_psi_max", "legendFormat": "PSI Max"}]
+    },
+    {
+      "id": 21,
+      "type": "stat",
+      "title": "Features in Drift",
+      "gridPos": {"x": 4, "y": 12, "w": 4, "h": 4},
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {"steps": [
+            {"color": "green",  "value": null},
+            {"color": "yellow", "value": 1},
+            {"color": "red",    "value": 5}
+          ]},
+          "unit": "none"
+        }
+      },
+      "targets": [{"expr": "scopus_feature_psi_crit_count", "legendFormat": "Drifted"}]
+    },
+    {
+      "id": 22,
+      "type": "stat",
+      "title": "CB Trips (1h)",
+      "gridPos": {"x": 8, "y": 12, "w": 4, "h": 4},
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {"steps": [
+            {"color": "green",  "value": null},
+            {"color": "red",    "value": 1}
+          ]},
+          "unit": "none"
+        }
+      },
+      "targets": [{"expr": "increase(scopus_cb_trips_total[1h])", "legendFormat": "CB Trips"}]
+    },
+    {
+      "id": 23,
+      "type": "stat",
+      "title": "Shadow Days",
+      "gridPos": {"x": 12, "y": 12, "w": 4, "h": 4},
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {"steps": [
+            {"color": "red",    "value": null},
+            {"color": "yellow", "value": 14},
+            {"color": "green",  "value": 30}
+          ]},
+          "unit": "none",
+          "decimals": 0
+        }
+      },
+      "targets": [{"expr": "scopus_shadow_days", "legendFormat": "Days"}]
+    },
+    {
+      "id": 24,
+      "type": "stat",
+      "title": "Avg Slippage (pips)",
+      "gridPos": {"x": 16, "y": 12, "w": 4, "h": 4},
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {"steps": [
+            {"color": "green",  "value": null},
+            {"color": "yellow", "value": 1.0},
+            {"color": "red",    "value": 2.0}
+          ]},
+          "unit": "short",
+          "decimals": 2
+        }
+      },
+      "targets": [{"expr": "scopus_avg_slippage_pips", "legendFormat": "Slippage"}]
+    },
+    {
+      "id": 25,
+      "type": "stat",
+      "title": "Open Positions",
+      "gridPos": {"x": 20, "y": 12, "w": 4, "h": 4},
+      "fieldConfig": {
+        "defaults": {"unit": "none", "decimals": 0}
+      },
+      "targets": [{"expr": "scopus_open_positions", "legendFormat": "Open"}]
+    },
+    {
+      "id": 30,
+      "type": "timeseries",
+      "title": "PSI Timeline (Max + Warning Count)",
+      "gridPos": {"x": 0, "y": 16, "w": 16, "h": 8},
+      "targets": [
+        {"expr": "scopus_feature_psi_max",        "legendFormat": "PSI Max"},
+        {"expr": "scopus_feature_psi_warn_count",  "legendFormat": "Warning Features"},
+        {"expr": "scopus_feature_psi_crit_count",  "legendFormat": "Critical Features"}
+      ],
+      "fieldConfig": {
+        "overrides": [
+          {"matcher": {"id": "byName", "options": "PSI Max"},
+           "properties": [{"id": "custom.axisPlacement", "value": "left"}]},
+          {"matcher": {"id": "byName", "options": "Warning Features"},
+           "properties": [{"id": "custom.axisPlacement", "value": "right"}]}
+        ]
+      }
+    },
+    {
+      "id": 31,
+      "type": "timeseries",
+      "title": "Signal Error Rate",
+      "gridPos": {"x": 16, "y": 16, "w": 8, "h": 8},
+      "targets": [
+        {"expr": "rate(scopus_signal_errors_total[5m]) * 60", "legendFormat": "Errors/min"}
+      ]
+    }
+  ]
+}

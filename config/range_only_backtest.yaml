@@ -78,7 +78,7 @@ session_gate:
   preferred_sessions:
     - "LONDON"
     - "NEW_YORK"
-  tokyo_size_multiplier: 0.5
+  tokyo_size_multiplier: 0.75
   sydney_size_multiplier: 0.6
   off_hours_block: true
 

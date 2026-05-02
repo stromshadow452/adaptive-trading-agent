@@ -1,0 +1,105 @@
+# monitoring/alert_rules.yml
+# Prometheus alerting rules for SCOPUS shadow trading monitoring
+# Import into Alertmanager or use with prometheus --config.file
+
+groups:
+  - name: scopus_shadow_alerts
+    rules:
+
+      # ── Drawdown Alerts ────────────────────────────────────────────────
+      - alert: ScopusDrawdownWarning
+        expr: scopus_max_drawdown_pct > 8
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "SCOPUS drawdown warning"
+          description: "Shadow drawdown is {{ $value | humanize }}% — approaching 12% hard limit"
+
+      - alert: ScopusDrawdownCritical
+        expr: scopus_max_drawdown_pct > 11
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "SCOPUS drawdown CRITICAL — approaching hard limit"
+          description: "Shadow drawdown {{ $value | humanize }}% — within 1% of 12% veto threshold"
+
+      # ── Circuit Breaker ────────────────────────────────────────────────
+      - alert: ScopusCircuitBreakerTripped
+        expr: increase(scopus_cb_trips_total[5m]) > 0
+        for: 0m
+        labels:
+          severity: critical
+        annotations:
+          summary: "SCOPUS circuit breaker tripped"
+          description: "Circuit breaker triggered — shadow trading may be paused. Symbol: {{ $labels.symbol }}"
+
+      # ── Profit Factor Decline ──────────────────────────────────────────
+      - alert: ScopusProfitFactorDecline
+        expr: scopus_profit_factor < 1.1
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: "SCOPUS profit factor below 1.1"
+          description: "Current profit factor {{ $value | humanize }} — strategy may be degrading"
+
+      - alert: ScopusProfitFactorCritical
+        expr: scopus_profit_factor < 1.0
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: "SCOPUS profit factor below 1.0"
+          description: "System is losing money — profit factor {{ $value | humanize }}"
+
+      # ── Win Rate ──────────────────────────────────────────────────────
+      - alert: ScopusWinRateLow
+        expr: scopus_win_rate < 0.35
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: "SCOPUS win rate low"
+          description: "Win rate {{ $value | humanizePercentage }} — below 35% over 1h"
+
+      # ── Latency ───────────────────────────────────────────────────────
+      - alert: ScopusHighLatency
+        expr: scopus_p95_latency_ms > 500
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "SCOPUS signal latency high"
+          description: "P95 latency {{ $value | humanize }}ms exceeds 500ms threshold"
+
+      # ── Slippage ──────────────────────────────────────────────────────
+      - alert: ScopusHighSlippage
+        expr: scopus_avg_slippage_pips > 2.0
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "SCOPUS slippage elevated"
+          description: "Average slippage {{ $value | humanize }} pips — unexpected spread widening"
+
+      # ── Pipeline Errors ───────────────────────────────────────────────
+      - alert: ScopusPipelineErrors
+        expr: increase(scopus_signal_errors_total[15m]) > 5
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: "SCOPUS pipeline errors detected"
+          description: "{{ $value }} pipeline errors in last 15 minutes"
+
+      # ── System Down ───────────────────────────────────────────────────
+      - alert: ScopusAPIDown
+        expr: up{job="scopus-api"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "SCOPUS API is down"
+          description: "SCOPUS FastAPI endpoint is unreachable — shadow trading may be halted"

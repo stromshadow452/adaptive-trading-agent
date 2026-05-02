@@ -48,7 +48,7 @@ DEFAULT_SESSIONS = {
         start_hour=21,
         end_hour=23,
         policy="SELECTIVE",
-        size_multiplier=0.7,
+        size_multiplier=0.85,
         min_edge_score=0.70,
         min_regime_strength=0.75,
         description="Sydney session - very selective"
@@ -58,7 +58,7 @@ DEFAULT_SESSIONS = {
         start_hour=0,
         end_hour=3,
         policy="EXPLORATION",
-        size_multiplier=0.5,
+        size_multiplier=0.75,
         min_edge_score=0.50,
         min_regime_strength=0.50,
         description="Tokyo session - exploration mode"
@@ -217,6 +217,7 @@ class SessionGate:
         symbol: str,
         edge_score: float = 0.0,
         regime_strength: float = 0.0,
+        confidence: float = 0.0,
     ) -> SessionGateOutput:
         """
         Evaluate session gate for a trade signal.
@@ -243,8 +244,20 @@ class SessionGate:
         # Detect current session
         session = detect_session(timestamp)
         
-        # OFF session - always block
+        # OFF session - allow only exceptional quality setups
         if session == "OFF":
+            if confidence > 0.65 and edge_score > 0.65:
+                output = SessionGateOutput(
+                    session=session,
+                    policy="OFF_OVERRIDE",
+                    allowed=True,
+                    size_multiplier=1.0,
+                    reason=f"Off-session override (conf={confidence:.2f}, edge={edge_score:.2f})"
+                )
+                if self.log_allows:
+                    logger.info(f"[SESSION] {symbol} {output}")
+                return output
+
             output = SessionGateOutput(
                 session=session,
                 policy="BLOCK",

@@ -1,0 +1,32 @@
+# monitoring/prometheus.yml
+# Prometheus scrape configuration for SCOPUS shadow trading
+
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'scopus-shadow'
+
+# Alerting rules
+rule_files:
+  - "alert_rules.yml"
+
+# Alertmanager connection
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+scrape_configs:
+  # SCOPUS FastAPI metrics endpoint
+  - job_name: 'scopus-api'
+    static_configs:
+      - targets: ['host.docker.internal:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']

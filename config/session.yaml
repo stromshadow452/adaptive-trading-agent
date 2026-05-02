@@ -19,7 +19,7 @@ sessions:
     start_hour: 21
     end_hour: 23
     policy: SELECTIVE  # Allow only high-quality setups
-    size_multiplier: 0.7
+    size_multiplier: 0.85
     min_edge_score: 0.70
     min_regime_strength: 0.75
     description: "Sydney session - very selective"
@@ -28,7 +28,7 @@ sessions:
     start_hour: 0
     end_hour: 3
     policy: EXPLORATION  # Exploration mode with reduced size
-    size_multiplier: 0.5
+    size_multiplier: 0.75
     min_edge_score: 0.50
     min_regime_strength: 0.50
     description: "Tokyo session - exploration mode"

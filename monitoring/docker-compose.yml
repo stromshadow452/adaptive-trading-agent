@@ -1,0 +1,72 @@
+# monitoring/docker-compose.yml
+# SCOPUS Shadow Trading Monitoring Stack
+#
+# Start with:
+#   docker compose -f monitoring/docker-compose.yml up -d
+#
+# Access:
+#   Grafana:      http://localhost:3000   (admin / scopus2026)
+#   Prometheus:   http://localhost:9090
+#   Alertmanager: http://localhost:9093
+
+version: "3.8"
+
+services:
+
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: scopus_prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./alert_rules.yml:/etc/prometheus/alert_rules.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=90d"
+      - "--web.enable-lifecycle"
+    networks:
+      - scopus_net
+
+  grafana:
+    image: grafana/grafana:10.2.0
+    container_name: scopus_grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=scopus2026
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_INSTALL_PLUGINS=grafana-clock-panel
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    depends_on:
+      - prometheus
+    networks:
+      - scopus_net
+
+  alertmanager:
+    image: prom/alertmanager:v0.26.0
+    container_name: scopus_alertmanager
+    restart: unless-stopped
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      - alertmanager_data:/alertmanager
+    networks:
+      - scopus_net
+
+networks:
+  scopus_net:
+    driver: bridge
+
+volumes:
+  prometheus_data:
+  grafana_data:
+  alertmanager_data:

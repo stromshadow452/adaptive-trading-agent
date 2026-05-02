@@ -1,0 +1,44 @@
+{
+  "config": {
+    "start_year": 2022,
+    "end_year": 2023,
+    "symbols": [
+      "EURUSD",
+      "GBPUSD",
+      "EURJPY",
+      "AUDUSD"
+    ]
+  },
+  "summary": {
+    "total_trades": 21,
+    "win_rate": 19.047619047619047,
+    "profit_factor": 0.43000442026003394,
+    "total_pnl_pips": -89.03738095237901,
+    "trades_per_month": 0.875
+  },
+  "yearly": {
+    "2022": {
+      "trades": 12,
+      "wins": 3,
+      "losses": 9,
+      "win_rate": 25.0,
+      "total_pnl_pips": -42.19809523809044,
+      "profit_factor": 0.45132809113989825
+    },
+    "2023": {
+      "trades": 9,
+      "wins": 1,
+      "losses": 8,
+      "win_rate": 11.11111111111111,
+      "total_pnl_pips": -46.839285714288565,
+      "profit_factor": 0.40932292448578605
+    }
+  },
+  "criteria": {
+    "PF >= 1.20": "False",
+    "Win Rate >= 40%": false,
+    "Trades 15-30/month": false,
+    "Avg Win > Avg Loss": "True"
+  },
+  "verdict": "NO-GO"
+}

@@ -1,0 +1,1151 @@
+[
+  {
+    "date": "2023-06-01",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 2,
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "pnl_pct": 0.0033,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      },
+      "AUDUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      },
+      "EURUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      }
+    },
+    "regime_distribution": {
+      "TREND": 45.1,
+      "TRANSITION": 37.8,
+      "CHOPPY": 7.3,
+      "DEAD": 9.8
+    },
+    "total_signals": 2,
+    "total_trades": 2,
+    "wins": 1,
+    "losses": 1,
+    "daily_pnl_pct": 0.3333,
+    "consecutive_losses": 0
+  },
+  {
+    "date": "2023-06-02",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 2,
+        "trades": 2,
+        "wins": 2,
+        "losses": 0,
+        "pnl_pct": 0.0167,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      },
+      "AUDUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      },
+      "EURUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      }
+    },
+    "regime_distribution": {
+      "CHOPPY": 4.0,
+      "TREND": 48.4,
+      "TRANSITION": 41.5,
+      "DEAD": 6.0
+    },
+    "total_signals": 2,
+    "total_trades": 2,
+    "wins": 2,
+    "losses": 0,
+    "daily_pnl_pct": 1.6667,
+    "consecutive_losses": 0
+  },
+  {
+    "date": "2023-06-03",
+    "per_asset": {},
+    "regime_distribution": {},
+    "total_signals": 0,
+    "total_trades": 0,
+    "wins": 0,
+    "losses": 0,
+    "daily_pnl_pct": 0.0,
+    "consecutive_losses": 0
+  },
+  {
+    "date": "2023-06-04",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 3,
+        "trades": 3,
+        "wins": 1,
+        "losses": 2,
+        "pnl_pct": -0.0067,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 0
+      },
+      "AUDUSD": {
+        "signals": 1,
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "pnl_pct": 0.0083,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      }
+    },
+    "regime_distribution": {
+      "TRANSITION": 26.7,
+      "TREND": 70.0,
+      "DEAD": 3.3
+    },
+    "total_signals": 4,
+    "total_trades": 4,
+    "wins": 2,
+    "losses": 2,
+    "daily_pnl_pct": 0.1667,
+    "consecutive_losses": 0
+  },
+  {
+    "date": "2023-06-05",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 9,
+        "trades": 9,
+        "wins": 5,
+        "losses": 4,
+        "pnl_pct": 0.0067,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      },
+      "AUDUSD": {
+        "signals": 1,
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "pnl_pct": 0.0083,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      },
+      "EURUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      }
+    },
+    "regime_distribution": {
+      "TRANSITION": 38.8,
+      "TREND": 39.2,
+      "CHOPPY": 12.2,
+      "DEAD": 9.8
+    },
+    "total_signals": 10,
+    "total_trades": 10,
+    "wins": 6,
+    "losses": 4,
+    "daily_pnl_pct": 1.5,
+    "consecutive_losses": 0
+  },
+  {
+    "date": "2023-06-06",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 3,
+        "trades": 3,
+        "wins": 1,
+        "losses": 2,
+        "pnl_pct": -0.0067,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 0
+      },
+      "AUDUSD": {
+        "signals": 5,
+        "trades": 5,
+        "wins": 3,
+        "losses": 2,
+        "pnl_pct": 0.015,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      },
+      "EURUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      }
+    },
+    "regime_distribution": {
+      "TREND": 40.9,
+      "TRANSITION": 33.9,
+      "CHOPPY": 18.9,
+      "DEAD": 6.3
+    },
+    "total_signals": 8,
+    "total_trades": 8,
+    "wins": 4,
+    "losses": 4,
+    "daily_pnl_pct": 0.8333,
+    "consecutive_losses": 0
+  },
+  {
+    "date": "2023-06-07",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 3,
+        "trades": 3,
+        "wins": 2,
+        "losses": 1,
+        "pnl_pct": 0.0047,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      },
+      "AUDUSD": {
+        "signals": 1,
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "pnl_pct": -0.005,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 1
+      },
+      "EURUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      }
+    },
+    "regime_distribution": {
+      "TREND": 57.7,
+      "TRANSITION": 30.1,
+      "CHOPPY": 5.2,
+      "DEAD": 7.0
+    },
+    "total_signals": 4,
+    "total_trades": 4,
+    "wins": 2,
+    "losses": 2,
+    "daily_pnl_pct": -0.0333,
+    "consecutive_losses": 1
+  },
+  {
+    "date": "2023-06-08",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 4,
+        "trades": 4,
+        "wins": 2,
+        "losses": 2,
+        "pnl_pct": 0.0017,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 0
+      },
+      "AUDUSD": {
+        "signals": 12,
+        "trades": 12,
+        "wins": 10,
+        "losses": 2,
+        "pnl_pct": 0.0733,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      },
+      "EURUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      }
+    },
+    "regime_distribution": {
+      "TREND": 58.7,
+      "TRANSITION": 31.8,
+      "CHOPPY": 3.5,
+      "DEAD": 5.9
+    },
+    "total_signals": 16,
+    "total_trades": 16,
+    "wins": 12,
+    "losses": 4,
+    "daily_pnl_pct": 7.5,
+    "consecutive_losses": 0
+  },
+  {
+    "date": "2023-06-09",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 2,
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "pnl_pct": 0.0013,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 0
+      },
+      "AUDUSD": {
+        "signals": 3,
+        "trades": 3,
+        "wins": 2,
+        "losses": 1,
+        "pnl_pct": 0.0117,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      },
+      "EURUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      }
+    },
+    "regime_distribution": {
+      "TREND": 58.5,
+      "TRANSITION": 29.4,
+      "CHOPPY": 3.6,
+      "DEAD": 8.5
+    },
+    "total_signals": 5,
+    "total_trades": 5,
+    "wins": 3,
+    "losses": 2,
+    "daily_pnl_pct": 1.3,
+    "consecutive_losses": 0
+  },
+  {
+    "date": "2023-06-10",
+    "per_asset": {},
+    "regime_distribution": {},
+    "total_signals": 0,
+    "total_trades": 0,
+    "wins": 0,
+    "losses": 0,
+    "daily_pnl_pct": 0.0,
+    "consecutive_losses": 0
+  },
+  {
+    "date": "2023-06-11",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 0
+      },
+      "AUDUSD": {
+        "signals": 2,
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "pnl_pct": 0.0033,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 1
+      }
+    },
+    "regime_distribution": {
+      "TRANSITION": 40.0,
+      "DEAD": 30.0,
+      "TREND": 30.0
+    },
+    "total_signals": 2,
+    "total_trades": 2,
+    "wins": 1,
+    "losses": 1,
+    "daily_pnl_pct": 0.3333,
+    "consecutive_losses": 1
+  },
+  {
+    "date": "2023-06-12",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 8,
+        "trades": 8,
+        "wins": 1,
+        "losses": 7,
+        "pnl_pct": -0.0097,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 2
+      },
+      "AUDUSD": {
+        "signals": 6,
+        "trades": 6,
+        "wins": 2,
+        "losses": 4,
+        "pnl_pct": -0.0103,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 3
+      },
+      "EURUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      }
+    },
+    "regime_distribution": {
+      "TREND": 39.2,
+      "TRANSITION": 44.1,
+      "CHOPPY": 12.9,
+      "DEAD": 3.8
+    },
+    "total_signals": 14,
+    "total_trades": 14,
+    "wins": 3,
+    "losses": 11,
+    "daily_pnl_pct": -2.0,
+    "consecutive_losses": 3
+  },
+  {
+    "date": "2023-06-13",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 10,
+        "trades": 8,
+        "wins": 1,
+        "losses": 7,
+        "pnl_pct": -0.0097,
+        "dampener_state": "RECOVERY",
+        "dampener_losses": 1
+      },
+      "AUDUSD": {
+        "signals": 4,
+        "trades": 4,
+        "wins": 2,
+        "losses": 2,
+        "pnl_pct": 0.0009,
+        "dampener_state": "COOLDOWN",
+        "dampener_losses": 0
+      },
+      "EURUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      }
+    },
+    "regime_distribution": {
+      "CHOPPY": 5.9,
+      "TREND": 49.3,
+      "TRANSITION": 35.0,
+      "DEAD": 9.8
+    },
+    "total_signals": 14,
+    "total_trades": 12,
+    "wins": 3,
+    "losses": 9,
+    "daily_pnl_pct": -0.875,
+    "consecutive_losses": 0
+  },
+  {
+    "date": "2023-06-14",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 10,
+        "trades": 10,
+        "wins": 1,
+        "losses": 9,
+        "pnl_pct": -0.0127,
+        "dampener_state": "COOLDOWN",
+        "dampener_losses": 5
+      },
+      "AUDUSD": {
+        "signals": 6,
+        "trades": 6,
+        "wins": 1,
+        "losses": 5,
+        "pnl_pct": -0.0057,
+        "dampener_state": "COOLDOWN",
+        "dampener_losses": 1
+      },
+      "EURUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      }
+    },
+    "regime_distribution": {
+      "TREND": 54.9,
+      "TRANSITION": 30.8,
+      "CHOPPY": 8.0,
+      "DEAD": 6.3
+    },
+    "total_signals": 16,
+    "total_trades": 16,
+    "wins": 2,
+    "losses": 14,
+    "daily_pnl_pct": -1.8333,
+    "consecutive_losses": 1
+  },
+  {
+    "date": "2023-06-15",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 1,
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "pnl_pct": 0.0021,
+        "dampener_state": "COOLDOWN",
+        "dampener_losses": 0
+      },
+      "AUDUSD": {
+        "signals": 2,
+        "trades": 2,
+        "wins": 2,
+        "losses": 0,
+        "pnl_pct": 0.0042,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 0
+      },
+      "EURUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      }
+    },
+    "regime_distribution": {
+      "TREND": 30.4,
+      "TRANSITION": 43.0,
+      "DEAD": 17.5,
+      "CHOPPY": 9.1
+    },
+    "total_signals": 3,
+    "total_trades": 3,
+    "wins": 3,
+    "losses": 0,
+    "daily_pnl_pct": 0.625,
+    "consecutive_losses": 0
+  },
+  {
+    "date": "2023-06-16",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 1,
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "pnl_pct": 0.0021,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 0
+      },
+      "AUDUSD": {
+        "signals": 1,
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "pnl_pct": -0.002,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 1
+      },
+      "EURUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      }
+    },
+    "regime_distribution": {
+      "TREND": 33.1,
+      "TRANSITION": 52.4,
+      "CHOPPY": 6.0,
+      "DEAD": 8.5
+    },
+    "total_signals": 2,
+    "total_trades": 2,
+    "wins": 1,
+    "losses": 1,
+    "daily_pnl_pct": 0.0083,
+    "consecutive_losses": 1
+  },
+  {
+    "date": "2023-06-17",
+    "per_asset": {},
+    "regime_distribution": {},
+    "total_signals": 0,
+    "total_trades": 0,
+    "wins": 0,
+    "losses": 0,
+    "daily_pnl_pct": 0.0,
+    "consecutive_losses": 1
+  },
+  {
+    "date": "2023-06-18",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 0
+      },
+      "AUDUSD": {
+        "signals": 2,
+        "trades": 2,
+        "wins": 0,
+        "losses": 2,
+        "pnl_pct": -0.004,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 3
+      }
+    },
+    "regime_distribution": {
+      "TRANSITION": 10.0,
+      "DEAD": 3.3,
+      "TREND": 83.3,
+      "CHOPPY": 3.3
+    },
+    "total_signals": 2,
+    "total_trades": 2,
+    "wins": 0,
+    "losses": 2,
+    "daily_pnl_pct": -0.4,
+    "consecutive_losses": 3
+  },
+  {
+    "date": "2023-06-19",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 8,
+        "trades": 8,
+        "wins": 3,
+        "losses": 5,
+        "pnl_pct": -0.006,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 2
+      },
+      "AUDUSD": {
+        "signals": 6,
+        "trades": 6,
+        "wins": 4,
+        "losses": 2,
+        "pnl_pct": 0.0038,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 1
+      },
+      "EURUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      }
+    },
+    "regime_distribution": {
+      "TREND": 30.1,
+      "TRANSITION": 30.1,
+      "CHOPPY": 28.3,
+      "DEAD": 11.5
+    },
+    "total_signals": 14,
+    "total_trades": 14,
+    "wins": 7,
+    "losses": 7,
+    "daily_pnl_pct": -0.2167,
+    "consecutive_losses": 1
+  },
+  {
+    "date": "2023-06-20",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 2,
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "pnl_pct": 0.0013,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 1
+      },
+      "AUDUSD": {
+        "signals": 2,
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "pnl_pct": -0.0017,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 0
+      },
+      "EURUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      }
+    },
+    "regime_distribution": {
+      "TREND": 49.3,
+      "TRANSITION": 40.2,
+      "CHOPPY": 10.5
+    },
+    "total_signals": 4,
+    "total_trades": 4,
+    "wins": 2,
+    "losses": 2,
+    "daily_pnl_pct": -0.0333,
+    "consecutive_losses": 0
+  },
+  {
+    "date": "2023-06-21",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 6,
+        "trades": 6,
+        "wins": 5,
+        "losses": 1,
+        "pnl_pct": 0.0267,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      },
+      "AUDUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 0
+      },
+      "EURUSD": {
+        "signals": 2,
+        "trades": 2,
+        "wins": 2,
+        "losses": 0,
+        "pnl_pct": 0.005,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      }
+    },
+    "regime_distribution": {
+      "TREND": 51.4,
+      "TRANSITION": 37.1,
+      "CHOPPY": 7.7,
+      "DEAD": 3.8
+    },
+    "total_signals": 8,
+    "total_trades": 8,
+    "wins": 7,
+    "losses": 1,
+    "daily_pnl_pct": 3.1667,
+    "consecutive_losses": 0
+  },
+  {
+    "date": "2023-06-22",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 8,
+        "trades": 8,
+        "wins": 6,
+        "losses": 2,
+        "pnl_pct": 0.04,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      },
+      "AUDUSD": {
+        "signals": 6,
+        "trades": 6,
+        "wins": 2,
+        "losses": 4,
+        "pnl_pct": -0.0073,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 2
+      },
+      "EURUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 0
+      }
+    },
+    "regime_distribution": {
+      "TREND": 44.8,
+      "TRANSITION": 43.7,
+      "CHOPPY": 5.2,
+      "DEAD": 6.3
+    },
+    "total_signals": 14,
+    "total_trades": 14,
+    "wins": 8,
+    "losses": 6,
+    "daily_pnl_pct": 3.2667,
+    "consecutive_losses": 2
+  },
+  {
+    "date": "2023-06-23",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 4,
+        "trades": 4,
+        "wins": 3,
+        "losses": 1,
+        "pnl_pct": 0.02,
+        "dampener_state": "NORMAL",
+        "dampener_losses": 1
+      },
+      "AUDUSD": {
+        "signals": 4,
+        "trades": 4,
+        "wins": 2,
+        "losses": 2,
+        "pnl_pct": 0.0027,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 0
+      },
+      "EURUSD": {
+        "signals": 3,
+        "trades": 3,
+        "wins": 0,
+        "losses": 3,
+        "pnl_pct": -0.012,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 3
+      }
+    },
+    "regime_distribution": {
+      "TREND": 34.3,
+      "CHOPPY": 9.7,
+      "TRANSITION": 43.5,
+      "DEAD": 12.5
+    },
+    "total_signals": 11,
+    "total_trades": 11,
+    "wins": 5,
+    "losses": 6,
+    "daily_pnl_pct": 1.0667,
+    "consecutive_losses": 3
+  },
+  {
+    "date": "2023-06-24",
+    "per_asset": {},
+    "regime_distribution": {},
+    "total_signals": 0,
+    "total_trades": 0,
+    "wins": 0,
+    "losses": 0,
+    "daily_pnl_pct": 0.0,
+    "consecutive_losses": 3
+  },
+  {
+    "date": "2023-06-25",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 1,
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "pnl_pct": -0.005,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 2
+      },
+      "AUDUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 0
+      }
+    },
+    "regime_distribution": {
+      "DEAD": 13.3,
+      "TRANSITION": 36.7,
+      "TREND": 46.7,
+      "CHOPPY": 3.3
+    },
+    "total_signals": 1,
+    "total_trades": 1,
+    "wins": 0,
+    "losses": 1,
+    "daily_pnl_pct": -0.5,
+    "consecutive_losses": 4
+  },
+  {
+    "date": "2023-06-26",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 1,
+        "trades": 1,
+        "wins": 1,
+        "losses": 0,
+        "pnl_pct": 0.0033,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 0
+      },
+      "AUDUSD": {
+        "signals": 12,
+        "trades": 12,
+        "wins": 3,
+        "losses": 9,
+        "pnl_pct": -0.0095,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 0
+      },
+      "EURUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 3
+      }
+    },
+    "regime_distribution": {
+      "TRANSITION": 31.5,
+      "TREND": 48.3,
+      "CHOPPY": 13.3,
+      "DEAD": 7.0
+    },
+    "total_signals": 13,
+    "total_trades": 13,
+    "wins": 4,
+    "losses": 9,
+    "daily_pnl_pct": -0.6167,
+    "consecutive_losses": 0
+  },
+  {
+    "date": "2023-06-27",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 4,
+        "trades": 4,
+        "wins": 0,
+        "losses": 4,
+        "pnl_pct": -0.008,
+        "dampener_state": "COOLDOWN",
+        "dampener_losses": 4
+      },
+      "AUDUSD": {
+        "signals": 3,
+        "trades": 3,
+        "wins": 0,
+        "losses": 3,
+        "pnl_pct": -0.006,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 3
+      },
+      "EURUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 3
+      }
+    },
+    "regime_distribution": {
+      "CHOPPY": 7.3,
+      "TREND": 44.8,
+      "TRANSITION": 32.5,
+      "DEAD": 15.4
+    },
+    "total_signals": 7,
+    "total_trades": 7,
+    "wins": 0,
+    "losses": 7,
+    "daily_pnl_pct": -1.4,
+    "consecutive_losses": 7
+  },
+  {
+    "date": "2023-06-28",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 3,
+        "trades": 3,
+        "wins": 0,
+        "losses": 3,
+        "pnl_pct": -0.005,
+        "dampener_state": "RECOVERY",
+        "dampener_losses": 1
+      },
+      "AUDUSD": {
+        "signals": 4,
+        "trades": 4,
+        "wins": 3,
+        "losses": 1,
+        "pnl_pct": 0.0055,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 0
+      },
+      "EURUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 3
+      }
+    },
+    "regime_distribution": {
+      "TREND": 33.9,
+      "TRANSITION": 43.4,
+      "CHOPPY": 13.3,
+      "DEAD": 9.4
+    },
+    "total_signals": 7,
+    "total_trades": 7,
+    "wins": 3,
+    "losses": 4,
+    "daily_pnl_pct": 0.05,
+    "consecutive_losses": 0
+  },
+  {
+    "date": "2023-06-29",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 2,
+        "trades": 2,
+        "wins": 1,
+        "losses": 1,
+        "pnl_pct": 0.0017,
+        "dampener_state": "COOLDOWN",
+        "dampener_losses": 1
+      },
+      "AUDUSD": {
+        "signals": 4,
+        "trades": 4,
+        "wins": 0,
+        "losses": 4,
+        "pnl_pct": -0.008,
+        "dampener_state": "COOLDOWN",
+        "dampener_losses": 4
+      },
+      "EURUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 3
+      }
+    },
+    "regime_distribution": {
+      "TREND": 40.6,
+      "TRANSITION": 34.6,
+      "CHOPPY": 8.4,
+      "DEAD": 16.4
+    },
+    "total_signals": 6,
+    "total_trades": 6,
+    "wins": 1,
+    "losses": 5,
+    "daily_pnl_pct": -0.6333,
+    "consecutive_losses": 5
+  },
+  {
+    "date": "2023-06-30",
+    "per_asset": {
+      "EURJPY": {
+        "signals": 1,
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "pnl_pct": -0.0012,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 2
+      },
+      "AUDUSD": {
+        "signals": 1,
+        "trades": 1,
+        "wins": 0,
+        "losses": 1,
+        "pnl_pct": -0.0012,
+        "dampener_state": "COOLDOWN",
+        "dampener_losses": 5
+      },
+      "EURUSD": {
+        "signals": 0,
+        "trades": 0,
+        "wins": 0,
+        "losses": 0,
+        "pnl_pct": 0.0,
+        "dampener_state": "CAUTION",
+        "dampener_losses": 3
+      }
+    },
+    "regime_distribution": {
+      "TRANSITION": 43.1,
+      "TREND": 36.3,
+      "CHOPPY": 12.9,
+      "DEAD": 7.7
+    },
+    "total_signals": 2,
+    "total_trades": 2,
+    "wins": 0,
+    "losses": 2,
+    "daily_pnl_pct": -0.25,
+    "consecutive_losses": 7
+  }
+]

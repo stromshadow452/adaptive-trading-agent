@@ -13,17 +13,51 @@ from collections import defaultdict
 logger = logging.getLogger(__name__)
 
 
+def calculate_position_risk(entry: float, stop: float,
+                             lot_size: float,
+                             pip_value: float = 0.0001,
+                             dollar_per_pip_per_lot: float = 10.0) -> float:
+    """
+    Correct position risk in USD.
+
+    Formula: stop_distance_pips × lot_size × dollar_per_pip_per_lot
+
+    This replaces the INCORRECT formula `size * 0.01` which was hardcoded
+    to 1% of lot size regardless of the actual stop distance.
+
+    Args:
+        entry:                   Entry price
+        stop:                    Stop-loss price
+        lot_size:                Position size in standard lots
+        pip_value:               Price of 1 pip (0.0001 for FX majors, 0.01 for JPY)
+        dollar_per_pip_per_lot:  USD value per pip per lot ($10 for most FX pairs)
+
+    Returns:
+        Risk in USD for the position
+
+    Example:
+        Entry 1.1000, stop 1.0950 on EURUSD:
+        |1.1000 - 1.0950| / 0.0001 = 50 pips × 0.1 lots × $10 = $5.00 risk
+    """
+    if entry <= 0 or stop <= 0 or lot_size <= 0:
+        return 0.0
+    stop_pips = abs(entry - stop) / max(pip_value, 1e-10)
+    return round(stop_pips * lot_size * dollar_per_pip_per_lot, 4)
+
+
+
 class PortfolioBrain:
     """
     Portfolio-level risk management with correlation awareness.
-    
+
     Tracks simulated positions and adjusts sizing based on:
     - Symbol-level risk (volatility)
     - Portfolio correlation (reduce size for correlated positions)
     - Total portfolio exposure
     """
-    
+
     def __init__(self,
+
                  max_portfolio_risk: float = 0.02,
                  correlation_lookback: int = 60,
                  max_correlated_exposure: float = 0.03):
@@ -191,23 +225,35 @@ class PortfolioBrain:
         
         return adjusted_size
     
-    def add_position(self, symbol: str, size: float, price: float, side: str):
+    def add_position(self, symbol: str, size: float, price: float,
+                     side: str, stop: float = None):
         """
         Track a new position (for simulation).
-        
+
         Args:
-            symbol: Trading symbol
-            size: Position size
-            price: Entry price
-            side: 'buy' or 'sell'
+            symbol:  Trading symbol
+            size:    Position size in lots
+            price:   Entry price
+            side:    'buy' or 'sell'
+            stop:    Stop-loss price (optional, used for correct risk calculation)
         """
+        # Correct risk: |entry - stop| × lots × $10/pip/lot
+        # Falls back to conservative 0.5% estimate when stop is not provided
+        if stop is not None and stop > 0 and price > 0:
+            position_risk = calculate_position_risk(price, stop, abs(size))
+        else:
+            # Fallback: 0.5% of notional (conservative estimate)
+            position_risk = abs(size) * price * 0.005
+
         self.open_positions[symbol] = {
             'size': size,
             'price': price,
             'side': side,
-            'risk': abs(size) * 0.01  # Assume 1% risk per position
+            'stop': stop,
+            'risk': position_risk,
         }
-        logger.info(f"[PORTFOLIO] Added position: {symbol} {side} {size:.4f} @ {price:.5f}")
+        logger.info(f"[PORTFOLIO] Added position: {symbol} {side} {size:.4f} @ {price:.5f} "
+                    f"| risk=${position_risk:.2f}")
     
     def remove_position(self, symbol: str):
         """

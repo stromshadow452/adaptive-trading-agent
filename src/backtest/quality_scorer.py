@@ -110,8 +110,8 @@ class QualityScorer:
         'A': 1.00,   # Full size
         'B': 0.95,   # Nearly full - good setups shouldn't be penalized
         'C': 0.90,   # Minor reduction only
-        'D': 0.75,   # Moderate reduction
-        'F': 0.00,   # Hard skip - this is the real filter
+        'D': 0.60,   # Moderate reduction (was 0.75)
+        'F': 0.30,   # Soft gating: allow with 30% size instead of hard skip
     }
     
     RECOMMENDATIONS = {
@@ -119,7 +119,7 @@ class QualityScorer:
         'B': 'HIGH',    # Was REDUCED
         'C': 'REDUCED', # Was MINI
         'D': 'MINI',
-        'F': 'SKIP',
+        'F': 'MICRO',   # Soft gating: allow with minimal size
     }
     
     # === REGIME-SPECIFIC AGGRESSION (NEW) ===

@@ -396,9 +396,22 @@ class SafeFeatureReactor:
             base_timeframe=Timeframe.M5,
             higher_timeframes=[Timeframe.M15, Timeframe.H1, Timeframe.H4, Timeframe.D1]
         )
-        
-        # Return last row (current candle features)
-        return mtf_df.iloc[-1]
+
+        # Return last row (current candle features) with router-critical aliases.
+        features = mtf_df.iloc[-1].copy()
+        alias_map = {
+            'M5_adx_14': ['adx_14', 'adx14'],
+            'M5_atr_pctile': ['atr_pctile'],
+            'M5_boll_z': ['boll_z'],
+        }
+        for source_col, aliases in alias_map.items():
+            if source_col in features.index:
+                for alias in aliases:
+                    features[alias] = features[source_col]
+
+        features = features.replace([np.inf, -np.inf], np.nan)
+        features = features.fillna(method='ffill').fillna(method='bfill')
+        return features
     
     def extract(
         self,

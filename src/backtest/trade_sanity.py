@@ -130,18 +130,17 @@ def assert_pnl_direction(
 # DANGER REGIME POLICY
 # ============================================================================
 
-# POLICY CHOICE: Option A - DANGER = ABSOLUTE BLOCK
-# This is the ONLY allowed policy for DANGER regime.
-# Both FAST and SHADOW modes MUST enforce this.
-DANGER_POLICY = "ABSOLUTE_BLOCK"
+# POLICY CHOICE: DANGER = MR-ONLY DEFENSIVE MODE
+# Allowed only for MEAN_REVERSION trades under a separate size reduction layer.
+DANGER_POLICY = "MR_ONLY_DEFENSIVE"
 
 
 def can_trade_in_regime(regime: str) -> bool:
     """
     Check if trading is allowed in the given regime.
     
-    Policy: DANGER = ABSOLUTE BLOCK
-    - No trades allowed in DANGER regime
+    Policy: DANGER = MR_ONLY_DEFENSIVE
+    - Only MEAN_REVERSION trades allowed in DANGER regime
     - This applies to ALL modes (FAST, SHADOW, LIVE)
     
     Returns:
@@ -161,14 +160,15 @@ def assert_no_danger_trade(trade: Dict) -> None:
     """
     regime = trade.get("regime", "UNKNOWN")
     
-    if regime == "DANGER":
+    if regime == "DANGER" and trade.get("strategy", "UNKNOWN") != "MEAN_REVERSION":
         error_msg = (
             f"CRITICAL: Trade executed in DANGER regime!\n"
             f"  Trade: {trade.get('symbol', 'UNKNOWN')}\n"
             f"  Side: {trade.get('side', 'UNKNOWN')}\n"
             f"  Regime: {regime}\n"
+            f"  Strategy: {trade.get('strategy', 'UNKNOWN')}\n"
             f"\n"
-            f"Policy violation: DANGER = ABSOLUTE BLOCK\n"
+            f"Policy violation: DANGER = MEAN_REVERSION only\n"
             f"This trade should have been blocked.\n"
             f"ABORTING."
         )

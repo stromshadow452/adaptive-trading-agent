@@ -1,0 +1,72 @@
+{
+  "start_date": "2024-01-01T00:00:00+00:00",
+  "end_date": "2024-04-01T00:00:00+00:00",
+  "symbols": [
+    "EURUSD"
+  ],
+  "initial_capital": 10000.0,
+  "final_equity": 10000.0,
+  "total_trades": 0,
+  "winning_trades": 0,
+  "losing_trades": 0,
+  "winrate": 0.0,
+  "total_return": 0.0,
+  "max_drawdown": 0.0,
+  "sharpe_ratio": 0.0,
+  "sortino_ratio": 0.0,
+  "profit_factor": 0.0,
+  "expectancy": 0.0,
+  "avg_win": 0.0,
+  "avg_loss": 0.0,
+  "max_win_streak": 0,
+  "max_loss_streak": 0,
+  "avg_r_multiple": 0.0,
+  "avg_trade_duration_minutes": 0.0,
+  "exposure_pct": 0.0,
+  "regime_breakdown": {},
+  "strategy_breakdown": {},
+  "decision_source_breakdown": {},
+  "debug_counters": {
+    "rejected_by_boll_z": 0,
+    "rejected_by_confidence": 0,
+    "rejected_by_session": 0,
+    "rejected_by_soft_filter": 0
+  },
+  "filter_diagnostics": {
+    "skip_reason_counts": {},
+    "skip_reason_percentages": {},
+    "edge_score_histogram": {},
+    "accepted_trades": 0,
+    "trades_per_day": 0.0,
+    "avg_signals_per_day": 0.0,
+    "idle_pct": 0.0,
+    "debug_counters": {
+      "rejected_by_boll_z": 0,
+      "rejected_by_confidence": 0,
+      "rejected_by_session": 0,
+      "rejected_by_soft_filter": 0
+    },
+    "hold_rejections": 0,
+    "cooldown_blocks": 0,
+    "low_volatility_blocks": 0,
+    "signal_quality_blocks": 0,
+    "probability_filter": {
+      "labeled_examples": 0,
+      "positive_rate": 0.0,
+      "live_filter_active": false
+    }
+  },
+  "ml_training": {
+    "total_samples": 0,
+    "all_trades_seen": 0,
+    "calibration_curve": [],
+    "bucket_performance": []
+  },
+  "execution_time": 3292.167140722275,
+  "config": {
+    "enable_meta_gating": true,
+    "enable_portfolio_brain": false,
+    "enable_slicer": false,
+    "enable_rl_fallback": true
+  }
+}

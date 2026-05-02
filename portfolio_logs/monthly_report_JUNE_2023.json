@@ -1,0 +1,32 @@
+{
+  "portfolio": {
+    "starting_capital": 10000.0,
+    "ending_capital": 10551.710096606184,
+    "net_return_pct": 5.517100966061843,
+    "gross_profit": 873.7500000000016,
+    "gross_loss": 334.99999999999994,
+    "profit_factor": 2.6082089552238856,
+    "total_trades": 72,
+    "wins": 37,
+    "losses": 13,
+    "win_rate": 51.388888888888886,
+    "max_drawdown_pct": 0.7487500000000104,
+    "max_drawdown_date": "2023-06-30 00:00:00",
+    "worst_day": [
+      "2023-06-20 00:00:00",
+      -0.005
+    ],
+    "best_day": [
+      "2023-06-25 00:00:00",
+      0.007500000000001096
+    ]
+  },
+  "protection": {
+    "caution_events": 17,
+    "danger_events": 0,
+    "critical_events": 0,
+    "positions_force_closed": 0,
+    "total_actions": 17
+  },
+  "generated_at": "2026-01-31T17:27:15.819450"
+}

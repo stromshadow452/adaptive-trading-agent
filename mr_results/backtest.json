@@ -1,0 +1,99 @@
+{
+  "config": {
+    "start_year": 2022,
+    "end_year": 2023,
+    "symbols": [
+      "GBPJPY",
+      "EURJPY",
+      "CHFJPY",
+      "AUDJPY"
+    ],
+    "bb_std": 3.0,
+    "adx_threshold": 40.0,
+    "atr_sl_multiplier": 2.5
+  },
+  "summary": {
+    "total_trades": 975,
+    "win_rate": 49.333333333333336,
+    "profit_factor": 0.8430495150078836,
+    "total_pnl_pips": -2519.548221957985,
+    "trades_per_month": 40.625,
+    "max_drawdown_pips": 2930.7487593568326,
+    "avg_win": 28.13636694386666,
+    "avg_loss": 32.49623627926688
+  },
+  "yearly": {
+    "GBPJPY_2022": {
+      "trades": 153,
+      "wins": 70,
+      "losses": 83,
+      "win_rate": 45.751633986928105,
+      "profit_factor": 0.825548021089487,
+      "total_pnl": -598.4960818121493
+    },
+    "GBPJPY_2023": {
+      "trades": 109,
+      "wins": 49,
+      "losses": 60,
+      "win_rate": 44.95412844036697,
+      "profit_factor": 0.5974285309201549,
+      "total_pnl": -956.7775344152552
+    },
+    "EURJPY_2022": {
+      "trades": 159,
+      "wins": 88,
+      "losses": 71,
+      "win_rate": 55.34591194968554,
+      "profit_factor": 1.1412767604133904,
+      "total_pnl": 315.7023656752358
+    },
+    "EURJPY_2023": {
+      "trades": 113,
+      "wins": 52,
+      "losses": 61,
+      "win_rate": 46.017699115044245,
+      "profit_factor": 0.677581599995199,
+      "total_pnl": -584.8084390023189
+    },
+    "CHFJPY_2022": {
+      "trades": 122,
+      "wins": 60,
+      "losses": 62,
+      "win_rate": 49.18032786885246,
+      "profit_factor": 0.9488998279922519,
+      "total_pnl": -96.46512246835925
+    },
+    "CHFJPY_2023": {
+      "trades": 94,
+      "wins": 44,
+      "losses": 50,
+      "win_rate": 46.808510638297875,
+      "profit_factor": 0.6503360000568079,
+      "total_pnl": -585.1480277040309
+    },
+    "AUDJPY_2022": {
+      "trades": 126,
+      "wins": 71,
+      "losses": 55,
+      "win_rate": 56.34920634920635,
+      "profit_factor": 1.0930125458544377,
+      "total_pnl": 138.35904148844946
+    },
+    "AUDJPY_2023": {
+      "trades": 99,
+      "wins": 47,
+      "losses": 52,
+      "win_rate": 47.474747474747474,
+      "profit_factor": 0.8677330884358954,
+      "total_pnl": -151.914423719559
+    }
+  },
+  "criteria": {
+    "PF >= 1.20": "False",
+    "PF >= 1.50 (TARGET)": "False",
+    "Win Rate >= 50%": false,
+    "Trades >= 15/month": true,
+    "Max DD < 300 pips": "False"
+  },
+  "verdict": "NO-GO"
+}

@@ -2,9 +2,15 @@
 # WEAPON SYSTEM CONFIGURATION
 # ============================================================================
 # Controls the strategy routing system for MARK-3.3 shadow run.
-# 
+#
 # WARNING: SNIPER must remain DISABLED until MARK-4 validation complete.
 # ============================================================================
+
+# System mode: BACKTEST | SHADOW | LIVE
+system_mode: BACKTEST
+
+# Global kill switch — set false to halt all trading immediately
+global_enabled: true
 
 enabled: true                      # Master switch for weapon system
 shadow_mode: true                  # Log only, observe behavior
@@ -24,16 +30,58 @@ log_format: jsonl                  # csv or jsonl
 log_path: logs/weapon_system
 
 # Strategy-specific settings
+# ─────────────────────────────────────────────────────────────────
+# ENABLED (validated edge, ready for shadow/live)
+# ─────────────────────────────────────────────────────────────────
 strategies:
+  tokyo_session_mr:
+    enabled: true                  # ✅ ACTIVE — PF 1.52, structural MR edge
+    session_start_utc: 0
+    session_end_utc: 7
+    prime_start_utc: 3
+    min_range_pips: 15
+    max_range_pips: 60
+    entry_threshold_pct: 0.80
+    risk_per_trade: 0.005          # 0.5% per trade
+
+  silver_mr:
+    enabled: true                  # ✅ ACTIVE — PF 1.12, marginal edge
+    lookback: 20
+    entry_zscore: 2.0
+    risk_per_trade: 0.003          # 0.3% (lower confidence strategy)
+
   range_micro_mr:
     enabled: true
     min_edge_tier: C
     max_regime_strength: 0.75
-    
+
   liquidity_sweep_fade:
     enabled: true
     min_edge_tier: C
     max_regime_strength: 0.65
+
+# ─────────────────────────────────────────────────────────────────
+# DISABLED (no validated edge / research prototype)
+# ─────────────────────────────────────────────────────────────────
+  london_box:
+    enabled: false                 # ⛔ Unvalidated — PF ~1.0
+
+  london_judas:
+    enabled: false                 # ⛔ Unvalidated — no backtest evidence
+
+  choppy_engine:
+    enabled: false                 # ⛔ CONFIRMED no edge — PF 0.81
+
+  fx_majors_swing:
+    enabled: false                 # ⛔ CONFIRMED no edge — random walk intraday
+
+# ─────────────────────────────────────────────────────────────────
+# ML / RL ROUTING
+# ─────────────────────────────────────────────────────────────────
+ml_routing:
+  rl_agent_enabled: false          # ⛔ Toy prototype (mock features) — DO NOT ENABLE
+  primary_ml_enabled: true         # ✅ XGBoost/LGB models active
+  confidence_threshold: 0.55       # Minimum ML confidence to pass signal
 
 # Retirement thresholds
 retirement:
@@ -42,3 +90,51 @@ retirement:
   min_avg_r: 0.05
   max_consecutive_loss: 6
   cooldown_hours: 48
+
+# ─────────────────────────────────────────────────────────────────
+# FEATURE FLAGS — Week 7-11
+# ─────────────────────────────────────────────────────────────────
+extended_features:
+  use_extended:    true   # Extended features: lag, vol regime, interaction, micro-momentum (+52)
+  use_session:     true   # Cyclical time encoding — Tokyo/London/NY session flags (+10)
+  use_structure:   true   # S/R proximity features (+8)
+  use_volume:      true   # OBV, VWAP, volume-structure features (+8)
+  use_cross_asset: false  # Week 11+ — DXY, Gold, Silver ratio (+4). Enable when MT5 live.
+
+# ─────────────────────────────────────────────────────────────────
+# RISK — Week 8 Adaptive Sizing
+# ─────────────────────────────────────────────────────────────────
+risk:
+  account_equity:        10000.0   # Starting equity in USD
+  base_risk_pct:         0.01      # Base risk per trade (1%)
+  use_adaptive_sizing:   true      # Enable confidence-tiered, vol-scaled sizing
+  default_size:          0.01      # Fallback lot size if adaptive sizer unavailable
+  max_symbol_exposure:   0.02      # Max 2% NAV per symbol
+  max_total_exposure:    0.06      # Max 6% NAV across all open positions
+
+# ─────────────────────────────────────────────────────────────────
+# ENSEMBLE — Week 8 Weighted Signal Aggregator
+# ─────────────────────────────────────────────────────────────────
+ensemble:
+  enabled:                      true
+  confidence_floor:             0.40   # Reject signals below this confidence
+  correlation_guard_threshold:  0.70   # Block conflicting top strategies if corr above
+  log_path: logs/shadow/ensemble.jsonl
+  weights_file: models/ensemble/optimal_weights.json   # Set by tune_ensemble_weights.py
+
+# ─────────────────────────────────────────────────────────────────
+# MONITORING — Weeks 9-11 Drift & Prometheus
+# ─────────────────────────────────────────────────────────────────
+monitoring:
+  psi_enabled:         true
+  psi_baseline_bars:   200          # Bars used to build PSI baseline
+  psi_warn_threshold:  0.10         # PSI warning level
+  psi_crit_threshold:  0.25         # PSI critical level (triggers retrain)
+  psi_log_path:        logs/shadow/psi_daily.jsonl
+  prometheus_enabled:  true
+  prometheus_port:     8001
+
+# ─────────────────────────────────────────────────────────────────
+# PATHS
+# ─────────────────────────────────────────────────────────────────
+fills_log: logs/shadow/fills.jsonl

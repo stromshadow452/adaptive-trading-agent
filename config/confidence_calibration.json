@@ -1,0 +1,8 @@
+{
+  "enabled": false,
+  "a": 1.0,
+  "b": 0.0,
+  "min_samples": 200,
+  "freeze_pf_floor": 1.1,
+  "notes": "Post-hoc monotonic calibration: sigmoid(a*logit(x)+b). Keep disabled until you fit params on 200-500 labeled trades."
+}

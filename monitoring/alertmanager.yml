@@ -1,0 +1,54 @@
+# monitoring/alertmanager.yml
+# Alertmanager routing and notification config for SCOPUS shadow trading
+
+global:
+  resolve_timeout: 5m
+
+# Default route — change email/telegram receiver as needed
+route:
+  receiver: 'scopus-email'
+  group_by: ['alertname', 'severity']
+  group_wait:      30s
+  group_interval:  5m
+  repeat_interval: 1h
+
+  routes:
+    # Critical alerts get immediate notification
+    - match:
+        severity: critical
+      receiver: 'scopus-email'
+      group_wait:      10s
+      repeat_interval: 15m
+
+    # Warning alerts are batched
+    - match:
+        severity: warning
+      receiver: 'scopus-email'
+      group_wait:      5m
+      repeat_interval: 4h
+
+receivers:
+  - name: 'scopus-email'
+    email_configs:
+      - to:       'trading-alerts@yourdomain.com'
+        from:     'scopus@yourdomain.com'
+        smarthost: 'smtp.yourdomain.com:587'
+        auth_username: 'scopus@yourdomain.com'
+        auth_password: 'YOUR_EMAIL_PASSWORD'
+        send_resolved: true
+        headers:
+          subject: '[SCOPUS] {{ .Status | toUpper }} — {{ .CommonAnnotations.summary }}'
+
+  # Telegram alternative (uncomment and fill bot_token + chat_id)
+  # - name: 'scopus-telegram'
+  #   webhook_configs:
+  #     - url: 'https://api.telegram.org/bot{BOT_TOKEN}/sendMessage'
+  #       send_resolved: true
+
+inhibit_rules:
+  # If critical is firing, suppress warning for same alertname
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname']

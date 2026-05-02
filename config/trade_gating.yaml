@@ -1,8 +1,15 @@
 # SCOPUS Trade Gating & Throttling Configuration
 
 # Meta-Gating Brain - Confidence Thresholds
-min_confidence_normal: 0.60
+min_confidence_normal: 0.50
 min_confidence_uncertain: 0.75
+calibrated_confidence_min: 0.50
+confidence_deadzone_low: 0.50
+confidence_deadzone_high: 0.52
+edge_score_min: 0.65
+tier1_confidence_min: 0.60
+tier2_confidence_min: 0.52
+tier3_confidence_floor: 0.50
 
 # Risk + Throttle Gates - Hard Trade Limits
 max_trades_per_day_per_symbol: 5

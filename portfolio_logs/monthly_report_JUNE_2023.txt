@@ -1,0 +1,52 @@
+╔══════════════════════════════════════════════════════════════╗
+║              SCOPUS PORTFOLIO - MONTHLY REPORT               ║
+║                          JUNE 2023                           ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  PERFORMANCE SUMMARY                                         ║
+║  ─────────────────────────────────────────────────────────   ║
+║  Starting Capital:        $10,000.00                         ║
+║  Ending Capital:          $10,551.71                         ║
+║  Net Monthly Return:      +5.52%                             ║
+║                                                              ║
+║  Gross Profit:            $873.75                            ║
+║  Gross Loss:              ($335.00)                          ║
+║  Profit Factor:           2.61                               ║
+║                                                              ║
+║  RISK METRICS                                                ║
+║  ─────────────────────────────────────────────────────────   ║
+║  Max Drawdown:            0.75%                              ║
+║  Max DD Date:             2023-06-30 00:00:00                ║
+║  Worst Day:               -0.50% (2023-06-20 00:00:00)       ║
+║  Best Day:                +0.75% (2023-06-25 00:00:00)       ║
+║  Win Rate:                51.4%                              ║
+║                                                              ║
+║  TRADE STATISTICS                                            ║
+║  ─────────────────────────────────────────────────────────   ║
+║  Total Trades:            72                                 ║
+║  Wins:                    37                                 ║
+║  Losses:                  13                                 ║
+║                                                              ║
+║  ASSET BREAKDOWN                                             ║
+║  ─────────────────────────────────────────────────────────   ║
+║  EURJPY (TREND):    +2.54%  │ 26 trades │ PF 2.71            ║
+║  EURUSD (CHOPPY):   +0.00%  │ 22 trades │ PF 0.00            ║
+║  AUDUSD (TREND):    +2.85%  │ 24 trades │ PF 3.00            ║
+║                                                              ║
+║  CAPITAL PROTECTION EVENTS                                   ║
+║  ─────────────────────────────────────────────────────────   ║
+║  CAUTION triggered:       17 times                           ║
+║  DANGER triggered:        0 times                            ║
+║  CRITICAL triggered:      0 times                            ║
+║  Positions force-closed:  0                                  ║
+║                                                              ║
+║  DAMPENER ACTIVITY                                           ║
+║  ─────────────────────────────────────────────────────────   ║
+║  Trades at full size:     61.1%                              ║
+║  Trades dampened:         38.9%                              ║
+║  Pause events:            3                                  ║
+║                                                              ║
+║  ──────────────────────────────────────────────────────────  ║
+║  VERDICT: PROFITABLE MONTH                                   ║
+║  System performed within risk parameters.                    ║
+╚══════════════════════════════════════════════════════════════╝

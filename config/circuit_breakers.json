@@ -1,9 +1,10 @@
 {
   "global_trip": false,
+  "global_reason": "",
   "symbols": {
     "EURUSD": {
-      "tripped": true,
-      "reset_time": 1763664866.4684467,
+      "tripped": false,
+      "reset_time": 1774724582.1659126,
       "reason": "Test circuit breaker"
     },
     "UNKNOWN": {

@@ -1,0 +1,21 @@
+{
+  "EURUSD": 0.6,
+  "GBPUSD": 1.0,
+  "USDJPY": 0.8,
+  "USDCHF": 0.8,
+  "USDCAD": 1.2,
+  "AUDUSD": 1.0,
+  "NZDUSD": 1.4,
+  "EURGBP": 1.2,
+  "EURJPY": 1.2,
+  "GBPJPY": 1.8,
+  "AUDJPY": 1.6,
+  "NZDJPY": 1.8,
+  "EURCAD": 1.8,
+  "EURCHF": 1.6,
+  "GBPCHF": 2.2,
+  "CHFJPY": 2.0,
+  "XAGUSD": 2.5,
+  "XAUUSD": 2.0,
+  "default": 1.2
+}

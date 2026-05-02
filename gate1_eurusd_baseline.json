@@ -1,0 +1,41 @@
+{
+  "profit_factor": 1.08,
+  "max_drawdown": 0.1587,
+  "win_rate": 0.3963,
+  "trade_count": 492,
+  "avg_r": 0.06,
+  "total_return": 26.9,
+  "wins": 195,
+  "losses": 297,
+  "validation": {
+    "metrics": {
+      "profit_factor": {
+        "value": 1.08,
+        "baseline": 1.9,
+        "status": "FAIL"
+      },
+      "max_drawdown": {
+        "value": 0.1587,
+        "baseline": 0.035,
+        "status": "FAIL"
+      },
+      "win_rate": {
+        "value": 0.3963,
+        "baseline": 0.574,
+        "status": "FAIL"
+      },
+      "trade_count": {
+        "value": 492,
+        "baseline": 155,
+        "deviation": "217.4%",
+        "status": "FAIL"
+      },
+      "avg_r": {
+        "value": 0.06,
+        "baseline": 0.44,
+        "status": "FAIL"
+      }
+    },
+    "overall": "FAIL"
+  }
+}

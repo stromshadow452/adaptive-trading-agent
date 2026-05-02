@@ -73,13 +73,16 @@ class MetaGatingBrain:
             }
         """
         # Extract indicators from features
-        atr = features.get("atr14", 0.0)
+        atr   = features.get("atr14", 0.0)
         close = features.get("close", 1.0)
-        
-        # Calculate ADX proxy (using ATR and price range)
-        # Real ADX requires +DI/-DI, but we approximate with ATR/price ratio
+
+        # True Wilder's ADX — computed upstream by calculate_wilder_adx()
+        # adx14 is now part of FEATURE_LIST in common_features.py
+        # Range: 0-100.  >25 = trend, <20 = range.
+        adx_proxy = float(features.get("adx14", 0.0))
+
+        # atr_pct still used for crash / volatility detection
         atr_pct = (atr / close) * 100 if close > 0 else 0
-        adx_proxy = min(atr_pct * 10, 100)  # Scale to 0-100 range
         
         # Calculate volatility if not provided
         if volatility is None:
@@ -109,22 +112,22 @@ class MetaGatingBrain:
             confidence = min(vol_ratio / self.vol_crash_multiplier, 1.0)
             reason = f"Volatility spike detected ({vol_ratio:.2f}x normal)"
         
-        # TREND: High ADX, moderate volatility
+        # TREND: High ADX (true Wilder's), moderate volatility
         elif adx_proxy > self.adx_trend_threshold and vol_ratio < 1.5:
             regime = "TREND"
             action = "ALLOW"
             size_multiplier = 1.0
             confidence = min(adx_proxy / 50, 1.0)
-            reason = f"Strong trend (ADX proxy: {adx_proxy:.1f})"
-        
+            reason = f"Strong trend (ADX: {adx_proxy:.1f})"
+
         # RANGE: Low ADX, low volatility
         elif adx_proxy < self.adx_range_threshold and vol_ratio < 1.2:
             regime = "RANGE"
             action = "REDUCE"
             size_multiplier = 0.7  # Reduce size in ranging markets
             confidence = 1.0 - (adx_proxy / self.adx_range_threshold)
-            reason = f"Range-bound market (ADX proxy: {adx_proxy:.1f})"
-        
+            reason = f"Range-bound market (ADX: {adx_proxy:.1f})"
+
         # UNCERTAIN: Mixed signals
         else:
             regime = "UNCERTAIN"
@@ -142,8 +145,9 @@ class MetaGatingBrain:
             "size_multiplier": size_multiplier,
             "confidence": confidence,
             "reason": reason,
-            "adx_proxy": adx_proxy,
-            "vol_ratio": vol_ratio
+            "adx": adx_proxy,          # renamed from adx_proxy — now real ADX
+            "adx_proxy": adx_proxy,    # kept for backward compat with callers
+            "vol_ratio": vol_ratio,
         }
     
     def get_model_weights(self, regime: str) -> Dict[str, float]:
@@ -160,11 +164,13 @@ class MetaGatingBrain:
                 "no_trade": float  # Weight for no-trade
             }
         """
+        # RL agent is DISABLED (prototype with mock features — see src/rl/env.py).
+        # All weight routes to primary ML Brain.
         weights = {
-            "TREND": {"primary": 0.7, "rl": 0.3, "no_trade": 0.0},
-            "RANGE": {"primary": 0.4, "rl": 0.4, "no_trade": 0.2},
-            "CRASH": {"primary": 0.0, "rl": 0.0, "no_trade": 1.0},
-            "UNCERTAIN": {"primary": 0.5, "rl": 0.3, "no_trade": 0.2}
+            "TREND":     {"primary": 1.0, "rl": 0.0, "no_trade": 0.0},
+            "RANGE":     {"primary": 0.8, "rl": 0.0, "no_trade": 0.2},
+            "CRASH":     {"primary": 0.0, "rl": 0.0, "no_trade": 1.0},
+            "UNCERTAIN": {"primary": 0.7, "rl": 0.0, "no_trade": 0.3},
         }
         
         return weights.get(regime, {"primary": 0.5, "rl": 0.3, "no_trade": 0.2})

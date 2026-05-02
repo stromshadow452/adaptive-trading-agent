@@ -1,11 +1,13 @@
 # src/features/common_features.py
 """
-Shared 19-feature builder (training + live) — exactly matches the model pipeline.
+Shared 20-feature builder (training + live) — exactly matches the model pipeline.
 
 Output columns (order fixed):
 ['close','ret','sma5','sma20','sma_ratio','sma50','sma100','sma_ratio_long',
  'atr14','hl_range','body','ret_5','ret_20','rsi14','boll_z','atr_pct',
- 'vol_norm','hod','dow']
+ 'vol_norm','hod','dow','adx14']
+
+NOTE: adx14 is computed using true Wilder's ADX (+DI/-DI) — NOT an ATR proxy.
 """
 
 from __future__ import annotations
@@ -35,6 +37,7 @@ FEATURE_LIST: List[str] = [
     "vol_norm",
     "hod",
     "dow",
+    "adx14",  # True Wilder's ADX — added for regime detection
 ]
 
 def _normalize_ohlcv(df: pd.DataFrame) -> pd.DataFrame:
@@ -63,12 +66,19 @@ def _normalize_ohlcv(df: pd.DataFrame) -> pd.DataFrame:
     if c_open is None or c_high is None or c_low is None or c_close is None:
         raise ValueError(f"CSV missing OHLC columns; have={list(df.columns)}")
 
+    def _col(name):
+        """Return column as a plain 1-D Series (safe against duplicate cols)."""
+        val = df[name]
+        if isinstance(val, pd.DataFrame):
+            val = val.iloc[:, 0]  # take first if duplicated
+        return val.squeeze()
+
     out = pd.DataFrame(index=df.index.copy())
-    out["open"]  = pd.to_numeric(df[c_open], errors="coerce")
-    out["high"]  = pd.to_numeric(df[c_high], errors="coerce")
-    out["low"]   = pd.to_numeric(df[c_low], errors="coerce")
-    out["close"] = pd.to_numeric(df[c_close], errors="coerce")
-    out["volume"] = pd.to_numeric(df[c_vol], errors="coerce") if c_vol else 1.0
+    out["open"]  = pd.to_numeric(_col(c_open),  errors="coerce")
+    out["high"]  = pd.to_numeric(_col(c_high),  errors="coerce")
+    out["low"]   = pd.to_numeric(_col(c_low),   errors="coerce")
+    out["close"] = pd.to_numeric(_col(c_close), errors="coerce")
+    out["volume"] = pd.to_numeric(_col(c_vol), errors="coerce") if c_vol else 1.0
 
     # Try to build datetime index if present
     date_col = None
@@ -103,6 +113,52 @@ def _compute_atr(df: pd.DataFrame, window: int = 14) -> pd.Series:
     tr = pd.concat([(h - l).abs(), (h - prev_c).abs(), (l - prev_c).abs()], axis=1).max(axis=1)
     atr = tr.rolling(window=window, min_periods=window).mean()
     return atr.bfill().fillna(0.0)
+
+
+def calculate_wilder_adx(df: pd.DataFrame, period: int = 14) -> pd.Series:
+    """
+    True Wilder's ADX using correct +DI / -DI directional movement.
+
+    This is the CORRECT implementation. It measures DIRECTIONAL STRENGTH,
+    not volatility magnitude. ATR/price ratio is NOT a substitute for ADX.
+
+    Args:
+        df: DataFrame with 'high', 'low', 'close' columns (normalized)
+        period: ADX period (Wilder default = 14)
+
+    Returns:
+        pd.Series of ADX values in range [0, 100]
+    """
+    high  = df["high"]
+    low   = df["low"]
+    close = df["close"]
+
+    # True Range
+    tr = pd.concat([
+        (high - low).abs(),
+        (high - close.shift(1)).abs(),
+        (low  - close.shift(1)).abs(),
+    ], axis=1).max(axis=1)
+
+    # Raw Directional Movement
+    up_move   = high.diff()
+    down_move = -(low.diff())
+
+    plus_dm  = up_move.where((up_move > down_move) & (up_move > 0), 0.0)
+    minus_dm = down_move.where((down_move > up_move) & (down_move > 0), 0.0)
+
+    # Wilder exponential smoothing (alpha = 1/period)
+    def _wilder(s: pd.Series) -> pd.Series:
+        return s.ewm(alpha=1.0 / period, adjust=False).mean()
+
+    atr_w    = _wilder(tr)
+    plus_di  = 100.0 * _wilder(plus_dm)  / (atr_w + 1e-10)
+    minus_di = 100.0 * _wilder(minus_dm) / (atr_w + 1e-10)
+
+    dx  = 100.0 * (plus_di - minus_di).abs() / (plus_di + minus_di + 1e-10)
+    adx = _wilder(dx)
+
+    return adx.clip(0, 100).bfill().fillna(0.0)
 
 def compute_features_from_ohlcv(raw_df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -168,6 +224,9 @@ def compute_features_from_ohlcv(raw_df: pd.DataFrame) -> pd.DataFrame:
     except Exception:
         feat["hod"] = 0.0
         feat["dow"] = 0.0
+
+    # True Wilder's ADX(14) — regime detection quality signal
+    feat["adx14"] = calculate_wilder_adx(df, period=14)
 
     # Fill & order
     feat = feat.ffill().bfill()

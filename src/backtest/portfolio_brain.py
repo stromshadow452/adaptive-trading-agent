@@ -192,7 +192,7 @@ class PortfolioBrain:
     def __init__(self, config: Optional[Dict] = None):
         config = config or {}
         self.max_open_trades = config.get("max_open_trades", self.MAX_OPEN_TRADES)
-        self.max_risk_pct = config.get("max_total_risk_pct", self.MAX_TOTAL_RISK_PCT)
+        self.max_risk_pct = config.get("max_total_risk_pct", self.MAX_TOTAL_RISK_PCT)   
         self.corr_threshold = config.get("correlation_threshold", self.CORRELATION_THRESHOLD)
         self.min_confidence = config.get("min_confidence", self.MIN_CONFIDENCE)
         
