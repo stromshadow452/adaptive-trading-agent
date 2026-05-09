@@ -41,7 +41,7 @@ from __future__ import annotations
 
 import logging
 import os
-import inspect
+
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
@@ -80,7 +80,7 @@ class PipelineConfig:
     psi_baseline_bars: int  = 200          # bars to baseline PSI from
 
     # Min bars required before computing extended features
-    min_bars:         int   = 150
+    min_bars:         int   = 100
     tier1_confidence_min: float = 0.60
     tier2_confidence_min: float = 0.55
     tier3_confidence_floor: float = 0.55
@@ -444,68 +444,82 @@ def _collect_strategy_signals(
     """
     Adaptive strategy layer.
 
-    Regime detection remains upstream. This stage maps the detected regime
-    into a context-aware strategy and returns a single explainable signal.
+    Calls StrategyBank strategies directly (replacing the removed
+    AdaptiveStrategyModule which no longer exists in this codebase).
+    Each strategy runs against raw_df + features and may return a signal.
     """
     from src.decision.ensemble import StrategySignal
-    from src.strategies.strategy_module import AdaptiveStrategyModule
+    from src.strategies.strategy_bank import StrategyBank, StrategySignal as BankSignal
 
     signals = []
 
     df = raw_df if raw_df is not None else full_df
     if df is None or df.empty or len(df) < 60:
+        LOG.warning(
+            f"[STRATEGY_BANK] {symbol}: insufficient rows ({len(df) if df is not None else 0}) "
+            f"— skipping strategy evaluation"
+        )
         return signals
 
     required_cols = ["open", "high", "low", "close"]
-    if not all(col in df.columns for col in required_cols):
+    # Normalise column case (YFinance uses Title-case)
+    col_lower = {c.lower(): c for c in df.columns}
+    df_norm = df.rename(columns={v: k for k, v in col_lower.items()})
+    if not all(col in df_norm.columns for col in required_cols):
+        LOG.warning(
+            f"[STRATEGY_BANK] {symbol}: missing OHLC columns — have {list(df.columns)}"
+        )
         return signals
 
-    module = AdaptiveStrategyModule()
-    ml_payload = {
-        "move_prob": float(
-            features.get(
-                "move_prob",
-                features.get("probability_move_size", features.get("confidence", 0.5)),
-            )
-            or 0.5
-        ),
-        "expected_volatility": float(
-            features.get(
-                "expected_volatility",
-                features.get("atr_pct", features.get("volatility", 0.0)),
-            )
-            or 0.0
-        ),
-    }
-    sentiment_bias = features.get("h4_bias")
-    decision = module.evaluate(
-        symbol=symbol,
-        raw_df=df,
-        feature_df=full_df,
-        regime_payload=regime,
-        ml_payload=ml_payload,
-        sentiment_bias=float(sentiment_bias) if sentiment_bias is not None else None,
+    regime_label = regime.get("regime", "UNCERTAIN") if isinstance(regime, dict) else str(regime)
+    action       = regime.get("action",  "ALLOW")    if isinstance(regime, dict) else "ALLOW"
+
+    if action == "BLOCK":
+        LOG.info(f"[STRATEGY_BANK] {symbol}: regime action=BLOCK — no signals generated")
+        return signals
+
+    bank = StrategyBank()
+    all_results = bank.get_all_signals(df_norm, features)
+
+    LOG.info(
+        f"[STRATEGY_BANK] {symbol} | regime={regime_label} | "
+        f"strategies_run={list(all_results.keys())}"
     )
 
-    if not decision.should_trade:
-        return signals
+    price = float(features.get("close", 0.0))
 
-    strategy_signal_kwargs = {
-        "strategy": decision.strategy,
-        "symbol": symbol,
-        "side": decision.action,
-        "confidence": decision.confidence,
-        "price": decision.entry,
-        "sl": decision.sl,
-        "tp": decision.tp,
-        "regime": decision.regime_type,
-    }
-    metadata_key = "metadata" if "metadata" in inspect.signature(StrategySignal).parameters else "meta"
-    strategy_signal_kwargs[metadata_key] = dict(decision.metadata or {})
-    signals.append(StrategySignal(**strategy_signal_kwargs))
+    for strategy_name, bank_sig in all_results.items():
+        if bank_sig is None:
+            LOG.debug(f"[STRATEGY_BANK] {symbol} | {strategy_name} → None (no setup)")
+            continue
 
-    LOG.info(f"[ADAPTIVE SIGNAL] {symbol} {decision.strategy} {decision.action} @ {decision.entry}")
+        LOG.info(
+            f"[STRATEGY_BANK] {symbol} | {strategy_name} → "
+            f"side={bank_sig.side} | conf={bank_sig.confidence:.4f} | "
+            f"entry={bank_sig.entry_px} | sl={bank_sig.sl} | tp={bank_sig.tp}"
+        )
 
+        # Convert StrategyBank signal → ensemble StrategySignal
+        try:
+            ens_sig = StrategySignal(
+                strategy=strategy_name.lower(),
+                symbol=symbol,
+                side=bank_sig.side,
+                confidence=bank_sig.confidence,
+                price=bank_sig.entry_px,
+                sl=bank_sig.sl,
+                tp=bank_sig.tp,
+                regime=regime_label,
+                meta=dict(bank_sig.metadata or {}),
+            )
+            signals.append(ens_sig)
+        except Exception as e:
+            LOG.warning(f"[STRATEGY_BANK] {symbol} | {strategy_name} signal convert error: {e}")
+
+    LOG.info(
+        f"[STRATEGY_BANK] {symbol}: {len(signals)} signal(s) produced "
+        f"({[s.strategy for s in signals]})"
+    )
     return signals
 
 
@@ -534,11 +548,12 @@ class PipelineV2:
 
     def process_bar(
         self,
-        symbol:  str,
-        bar,                  # BarData namedtuple (open/high/low/close/volume)
-        raw_df:  pd.DataFrame,
-        executor,             # PaperExecutor
+        symbol: str,
+        bar,
+        raw_df: pd.DataFrame,
+        executor,
     ) -> BarResult:
+
         """
         Full bar processing: features → regime → ensemble → size → execute.
 
@@ -593,6 +608,12 @@ class PipelineV2:
 
         result.regime     = regime.get("regime", "UNCERTAIN")
         result.confidence = float(regime.get("confidence", 0.0))
+
+        LOG.info(
+            f"[DEBUG] {symbol} | features={result.feature_count} | "
+            f"regime={result.regime} | regime_conf={result.confidence:.4f} | "
+            f"adx={regime.get('adx', 0.0):.1f} | vol_ratio={regime.get('vol_ratio', 0.0):.2f}"
+        )
 
         # ── 6. Strategy bank → signals ────────────────────────────────────
         raw_signals = _collect_strategy_signals(
@@ -687,6 +708,14 @@ class PipelineV2:
                 _sig_regime,
             )
             quality_grade = str(quality_payload.get("grade", "B")).strip().upper()
+        raw_conf = float(result.signal.get("confidence", 0.0))
+        LOG.info(
+            f"[TIER_GATE] {symbol} | raw_conf={raw_conf:.4f} | grade={quality_grade} | "
+            f"strategy={result.signal.get('strategy')} | "
+            f"tier1_min={self.cfg.tier1_confidence_min} | "
+            f"tier2_min={self.cfg.tier2_confidence_min} | "
+            f"tier3_floor={self.cfg.tier3_confidence_floor}"
+        )
         gated_signal, signal_tier, tier_size_multiplier = _apply_signal_tier_gate(
             result.signal,
             self.cfg,
@@ -694,9 +723,17 @@ class PipelineV2:
             last_features,
         )
         if gated_signal is None:
+            LOG.info(
+                f"[TIER_GATE] {symbol} | REJECTED | tier3_reject | "
+                f"conf={raw_conf:.4f} grade={quality_grade}"
+            )
             result.signal = None
             result.errors.append(f"tier3_reject:{quality_grade}")
             return result
+        LOG.info(
+            f"[TIER_GATE] {symbol} | PASSED | tier={signal_tier} | "
+            f"conf={raw_conf:.4f} grade={quality_grade} size_mult={tier_size_multiplier}"
+        )
         result.signal = gated_signal
         result.signal.setdefault("metadata", {})
         if isinstance(result.signal.get("metadata"), dict):

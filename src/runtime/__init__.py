@@ -1,8 +1,3 @@
-"""
-Runtime package initialization.
-
-Provides autonomous runtime for Adaptive Trading OS.
-"""
 
 from .autonomous_runtime import (
     AutonomousRuntime,
@@ -10,26 +5,21 @@ from .autonomous_runtime import (
     RuntimeState,
     RuntimeMode,
     RuntimeHealth,
-    RuntimeHeartbeat,
     MarketDataCoordinator,
     PipelineCoordinator,
     ExecutionCoordinator,
-    StatePersistence,
-    DriftAndHealthMonitor,
-    main
+    RuntimeHeartbeat,
 )
 
 __all__ = [
-    'AutonomousRuntime',
-    'RuntimeConfig',
-    'RuntimeState',
-    'RuntimeMode',
-    'RuntimeHealth',
-    'RuntimeHeartbeat',
-    'MarketDataCoordinator',
-    'PipelineCoordinator',
-    'ExecutionCoordinator',
-    'StatePersistence',
-    'DriftAndHealthMonitor',
-    'main'
+    "AutonomousRuntime",
+    "RuntimeConfig",
+    "RuntimeState",
+    "RuntimeMode",
+    "RuntimeHealth",
+    "MarketDataCoordinator",
+    "PipelineCoordinator",
+    "ExecutionCoordinator",
+    "RuntimeHeartbeat",
 ]
+

@@ -24,6 +24,8 @@ from typing import Dict, List, Optional
 import numpy as np
 import pandas as pd
 
+from src.strategies.silver_mean_reversion import SilverMeanReversion, SignalType
+
 LOG = logging.getLogger("strategy_bank")
 
 __all__ = ["StrategyBank", "StrategySignal"]
@@ -105,14 +107,27 @@ def _compute_ema(series: pd.Series, span: int) -> pd.Series:
 
 def mean_reversion_signal(raw_df: pd.DataFrame, features: dict) -> Optional[StrategySignal]:
     """
-    This is a REFERENCE STUB. The actual MR logic lives inside
-    PipelineV2.process_bar() and is NEVER modified.
-
-    The StrategyRouter will return "MEAN_REVERSION" when conditions favor MR,
-    and the pipeline's native logic will handle signal generation.
-
-    Returns None always — pipeline handles MR internally.
+    MEAN_REVERSION: Wired to SilverMeanReversion engine.
     """
+    if len(raw_df) < 30:
+        return None
+
+    # SilverMeanReversion handles its own indicators internally
+    smr = SilverMeanReversion()
+    df_cache = smr.compute_indicators(raw_df)
+    sig = smr.generate_signal(df_cache, bar_idx=-1)
+    
+    if sig.signal in (SignalType.LONG, SignalType.SHORT):
+        side = "buy" if sig.signal == SignalType.LONG else "sell"
+        return StrategySignal(
+            strategy="MEAN_REVERSION",
+            side=side,
+            entry_px=round(sig.entry_price, 5),
+            sl=round(sig.stop_loss, 5),
+            tp=round(sig.take_profit, 5),
+            confidence=round(sig.confidence, 3),
+            metadata={"reason": sig.reason}
+        )
     return None
 
 
@@ -122,21 +137,24 @@ def mean_reversion_signal(raw_df: pd.DataFrame, features: dict) -> Optional[Stra
 
 def trend_pullback_signal(raw_df: pd.DataFrame, features: dict) -> Optional[StrategySignal]:
     """
-    TREND_PULLBACK: DISABLED — System uses MEAN_REVERSION only.
+    TREND_PULLBACK: EMA trend + pullback to EMA(20) entry with rejection candle.
+    Restored and re-enabled safely with strict breakout + pullback + rejection logic.
     """
-    return None  # DISABLED: MR-only mode
+    if len(raw_df) < 50:
+        return None
 
-
-# Strategy 2: TREND PULLBACK (DISABLED - placeholder for compatibility)
-# ---------------------------------------------------------------------------
-
-def _disabled_trend_pullback(raw_df: pd.DataFrame, features: dict) -> Optional[StrategySignal]:
-    """
-    DISABLED: Trend Pullback Strategy no longer active.
-    System operates in MEAN_REVERSION-only mode.
-    """
-    return None
-    recent_low = float(low.iloc[-20:-1].min())
+    close = raw_df["close"]
+    high = raw_df["high"]
+    low = raw_df["low"]
+    
+    current_close = float(close.iloc[-1])
+    prev_close = float(close.iloc[-2])
+    prev_high = float(high.iloc[-2])
+    prev_low = float(low.iloc[-2])
+    
+    recent_high = float(high.iloc[-21:-1].max())
+    recent_low = float(low.iloc[-21:-1].min())
+    
     breakout_up = current_close > recent_high
     breakout_down = current_close < recent_low
 
@@ -158,7 +176,12 @@ def _disabled_trend_pullback(raw_df: pd.DataFrame, features: dict) -> Optional[S
     # Bearish rejection: long upper wick, small body, in pullback zone
     bearish_rejection = (upper_wick > 2 * body) and (current_close < current_open)
 
-    slope_threshold = 0.03
+    current_ema20 = features.get("sma20", 0.0)
+    current_ema50 = features.get("sma50", 0.0)
+    atr = features.get("atr14", 0.0)
+    adx = features.get("adx14", 0.0)
+    atr_pctile = features.get("atr_pctile", 0.5)
+    boll_z = features.get("boll_z", 0.0)
 
     # --- UPTREND: EMA(20) > EMA(50) ---
     if current_ema20 > current_ema50:
