@@ -41,6 +41,7 @@ from __future__ import annotations
 
 import logging
 import os
+import inspect
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
@@ -438,249 +439,72 @@ def _collect_strategy_signals(
     full_df:  pd.DataFrame,
     regime:   dict,
     cfg_yaml: dict,
+    raw_df: pd.DataFrame = None,
 ) -> List[object]:
     """
-    Collect StrategySignal from each enabled strategy.
-    Returns list of StrategySignal (may be empty).
+    Adaptive strategy layer.
+
+    Regime detection remains upstream. This stage maps the detected regime
+    into a context-aware strategy and returns a single explainable signal.
     """
     from src.decision.ensemble import StrategySignal
+    from src.strategies.strategy_module import AdaptiveStrategyModule
+
     signals = []
-    enabled = cfg_yaml.get("strategies", {})
-    close   = features.get("close", 0.0)
-    atr     = features.get("atr14", 0.0)
-    rsi     = features.get("rsi14", 50.0)
 
-    # ── Regime-aware directional guard ───────────────────────────────────
-    # BUY PF=1.364 vs SELL PF=0.865 — SELL into TREND is the identified leak.
-    # In TREND regime: only take signals aligned WITH the short-term trend.
-    # In UNCERTAIN: allow both sides (no clear trend to fight).
-    current_regime = regime.get("regime", "UNCERTAIN")
-    sma_ratio      = features.get("sma_ratio", 1.0)   # sma5/sma20: >1=uptrend, <1=downtrend
-    trend_is_up    = sma_ratio > 1.0
-    trend_is_down  = sma_ratio < 1.0
-
-    # ── Entry quality gate — 2 independently validated conditions ────────
-    # CONFIRMED (2026-04-01, sampling shows atr_pctile self-calibrates
-    # every 100 bars, making it useless as an absolute vol filter):
-    #
-    # GATE 1: |boll_z| ≥ 1.0  (calibrated entry relaxation for 3-month test)
-    #
-    # GATE 2: ABSOLUTE ATR range  (replaces relative atr_pctile gate)
-    #   Probe: D01-30 bad period has ATR=17-24pip while atr_pctile=0.29-0.50
-    #   because the 100-bar window recalibrates to local high-vol conditions.
-    #   EURUSD MR works when ATR 5–16 pip (H1):
-    #     < 5 pip: too quiet, spread dominates, SL always hit
-    #     > 16 pip: too volatile, TP never reached (SL=24pip, TP=32pip too far)
-    #   Both failure zones observed in the 90-day data (D01-30 = high-vol loss)
-    boll_z  = features.get("boll_z", 0.0)
-    atr14   = features.get("atr14", 0.001)   # absolute ATR in price units
-    atr_pctile = features.get("atr_pctile", 0.5)
-
-    ATR_MIN_PRICE = 0.0005   # 5 pip  — floor: spread noise kills edge
-    ATR_MAX_PRICE = 0.0016   # 16 pip — ceiling: TP too far, trend continuation (REVERTED)
-
-    # === GLOBAL EDGE FILTER: effective_edge = |boll_z| × atr_pctile ===
-    # Both dimensions must confirm: price displaced AND volatility is in range.
-    # This is the primary quality gate — no broad bypasses.
-    effective_edge = abs(boll_z) * atr_pctile
-
-    # Hard global floor — signals below this have insufficient edge to trade
-    if effective_edge < 0.50:
+    df = raw_df if raw_df is not None else full_df
+    if df is None or df.empty or len(df) < 60:
         return signals
 
-    # STRICT TRANSITION CONTROL: TRANSITION regime needs stronger confirmation
-    if current_regime == "TRANSITION" and effective_edge < 0.55:
+    required_cols = ["open", "high", "low", "close"]
+    if not all(col in df.columns for col in required_cols):
         return signals
 
-    # boll_z floor (keep 0.7 from prior fix)
-    if abs(boll_z) < 0.7:
-        return signals   # not extended enough
+    module = AdaptiveStrategyModule()
+    ml_payload = {
+        "move_prob": float(
+            features.get(
+                "move_prob",
+                features.get("probability_move_size", features.get("confidence", 0.5)),
+            )
+            or 0.5
+        ),
+        "expected_volatility": float(
+            features.get(
+                "expected_volatility",
+                features.get("atr_pct", features.get("volatility", 0.0)),
+            )
+            or 0.0
+        ),
+    }
+    sentiment_bias = features.get("h4_bias")
+    decision = module.evaluate(
+        symbol=symbol,
+        raw_df=df,
+        feature_df=full_df,
+        regime_payload=regime,
+        ml_payload=ml_payload,
+        sentiment_bias=float(sentiment_bias) if sentiment_bias is not None else None,
+    )
 
-    # ATR gate: original 16 pip ceiling restored
-    if atr14 < ATR_MIN_PRICE or atr14 > ATR_MAX_PRICE:
-        return signals   # vol regime outside MR operating range
+    if not decision.should_trade:
+        return signals
 
+    strategy_signal_kwargs = {
+        "strategy": decision.strategy,
+        "symbol": symbol,
+        "side": decision.action,
+        "confidence": decision.confidence,
+        "price": decision.entry,
+        "sl": decision.sl,
+        "tp": decision.tp,
+        "regime": decision.regime_type,
+    }
+    metadata_key = "metadata" if "metadata" in inspect.signature(StrategySignal).parameters else "meta"
+    strategy_signal_kwargs[metadata_key] = dict(decision.metadata or {})
+    signals.append(StrategySignal(**strategy_signal_kwargs))
 
-    def _side_allowed(side: str) -> bool:
-        """Block counter-trend MR signals in TREND regime."""
-        if current_regime == "TREND":
-            # In uptrend: only buy-the-dip allowed, no short selling
-            if side == "sell" and trend_is_up:
-                return False
-            # In downtrend: only sell-the-rally allowed, no buy
-            if side == "buy" and trend_is_down:
-                return False
-        return True
-
-
-    # ── Tokyo MR ────────────────────────────────────────────────────────
-    if enabled.get("tokyo_session_mr", {}).get("enabled", False):
-        # Momentum confirmation: RSI must be TURNING (not just at threshold)
-        rsi_lag          = features.get("lag_rsi3", rsi)  # 3-bar lagged RSI
-        rsi_turning_up   = rsi > rsi_lag   # recovering from oversold
-        rsi_turning_down = rsi < rsi_lag   # rolling from overbought
-
-        if rsi < 40 and rsi_turning_up and _side_allowed("buy"):
-            signals.append(StrategySignal(
-                strategy="tokyo_session_mr", symbol=symbol, side="buy",
-                confidence=0.45 + (40 - rsi) / 100.0,
-                price=close,
-                sl=close - atr * 1.5,   # 1.5 ATR stop (wide enough for H1 noise)
-                tp=close + atr * 2.0,   # 2.0 ATR target (asymmetric: need only 43%+ WR)
-                regime=current_regime,
-            ))
-        elif rsi > 60 and rsi_turning_down and _side_allowed("sell"):
-            signals.append(StrategySignal(
-                strategy="tokyo_session_mr", symbol=symbol, side="sell",
-                confidence=0.45 + (rsi - 60) / 100.0,
-                price=close,
-                sl=close + atr * 1.5,
-                tp=close - atr * 2.0,
-                regime=current_regime,
-            ))
-
-    # ── MEAN_REVERSION (MATHEMATICALLY CORRECT EDGE) ────────────────────────────────
-    # Primary alpha: Mean reversion to Bollinger mean with strict edge conditions
-    
-    if enabled.get("silver_mr", {}).get("enabled", False):
-        boll_z = features.get("boll_z", 0.0)
-        atr_pctile = features.get("atr_pctile", 0.5)
-        adx = features.get("adx14", 25.0)  # Default high to require explicit low ADX
-        
-        # === ENTRY CONDITIONS (ALL must pass) ===
-        
-        # 1. abs(boll_z) >= 1.5 — quality pullback from mean
-        if abs(boll_z) < 1.5:
-            return signals
-        
-        # 2. atr_pctile >= 0.55 — sufficient volatility for edge
-        if atr_pctile < 0.55:
-            return signals
-        
-        # 3. ADX < 20 — anti-trend filter (mean reversion works in ranging markets)
-        if adx >= 20.0:
-            return signals
-        
-        # 4. SYMBOL FILTER: EURUSD and NZDUSD only
-        if symbol.upper() not in ["EURUSD", "NZDUSD"]:
-            return signals
-        
-        # 5. CONFIRMATION: rejection_wick AND engulfing candle
-        try:
-            if len(full_df) >= 3:
-                curr_open = float(full_df["open"].iloc[-1])
-                curr_close = float(full_df["close"].iloc[-1])
-                curr_high = float(full_df["high"].iloc[-1])
-                curr_low = float(full_df["low"].iloc[-1])
-                prev_close = float(full_df["close"].iloc[-2])
-                prev_open = float(full_df["open"].iloc[-2])
-                prev_high = float(full_df["high"].iloc[-2])
-                prev_low = float(full_df["low"].iloc[-2])
-            else:
-                return signals
-        except Exception:
-            return signals
-        
-        # Current candle metrics
-        curr_body = abs(curr_close - curr_open)
-        curr_range = curr_high - curr_low
-        
-        # Rejection wick: long wick in direction of the reversal
-        # For buy (boll_z < 0): long lower wick, close near high
-        # For sell (boll_z > 0): long upper wick, close near low
-        if boll_z < 0:  # Buy setup
-            lower_wick = min(curr_close, curr_open) - curr_low
-            rejection_wick = (lower_wick > 1.5 * curr_body) and (curr_close > curr_open)
-            # Engulfing: current candle body engulfs previous candle
-            engulfing = curr_body > abs(prev_close - prev_open) and curr_close > prev_close
-        else:  # Sell setup
-            upper_wick = curr_high - max(curr_close, curr_open)
-            rejection_wick = (upper_wick > 1.5 * curr_body) and (curr_close < curr_open)
-            # Engulfing: current candle body engulfs previous candle
-            engulfing = curr_body > abs(prev_close - prev_open) and curr_close < prev_close
-        
-        if not (rejection_wick and engulfing):
-            return signals
-        
-        # === DYNAMIC EXIT LOGIC (NOT FIXED R) ===
-        # TP = Bollinger mean (middle band)
-        # SL = entry ± (1.2 × ATR)
-        
-        bb_middle = features.get("bb_middle", close)
-        if bb_middle is None or bb_middle <= 0:
-            bb_middle = close  # Fallback
-        
-        entry = curr_close
-        
-        # Take Profit = distance to Bollinger mean
-        if boll_z < 0:  # Buy
-            tp = bb_middle
-            sl = entry - (atr * 1.2)
-            side = "buy"
-        else:  # Sell
-            tp = bb_middle
-            sl = entry + (atr * 1.2)
-            side = "sell"
-        
-        # Effective R = distance to TP / distance to SL
-        tp_distance = abs(tp - entry)
-        sl_distance = abs(sl - entry)
-        effective_r = tp_distance / sl_distance if sl_distance > 0 else 0
-        
-        # Skip if effective R is too low (need at least 1:1)
-        if effective_r < 1.0:
-            return signals
-        
-        # === COST FILTER (CRITICAL FIX) ===
-        # expected_move >= total_cost × 14
-        
-        # Get spread from slippage model
-        from src.broker.paper_executor import SLIPPAGE_MODEL
-        sym_upper = symbol.upper()
-        pip_val = 0.01 if "JPY" in sym_upper else 0.0001
-        spread_range = SLIPPAGE_MODEL.get(sym_upper, SLIPPAGE_MODEL.get("default", (1.0, 2.0)))
-        avg_spread_pips = (spread_range[0] + spread_range[1]) / 2
-        spread_cost = avg_spread_pips * pip_val
-        
-        # Expected slippage (conservative)
-        expected_slippage = spread_cost
-        total_cost = spread_cost + expected_slippage
-        
-        # Expected move = distance to TP
-        expected_move = tp_distance
-        
-        # Strict cost filter: expected_move >= 14 × total_cost
-        if expected_move < total_cost * 14:
-            return signals
-        
-        # Calculate cost ratio for logging
-        cost_ratio = expected_move / total_cost if total_cost > 0 else 0
-        
-        # Confidence based on edge quality
-        base_conf = 0.60 + (abs(boll_z) - 1.5) * 0.10 + (atr_pctile - 0.55) * 0.20
-        base_conf = min(0.85, max(0.50, base_conf))
-        
-        # Create signal with rich metadata
-        signals.append(StrategySignal(
-            strategy="silver_mr", symbol=symbol, side=side,
-            confidence=round(base_conf, 3),
-            price=entry,
-            sl=round(sl, 5),
-            tp=round(tp, 5),
-            regime=current_regime,
-            metadata={
-                "boll_z": round(boll_z, 3),
-                "atr_pctile": round(atr_pctile, 3),
-                "adx": round(adx, 1),
-                "expected_move": round(expected_move, 5),
-                "total_cost": round(total_cost, 5),
-                "cost_ratio": round(cost_ratio, 1),
-                "effective_r": round(effective_r, 2),
-                "bb_middle": round(bb_middle, 5),
-                "rejection_wick": rejection_wick,
-                "engulfing": engulfing,
-            }
-        ))
+    LOG.info(f"[ADAPTIVE SIGNAL] {symbol} {decision.strategy} {decision.action} @ {decision.entry}")
 
     return signals
 
@@ -772,7 +596,7 @@ class PipelineV2:
 
         # ── 6. Strategy bank → signals ────────────────────────────────────
         raw_signals = _collect_strategy_signals(
-            symbol, last_features, full_df, regime, self.cfg_yaml
+            symbol, last_features, full_df, regime, self.cfg_yaml, raw_df
         )
 
         if not raw_signals:
@@ -782,14 +606,32 @@ class PipelineV2:
         final_signal: Optional[dict] = None
         ens_decision = None
 
-        if self.cfg.use_ensemble:
+        if len(raw_signals) == 1:
+            best = raw_signals[0]
+            final_signal = {
+                "symbol": symbol,
+                "side": getattr(best, "side", None),
+                "price": getattr(best, "price", None),
+                "sl": getattr(best, "sl", None),
+                "tp": getattr(best, "tp", None),
+                "strategy": getattr(best, "strategy", "ADAPTIVE"),
+                "regime": getattr(best, "regime", result.regime),
+                "confidence": getattr(best, "confidence", 0.0),
+                "metadata": dict(getattr(best, "metadata", getattr(best, "meta", {})) or {}),
+            }
+
+        if final_signal is None and self.cfg.use_ensemble:
             ensemble = _get_ensemble(self.cfg)
             if ensemble is not None:
                 ens_decision = ensemble.aggregate(raw_signals, result.regime, symbol)
                 result.ensemble_decision = ens_decision
                 if ens_decision.should_trade:
                     final_signal = ens_decision.to_signal_dict()
-        else:
+                    if final_signal is not None and len(raw_signals) == 1:
+                        final_signal["strategy"] = raw_signals[0].strategy
+                        final_signal["regime"] = raw_signals[0].regime
+                        final_signal["metadata"] = dict(getattr(raw_signals[0], "meta", {}) or {})
+        elif final_signal is None:
             # Fallback: single best signal (highest confidence)
             best = max(raw_signals, key=lambda s: s.confidence)
             final_signal = {
@@ -801,6 +643,7 @@ class PipelineV2:
                 "strategy":   best.strategy,
                 "regime":     result.regime,
                 "confidence": best.confidence,
+                "metadata":   dict(getattr(best, "meta", {}) or {}),
             }
 
         if final_signal is None:
@@ -834,12 +677,16 @@ class PipelineV2:
             if 0.4 <= bz < 0.5:
                 result.signal["size"] = round(result.signal["size"] * 0.7, 2)
                 result.signal["size"] = max(result.signal["size"], 0.01)
-        quality_payload = _grade_signal_quality(
-            last_features,
-            str(result.signal.get("side", "")).strip().upper(),
-            _sig_regime,
-        )
-        quality_grade = str(quality_payload.get("grade", "B")).strip().upper()
+        quality_payload = {"grade": "B", "score": None}
+        if result.signal.get("strategy") == "BOS":
+            quality_grade = "B"
+        else:
+            quality_payload = _grade_signal_quality(
+                last_features,
+                str(result.signal.get("side", "")).strip().upper(),
+                _sig_regime,
+            )
+            quality_grade = str(quality_payload.get("grade", "B")).strip().upper()
         gated_signal, signal_tier, tier_size_multiplier = _apply_signal_tier_gate(
             result.signal,
             self.cfg,
@@ -903,10 +750,10 @@ class PipelineV2:
             
             # MATHEMATICAL EDGE FILTER: expected move must be >= 14x total cost
             # This ensures friction costs are negligible relative to profit potential
-            if expected_move < total_cost * 14:
-                LOG.debug(f"[pipeline_v2] {sym}: Skipping - expected_move ({expected_move:.5f}) < 14x cost ({total_cost * 14:.5f})")
+            if expected_move < total_cost * 5:
+                LOG.debug(f"[pipeline_v2] {sym}: Skipping - expected_move ({expected_move:.5f}) < 5x cost ({total_cost * 5:.5f})")
                 result.signal = None
-                result.errors.append(f"execution_cost_filter:expected_move={expected_move:.5f},cost_14x={total_cost*14:.5f}")
+                result.errors.append(f"execution_cost_filter:expected_move={expected_move:.5f},cost_5x={total_cost*5:.5f}")
                 return result
             
             # Log cost ratio for trade

@@ -85,27 +85,27 @@ class PipelineConfigV2:
     verbose: bool = False
     log_features: bool = True
 
-    # Gating & Throttling (MATHEMATICAL EDGE: 50 bars between trades, MR-only)
+    # Gating & Throttling (REBUILD_V1: max 1 trade, 5 bar cooldown)
     min_confidence_normal: float = 0.60
     min_confidence_uncertain: float = 0.75
-    max_trades_per_day_per_symbol: int = 5  # Reduced for MR-only mode
-    min_bars_between_trades: int = 50  # 50 bars cooldown per symbol
-    max_open_positions: int = 2  # Reduced for focused MR trades
-    loss_streak_cooldown_trades: int = 3
-    loss_streak_cooldown_bars: int = 50  # Consistent with main cooldown
-    calibrated_confidence_min: float = 0.55  # Higher for MR-only
-    confidence_deadzone_low: float = 0.55
-    confidence_deadzone_high: float = 0.60
-    edge_score_min: float = 0.70  # Higher for MR edge
-    volatility_low_pctile: float = 0.55  # MR requires elevated vol
+    max_trades_per_day_per_symbol: int = 10
+    min_bars_between_trades: int = 5  # 5 bar cooldown (REBUILD_V1)
+    max_open_positions: int = 1  # REBUILD_V1: max 1 trade at a time
+    loss_streak_cooldown_trades: int = 2
+    loss_streak_cooldown_bars: int = 5  # Consistent with main cooldown
+    calibrated_confidence_min: float = 0.50
+    confidence_deadzone_low: float = 0.50
+    confidence_deadzone_high: float = 0.55
+    edge_score_min: float = 0.60
+    volatility_low_pctile: float = 0.20
     volatility_high_pctile: float = 0.90
-    cooldown_bars_after_loss: int = 5
+    cooldown_bars_after_loss: int = 2
     cooldown_bars_after_win: int = 0
-    trade_cluster_bars: int = 50  # 50 bars
-    tokyo_min_confidence: float = 0.65
-    tier1_confidence_min: float = 0.65  # Higher for MR-only
-    tier2_confidence_min: float = 0.60
-    tier3_confidence_floor: float = 0.55
+    trade_cluster_bars: int = 5  # 5 bars (REBUILD_V1)
+    tokyo_min_confidence: float = 0.60
+    tier1_confidence_min: float = 0.60
+    tier2_confidence_min: float = 0.55
+    tier3_confidence_floor: float = 0.50
 
 
 @dataclass

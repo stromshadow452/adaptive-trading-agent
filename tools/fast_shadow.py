@@ -81,35 +81,48 @@ BARS_PER_DAY = {"H1": 24, "M15": 96, "M5": 288, "H4": 6, "D1": 1}
 # Ordered candidates (first existing file wins per symbol).
 # Backup files (2024-2025) are preferred for multi-symbol mode because they
 # all share the same calendar period. Kaggle files used as fallback only.
-SYMBOL_DATA_CANDIDATES: Dict[str, List[str]] = {
+# Train period: 2020-2022 files
+SYMBOL_DATA_CANDIDATES_TRAIN: Dict[str, List[str]] = {
     "EURUSD": [
-        "data/raw/forex_backup_2020_2025/EURUSD_H1_2024_to_2025.csv",
-        "data/raw/forex_kaggle_multiTF/EURUSD_H1.csv",
+        "data/raw/forex_backup_2020_2025/EURUSD_H1_2020_to_2021.csv",
+        "data/raw/forex_backup_2020_2025/EURUSD_H1_2021_to_2022.csv",
+        "data/raw/forex_backup_2020_2025/EURUSD_H1_2022_to_2023.csv",
     ],
     "GBPUSD": [
-        "data/raw/forex_backup_2020_2025/GBPUSD_H1_2024_to_2025.csv",
-        "data/raw/forex_kaggle_multiTF/GBPUSD_H1.csv",
-    ],
-    "USDJPY": [
-        "data/raw/forex_backup_2020_2025/USDJPY_H1_2024_to_2025.csv",
-        "data/raw/forex_kaggle_multiTF/USDJPY_H1.csv",
-    ],
-    "USDCAD": [
-        "data/raw/forex_backup_2020_2025/USDCAD_H1_2024_to_2025.csv",
-        "data/raw/forex_kaggle_multiTF/USDCAD_H1.csv",
+        "data/raw/forex_backup_2020_2025/GBPUSD_H1_2020_to_2021.csv",
+        "data/raw/forex_backup_2020_2025/GBPUSD_H1_2021_to_2022.csv",
+        "data/raw/forex_backup_2020_2025/GBPUSD_H1_2022_to_2023.csv",
     ],
     "AUDUSD": [
-        "data/raw/forex_kaggle_multiTF/AUDUSD_H1.csv",
+        "data/raw/forex_backup_2020_2025/AUDUSD_H1_2020_to_2021.csv",
+        "data/raw/forex_backup_2020_2025/AUDUSD_H1_2021_to_2022.csv",
+        "data/raw/forex_backup_2020_2025/AUDUSD_H1_2022_to_2023.csv",
     ],
-    "NZDUSD": [
-        "data/raw/forex_kaggle_multiTF/NZDUSD_H1.csv",
+}
+
+# Test period: 2023-2024 files
+SYMBOL_DATA_CANDIDATES_TEST: Dict[str, List[str]] = {
+    "EURUSD": [
+        "data/raw/forex_backup_2020_2025/EURUSD_H1_2023_to_2024.csv",
     ],
-    "XAGUSD": [
-        "data/raw/forex_kaggle_multiTF/XAGUSD_H1.csv",
+    "GBPUSD": [
+        "data/raw/forex_backup_2020_2025/GBPUSD_H1_2023_to_2024.csv",
     ],
-    "XAUUSD": [
-        "data/raw/forex_kaggle_multiTF/XAUUSD_H1.csv",
-        "data/raw/forex_backup_2020_2025/XAUUSD_H1_2024_to_2025.csv",
+    "AUDUSD": [
+        "data/raw/forex_backup_2020_2025/AUDUSD_H1_2023_to_2024.csv",
+    ],
+}
+
+# Default (backward compatible)
+SYMBOL_DATA_CANDIDATES: Dict[str, List[str]] = {
+    "EURUSD": [
+        "data/raw/forex_backup_2020_2025/EURUSD_H1_2023_to_2024.csv",
+    ],
+    "GBPUSD": [
+        "data/raw/forex_backup_2020_2025/GBPUSD_H1_2023_to_2024.csv",
+    ],
+    "AUDUSD": [
+        "data/raw/forex_backup_2020_2025/AUDUSD_H1_2023_to_2024.csv",
     ],
 }
 
@@ -863,7 +876,7 @@ def run_multi_symbol_shadow(
     persist_blocks    = 0
     trades_per_sym:   Dict[str, int] = {sym: 0 for sym in valid_symbols}
     ml_veto_blocks    = 0
-    trades_per_group: Dict[str, int] = {"USD": 0, "JPY": 0, "METALS": 0, "OTHER": 0}
+    trades_per_group: Dict[str, int] = {"FOREX": 0}
     pending_signals:  Dict[str, dict] = {}   # sym -> signal (fill at next-bar open)
 
     # ── Phase 1 / JARVIS tracking logic ──────────────────────────────────
@@ -887,16 +900,16 @@ def run_multi_symbol_shadow(
     fast_blocks   = 0
     slow_pf_blocks = 0     # counted but NOT hard-blocked for approved symbols
 
-    # Phase 2 components (JARVIS adaptive engine)
-    from src.strategies.strategy_bank import StrategyBank
-    from src.pipeline.strategy_router import StrategyRouter
-    from src.ml.ml_engine import MLEngine, TradeMemory
-    from src.rl.rl_controller import RLController
+    # DISABLED: Phase 2 components (JARVIS adaptive engine) - BOS-ONLY baseline
+    # from src.strategies.strategy_bank import StrategyBank
+    # from src.pipeline.strategy_router import StrategyRouter
+    # from src.ml.ml_engine import MLEngine, TradeMemory
+    # from src.rl.rl_controller import RLController
 
-    strategy_bank = StrategyBank()
-    strategy_router = StrategyRouter()
-    ml_engine = MLEngine(memory_path="logs/shadow/trade_memory_phase2.jsonl")
-    rl_controller = RLController(window=20)
+    # strategy_bank = StrategyBank()
+    # strategy_router = StrategyRouter()
+    # ml_engine = MLEngine(memory_path="logs/shadow/trade_memory_phase2.jsonl")
+    # rl_controller = RLController(window=20)
     router_skip_blocks = 0
     frequency_gap_blocks = 0
     prev_boll_z = {}   # per-symbol scalar cache for reversal confirmation
@@ -910,7 +923,6 @@ def run_multi_symbol_shadow(
     sym_cooldown_until_bar = {}   # kept for compatibility (no longer used)
     sym_health_window = 30
     last_trade_bar = {sym: -999 for sym in valid_symbols}
-    sym_bos_state = {sym: {"level": None, "dir": 0, "active": False} for sym in valid_symbols}
 
     # Phase 2 adaptive relaxation: approximate trades/day over last ~3 days (H1 → 72 bars).
     from collections import deque
@@ -950,8 +962,10 @@ def run_multi_symbol_shadow(
                 psig["metadata"]["bar_time"] = ts.isoformat() if hasattr(ts, "isoformat") else str(ts)
             if not dry_run:
                 try:
+                    print(f"EXECUTE_CALLED | {sym}")
                     fill = executor.execute(psig)
                     if fill is not None:
+                        print(f"EXECUTE_SUCCESS | {sym} | fill_price={fill.fill_px}")
                         trade_count += 1
                         last_trade_bar[sym] = bar_count
                         try:
@@ -969,7 +983,10 @@ def run_multi_symbol_shadow(
                                 f"score={psig.get('_score', 0):.3f}  "
                                 f"regime={psig.get('regime', '?')} [next-open]"
                             )
+                    else:
+                        print(f"EXECUTE_REJECT | {sym} | reason=executor_returned_none")
                 except Exception as e:
+                    print(f"EXECUTE_REJECT | {sym} | reason={str(e)}")
                     LOG.debug(f"[multi] fill error ({sym}): {e}")
 
         # ── Phase A2: Record closed-trade PnL for blacklist tracking ─────
@@ -996,33 +1013,15 @@ def run_multi_symbol_shadow(
                 # Update Risk Engine
                 risk_engine.update_post_trade(ct)
 
-                # Phase 2: Record to RL and ML
-                rl_controller.record_trade(pnl, strat)
-
-                features = ct.metadata if ct.metadata else {}
-                ml_engine.record_trade(TradeMemory(
-                    symbol=ct.symbol,
-                    strategy=strat,
-                    side=ct.side,
-                    adx=features.get("adx", 0.0),
-                    atr_pctile=features.get("atr_pctile", 0.0),
-                    boll_z=features.get("boll_z", 0.0),
-                    regime_score=features.get("regime_score", 0.0),
-                    ret_std=features.get("ret_std", 0.0),
-                    hour=features.get("hour", 12),
-                    bar_index=bar_count,
-                    pnl_usd=pnl,
-                    r_multiple=0.0,
-                    won=pnl > 0,
-                    ml_confidence=features.get("ml_confidence", 0.0),
-                ))
+                # DISABLED: Phase 2 components (RL/ML recording)
+                # rl_controller.record_trade(pnl, strat)
+                # ml_engine.record_trade(...)
 
                 cursor += 1
             executor._bl_cursor = cursor
 
-        # Keep RL drawdown updated
-        if hasattr(executor, 'get_summary'):
-            rl_controller.set_drawdown(executor.get_summary().get("drawdown_pct", 0.0))
+        # DISABLED: Keep RL drawdown updated
+        # rl_controller.set_drawdown(...)
 
         pending_signals.clear()
 
@@ -1043,6 +1042,8 @@ def run_multi_symbol_shadow(
 
         for sym in valid_symbols:
             if sym in open_pos:
+                if bar_count % 50 == 0:  # Log periodically
+                    print(f"MAX_POS_BLOCK | {sym} | open_positions={len(open_pos)}")
                 continue   # already has open position
 
             # Symbol health filter is sizing-only (no pre-skip).
@@ -1066,160 +1067,80 @@ def run_multi_symbol_shadow(
             if len(raw_df) < pcfg.min_bars:
                 continue   # warm-up incomplete
 
-            # ── PHASE 1: Structure Tracking (BOS & Liquidity Sweeps)
-            if len(raw_df) < 22:
+            # Cooldown check (5 bars for REBUILD_V1)
+            bars_since_last = bar_count - last_trade_bar[sym]
+            if bars_since_last <= 5:
+                if bars_since_last == 0 or bar_count % 50 == 0:  # Log periodically
+                    print(f"COOLDOWN_BLOCK | {sym} | last_trade_bar={last_trade_bar[sym]} | now={bar_count} | delta={bars_since_last}")
                 continue
 
-            current_high = float(getattr(bar, "high", getattr(bar, "High", getattr(bar, "h", 0.0))) or 0.0)
-            current_low = float(getattr(bar, "low", getattr(bar, "Low", getattr(bar, "l", 0.0))) or 0.0)
-            current_close = float(getattr(bar, "close", getattr(bar, "Close", getattr(bar, "c", 0.0))) or 0.0)
-            current_open = float(getattr(bar, "open", getattr(bar, "Open", getattr(bar, "o", 0.0))) or 0.0)
+            # ── PHASE 2: Signal Generation via PipelineV2 (REBUILD_V1)
+            pipeline = sym_pipelines[sym]
+            result = pipeline.process_bar(sym, bar, raw_df, executor)
             
-            recent_highs = raw_df["high"].iloc[-21:-1]
-            recent_lows = raw_df["low"].iloc[-21:-1]
-            highest_20 = float(recent_highs.max())
-            lowest_20 = float(recent_lows.min())
-            
-            # BOS Detection
-            state = sym_bos_state[sym]
-            
-            # ATR for sizing/SL
-            _atr_val = float((raw_df["high"] - raw_df["low"]).rolling(14).mean().iloc[-1])
-            
-            if current_high > highest_20 and current_close > highest_20:
-                breakout_size = current_close - highest_20
-                if breakout_size >= _atr_val * 0.3:
-                    state["level"] = highest_20
-                    state["dir"] = 1
-                    state["active"] = True
-            elif current_low < lowest_20 and current_close < lowest_20:
-                breakout_size = lowest_20 - current_close
-                if breakout_size >= _atr_val * 0.3:
-                    state["level"] = lowest_20
-                    state["dir"] = -1
-                    state["active"] = True
-
-            # Cooldown check
-            if bar_count - last_trade_bar[sym] <= 10:
+            # Check if pipeline generated a signal
+            if result.signal is None:
                 continue
-
-            # ── PHASE 2: Signal Generation
-            mr_sig = None
-            tp_sig = None
-
-            # 2. TREND PULLBACK (BOS Pullback + Rejection)
-            # H4 Trend Filter approximation (EMA80 on H1)
-            ema_up = True
-            ema_down = True
-            if len(raw_df) > 80:
-                ema80 = raw_df["close"].ewm(span=80, adjust=False).mean()
-                ema_up = float(ema80.iloc[-1]) > float(ema80.iloc[-2])
-                ema_down = float(ema80.iloc[-1]) < float(ema80.iloc[-2])
             
-            if state["active"]:
-                if state["dir"] == 1 and ema_up:
-                    if current_low <= state["level"] and current_close > state["level"] and current_close > current_open:
-                        sl = current_low - _atr_val * 0.5
-                        sl_dist = current_close - sl
-                        tp = current_close + 2.0 * sl_dist
-                        tp_sig = {
-                            "symbol": sym,
-                            "strategy": "TREND_PULLBACK",
-                            "side": "buy",
-                            "price": current_close,
-                            "sl": sl,
-                            "tp": tp,
-                            "size": pcfg.base_risk_pct,
-                            "metadata": {"strategy": "TREND_PULLBACK"}
-                        }
-                        state["active"] = False
-                elif state["dir"] == -1 and ema_down:
-                    if current_high >= state["level"] and current_close < state["level"] and current_close < current_open:
-                        sl = current_high + _atr_val * 0.5
-                        sl_dist = sl - current_close
-                        tp = current_close - 2.0 * sl_dist
-                        tp_sig = {
-                            "symbol": sym,
-                            "strategy": "TREND_PULLBACK",
-                            "side": "sell",
-                            "price": current_close,
-                            "sl": sl,
-                            "tp": tp,
-                            "size": pcfg.base_risk_pct,
-                            "metadata": {"strategy": "TREND_PULLBACK"}
-                        }
-                        state["active"] = False
-
-            # --- Execution Filter (Spread + Slippage cost vs expected move) ---
-            pip_val = 0.01 if "JPY" in sym else 0.0001
-            total_cost = (1.5 + 1.0) * 2 * pip_val
+            sig = result.signal
+            score = float(sig.get("_score", sig.get("confidence", 0.5)))
             
-            if tp_sig:
-                expected_move = abs(tp_sig["tp"] - tp_sig["price"])
-                if expected_move < total_cost * 4:
-                    tp_sig = None
-            if mr_sig:
-                expected_move = abs(mr_sig["tp"] - mr_sig["price"])
-                if expected_move < total_cost * 4:
-                    mr_sig = None
-
-            # --- Select signal (MR priority) ---
-            sig = None
-            score = 1.0
-            chosen_strategy = None
+            # INSTRUMENTATION: Signal found
+            strategy_name = sig.get("metadata", {}).get("strategy", sig.get("strategy", "BOS"))
+            print(f"SIGNAL_FOUND | {sym} | side={sig.get('side')} | price={sig.get('price')} | strat={strategy_name}")
             
-            if mr_sig:
-                sig, score, chosen_strategy = mr_sig, 1.0, "MEAN_REVERSION"
-            elif tp_sig:
-                sig, score, chosen_strategy = tp_sig, 1.0, "TREND_PULLBACK"
+            # Ensure required fields
+            sig.setdefault("_score", score)
+            sig.setdefault("metadata", {})
+            sig["metadata"].setdefault("strategy", strategy_name)
+            
+            candidates.append({
+                "symbol": sym,
+                "signal": sig,
+                "score": score,
+                "boll_z": float(sig.get("metadata", {}).get("boll_z", 0.0)),
+                "regime_score": float(sig.get("metadata", {}).get("regime_score", 0.5))
+            })
+            
+            # INSTRUMENTATION: Candidate added
+            print(f"CANDIDATE_ADDED | {sym} | score={score:.3f} | strat={strategy_name}")
+            
+            # DISABLED: rl_controller.set_last_trade_bar(bar_count)
 
-            if sig:
-                # ──────────────────────────────────────────────────────────
-                # SINGLE ENTRY DECISION POINT
-                # All entry logic consolidated here. Nothing after this
-                # block may reject a valid entry (except Risk Engine).
-                #
-                # ──────────────────────────────────────────────────────────
-                
-                size_mult = 1.0
-                original_size = sig.get("size", 0.01)
-                sig["size"] = round(original_size * size_mult, 4)
-
-                sig["_score"]        = score
-                sig["_regime_score"] = 0.5
-                sig["_size_mult"]    = round(size_mult, 3)
-                sig["_size_tier"]    = "UNKNOWN"
-                
-                sig["metadata"] = {
-                    "strategy": chosen_strategy or "UNKNOWN",
-                    "adx": 0.0,
-                    "atr": _atr_val,
-                    "atr_pctile": 0.0,
-                    "boll_z": 0.0,
-                    "regime_score": 0.5,
-                    "ret_std": 0.0,
-                    "ml_confidence": 0.0,
-                    "hour": 12
-                }
-                
-                rl_controller.set_last_trade_bar(bar_count)
-                
-                candidates.append({
-                    "symbol": sym,
-                    "signal": sig,
-                    "score":  score,
-                    "boll_z": 0.0,
-                    "regime_score": 0.5,
-                })
-
-            prev_boll_z[sym] = 0.0
+        # DISABLED: Pairs Trading Engine for BOS-only baseline
+        # from src.strategies.pairs_trading import get_pairs_engine
+        # pairs_engine = get_pairs_engine()
+        # 
+        # # Update prices for all symbols
+        # for sym in valid_symbols:
+        #     idx = sym_ts_idx[sym].get(ts)
+        #     if idx is not None:
+        #         row = sym_dfs[sym].iloc[idx]
+        #         pairs_engine.update_price(sym, pd.Series({
+        #             'open': row['open'],
+        #             'high': row['high'],
+        #             'low': row['low'],
+        #             'close': row['close'],
+        #             'volume': row.get('volume', 1000.0)
+        #         }))
+        # 
+        # # Process pairs trading
+        # if bar_count > 50:  # Warmup period for correlation
+        #     pair_signals, closed_pairs = pairs_engine.process_bar(ts, valid_symbols)
 
         # ── Phase D: Portfolio selection (rank + guard + cap) ────────────
         if candidates:
             selected = select_signals(candidates, open_pos, max_trades=3)
+            
+            # INSTRUMENTATION: Candidates vs selected
+            print(f"PORTFOLIO_SELECT | candidates={len(candidates)} | selected={len(selected)}")
+            
             for item in selected:
                 sym = item["symbol"]
                 sig = item["signal"]
+                
+                # INSTRUMENTATION: Before execute
+                print(f"BEFORE_EXECUTE | {sym} | side={sig.get('side')} | price={sig.get('price')}")
                 
                 # Evaluate Risk Engine BEFORE routing
                 try:
@@ -1231,7 +1152,9 @@ def run_multi_symbol_shadow(
                 if allow:
                     sig["size"] = sig.get("size", 1.0) * size_mult
                     pending_signals[sym] = sig
+                    print(f"PENDING_SIGNAL | {sym} | queued for execution")
                 else:
+                    print(f"RISK_BLOCK | {sym} | reason={reason}")
                     LOG.debug(f"[Risk Engine] Blocked {sym}: {reason}")
                     risk_skips += 1
                     risk_block_reasons[reason] = risk_block_reasons.get(reason, 0) + 1
@@ -1314,7 +1237,7 @@ def run_multi_symbol_shadow(
 
     summary = {
         **raw_summary,
-        "mode":              "multi_symbol",
+        "mode":              "BOS_ONLY_SINGLE_PIPELINE",
         "symbols":           valid_symbols,
         "timeframe":         tf,
         "days_simulated":    days,
@@ -1324,14 +1247,7 @@ def run_multi_symbol_shadow(
         "elapsed_s":         round(elapsed, 2),
         "bars_per_sec":      round(bar_count / max(elapsed, 0.1), 1),
         "trades_per_symbol": trades_per_sym,
-        "trades_per_group":  trades_per_group,
-        "group_pct":         group_pct,
-        "sym_pct":           sym_pct,
-        "max_sym_pct":       max_sym_pct,
-        "strat_counts":      strat_counts,
-        "router_skips":      router_skip_blocks,
-        "freq_blocks":       frequency_gap_blocks,
-        "adaptive_relax_active_bars": adaptive_relax_active,
+        "strategy":          "BOS_ONLY",
     }
 
     # ── 7. Print report ───────────────────────────────────────────────────
@@ -1346,7 +1262,7 @@ def run_multi_symbol_shadow(
     f_pct    = raw_summary.get("friction_loss_pct", 0)
 
     LOG.info(sep)
-    LOG.info("[multi] MULTI-SYMBOL SIMULATION COMPLETE (Phase 2 JARVIS)")
+    LOG.info("[multi] MULTI-SYMBOL SIMULATION COMPLETE (BOS-ONLY BASELINE)")
     LOG.info(f"  Symbols:    {', '.join(valid_symbols)}")
     LOG.info(f"  Bars:       {bar_count:,}  ({days} days @ {tf})")
     LOG.info(f"  Trades:     {trade_count}")
@@ -1359,10 +1275,10 @@ def run_multi_symbol_shadow(
     LOG.info(f"  Speed:      {summary['bars_per_sec']} bars/sec")
     LOG.info(f"  Elapsed:    {elapsed:.1f}s")
     LOG.info(dash)
-    LOG.info("  Phase 2 Subsystems:")
-    LOG.info(f"    Router skips (chop logic): {router_skip_blocks}")
-    LOG.info(f"    RL Freq gap blocks:        {frequency_gap_blocks}")
-    LOG.info(f"    Strategy Breakdown:        {strat_counts}")
+    LOG.info("  BOS-ONLY Pipeline:")
+    LOG.info(f"    Strategy: BOS ONLY (no MR, no pairs)")
+    LOG.info(f"    Trades:   {trade_count}")
+    
     if strat_pf:
         LOG.info("    Per-Strategy PF:")
         for s_name in sorted(strat_pf.keys()):
