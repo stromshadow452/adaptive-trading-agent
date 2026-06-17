@@ -48,470 +48,121 @@ from typing import Dict, List, Optional
 import numpy as np
 import pandas as pd
 
-LOG = logging.getLogger("pipeline_v2")
+# Dynamic/Backtest Pipeline imports
+import traceback
+import json
+import math
+from pathlib import Path
+from typing import Any, Tuple
+from collections import Counter, deque
+from datetime import datetime, timedelta
+from src.market_data import MarketDataStore, Symbol, Timeframe
+from src.backtest.feature_reactor_v1 import SafeFeatureReactor
+from src.backtest.ml_brain_v1 import MLBrainV1
+from src.backtest.regime_engine_v1 import RegimeEngineV1
+from src.backtest.risk_brain_v1 import RiskBrainV1
+from src.backtest.meta_gating_v1 import MetaGatingV1
+logger = logging.getLogger("pipeline_v2")
 
-# ---------------------------------------------------------------------------
-# Pipeline configuration dataclass
-# ---------------------------------------------------------------------------
 
 @dataclass
-class PipelineConfig:
-    """All feature flags and sizing parameters for the v2 pipeline."""
+class Decision:
+    """Trading decision output from pipeline"""
+    action: str  # 'open', 'hold'
+    side: Optional[str] = None  # 'buy', 'sell'
+    entry_price: Optional[float] = None
+    size: Optional[float] = None
+    sl_price: Optional[float] = None
+    tp_price: Optional[float] = None
+    decision_source: str = 'UNKNOWN'  # 'PRIMARY', 'RL_FALLBACK', 'HEURISTIC'
+    regime: str = 'UNKNOWN'  # 'TREND', 'RANGE', 'UNCERTAIN'
+    confidence: float = 0.0
+    features: Optional[Dict[str, float]] = None
+    metadata: Dict[str, Any] = field(default_factory=dict)
 
-    # Feature flags
-    use_extended_features: bool  = True    # lag, vol regime, interaction, mic-mom
-    use_session_features:  bool  = True    # cyclical time encoding
-    use_structure_features: bool = True    # S/R proximity
-    use_volume_features:   bool  = True    # OBV, VWAP, volume structure
-    use_cross_asset:       bool  = False   # Week 11 — not active yet
-
-    # Sizing
-    account_equity:   float = 10_000.0
-    base_risk_pct:    float = 0.01         # 1% per trade base
-    use_adaptive_sizing: bool = True
-
-    # Ensemble
-    use_ensemble:     bool  = True         # WeightedSignalAggregator
-    ensemble_log:     str   = "logs/shadow/ensemble.jsonl"
-
-    # Drift monitoring
-    monitor_psi:      bool  = True
-    psi_log_path:     str   = "logs/shadow/psi_daily.jsonl"
-    psi_baseline_bars: int  = 200          # bars to baseline PSI from
-
-    # Min bars required before computing extended features
-    min_bars:         int   = 150
-    tier1_confidence_min: float = 0.60
-    tier2_confidence_min: float = 0.55
-    tier3_confidence_floor: float = 0.55
-
-    @classmethod
-    def from_cfg(cls, cfg: dict) -> "PipelineConfig":
-        """Build from weapon_system.yaml config dict."""
-        feat = cfg.get("extended_features", {})
-        risk = cfg.get("risk", {})
-        gating = cfg.get("trade_gating", {})
-        return cls(
-            use_extended_features  = feat.get("use_extended",   True),
-            use_session_features   = feat.get("use_session",    True),
-            use_structure_features = feat.get("use_structure",  True),
-            use_volume_features    = feat.get("use_volume",     True),
-            use_cross_asset        = feat.get("use_cross_asset", False),
-            account_equity         = risk.get("account_equity",  10_000.0),
-            base_risk_pct          = risk.get("base_risk_pct",   0.01),
-            use_adaptive_sizing    = risk.get("use_adaptive_sizing", True),
-            use_ensemble           = cfg.get("ensemble", {}).get("enabled", True),
-            tier1_confidence_min   = gating.get("tier1_confidence_min", 0.60),
-            tier2_confidence_min   = gating.get("tier2_confidence_min", 0.52),
-            tier3_confidence_floor = gating.get("tier3_confidence_floor", 0.50),
-        )
-
-
-# ---------------------------------------------------------------------------
-# Bar result
-# ---------------------------------------------------------------------------
-
-@dataclass
-class BarResult:
-    """Output from pipeline.process_bar() for one symbol and bar."""
-    symbol:        str
-    bar_index:     int
-    feature_count: int
-    regime:        str
-    confidence:    float
-    signal:        Optional[dict]           # None = no trade
-    fill:          Optional[object]         # SimulatedFill or None
-    ensemble_decision: Optional[object]     # EnsembleDecision or None
-    psi_max:       float = 0.0
-    errors:        List[str] = field(default_factory=list)
-
-    @property
-    def traded(self) -> bool:
-        return self.fill is not None
-
-
-# ---------------------------------------------------------------------------
-# Lazy singletons (module level, created once per process)
-# ---------------------------------------------------------------------------
-
-_sizer:    Optional[object] = None
-_ensemble: Optional[object] = None
-_drift:    Optional[object] = None
-_drift_baseline: Optional[pd.DataFrame] = None
-_bar_count_for_psi: int = 0
-
-
-def _get_sizer(cfg: PipelineConfig) -> object:
-    global _sizer
-    if _sizer is None and cfg.use_adaptive_sizing:
-        from src.risk.adaptive_sizing import AdaptiveSizer
-        _sizer = AdaptiveSizer(
-            account_equity=cfg.account_equity,
-            base_risk_pct=cfg.base_risk_pct,
-        )
-    return _sizer
-
-
-def _get_ensemble(cfg: PipelineConfig) -> object:
-    global _ensemble
-    if _ensemble is None and cfg.use_ensemble:
-        from src.decision.ensemble import WeightedSignalAggregator
-        _ensemble = WeightedSignalAggregator(
-            log_path=cfg.ensemble_log, shadow_mode=True
-        )
-    return _ensemble
-
-
-# ---------------------------------------------------------------------------
-# Feature computation v2
-# ---------------------------------------------------------------------------
-
-def build_full_feature_set(
-    raw_df: pd.DataFrame,
-    cfg: PipelineConfig,
-    symbol: str = "UNKNOWN",
-    data_source=None,
-) -> Optional[pd.DataFrame]:
+def _compute_technical_indicators(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Run all feature categories and return a merged DataFrame.
-    Falls back gracefully if any category fails.
-
-    Returns:
-        DataFrame with [20 + up_to_82 extended] columns, or None.
+    Stage 2: Feature Reactor
+    Compute technical indicators from OHLCV data
     """
-    if raw_df is None or raw_df.empty or len(raw_df) < cfg.min_bars:
-        return None
+    df = df.copy()
+    
+    # Price-based features
+    df['returns'] = df['close'].pct_change()
+    df['log_returns'] = np.log(df['close'] / df['close'].shift(1))
+    
+    # Moving averages
+    for period in [5, 10, 20, 50]:
+        df[f'sma_{period}'] = df['close'].rolling(period).mean()
+        df[f'ema_{period}'] = df['close'].ewm(span=period).mean()
+    
+    # RSI
+    delta = df['close'].diff()
+    gain = (delta.where(delta > 0, 0)).rolling(window=14).mean()
+    loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
+    rs = gain / loss
+    df['rsi'] = 100 - (100 / (1 + rs))
+    
+    # MACD
+    ema_12 = df['close'].ewm(span=12).mean()
+    ema_26 = df['close'].ewm(span=26).mean()
+    df['macd'] = ema_12 - ema_26
+    df['macd_signal'] = df['macd'].ewm(span=9).mean()
+    df['macd_hist'] = df['macd'] - df['macd_signal']
+    
+    # Bollinger Bands
+    df['bb_middle'] = df['close'].rolling(20).mean()
+    bb_std = df['close'].rolling(20).std()
+    df['bb_upper'] = df['bb_middle'] + (2 * bb_std)
+    df['bb_lower'] = df['bb_middle'] - (2 * bb_std)
+    df['bb_width'] = (df['bb_upper'] - df['bb_lower']) / df['bb_middle']
+    
+    # ATR (Average True Range)
+    high_low = df['high'] - df['low']
+    high_close = np.abs(df['high'] - df['close'].shift())
+    low_close = np.abs(df['low'] - df['close'].shift())
+    tr = pd.concat([high_low, high_close, low_close], axis=1).max(axis=1)
+    df['atr'] = tr.rolling(14).mean()
+    df['atr14'] = df['atr']  # Alias
+    
+    # Volatility
+    df['volatility'] = df['returns'].rolling(20).std()
+    
+    # Volume features (if available)
+    if 'volume' in df.columns:
+        df['volume_sma'] = df['volume'].rolling(20).mean()
+        df['volume_ratio'] = df['volume'] / df['volume_sma']
+    
+    return df
 
+def _detect_regime(features: pd.Series) -> str:
+    """
+    Stage 5: Volatility Brain
+    Detect market regime based on features
+    """
     try:
-        from src.features.common_features import compute_features_from_ohlcv
-        base_df = compute_features_from_ohlcv(raw_df)
-    except Exception as e:
-        LOG.warning(f"[pipeline_v2] base feature error: {e}")
-        return None
-
-    frames = [base_df]
-
-    # Extended features (lagged, vol regime, interaction, micro-momentum)
-    if cfg.use_extended_features:
-        try:
-            from src.features.extended_features import ExtendedFeatures
-            ext_df = ExtendedFeatures.compute(raw_df, base_df)
-            frames.append(ext_df)
-        except Exception as e:
-            LOG.debug(f"[pipeline_v2] extended_features error ({symbol}): {e}")
-
-    # Session features
-    if cfg.use_session_features:
-        try:
-            from src.features.session_features import compute_session_features
-            sess_df = compute_session_features(raw_df)
-            frames.append(sess_df)
-        except Exception as e:
-            LOG.debug(f"[pipeline_v2] session_features error ({symbol}): {e}")
-
-    # S/R structure features
-    if cfg.use_structure_features:
-        try:
-            from src.features.structure_features import compute_structure_features
-            from src.features.common_features import _compute_atr
-            atr14 = _compute_atr(raw_df, 14)
-            sr_df  = compute_structure_features(raw_df, atr14)
-            frames.append(sr_df)
-        except Exception as e:
-            LOG.debug(f"[pipeline_v2] structure_features error ({symbol}): {e}")
-
-    # Volume structure features
-    if cfg.use_volume_features:
-        try:
-            from src.features.volume_features import compute_volume_features
-            from src.features.common_features import _compute_atr
-            atr14  = _compute_atr(raw_df, 14)
-            vol_df = compute_volume_features(raw_df, atr14)
-            frames.append(vol_df)
-        except Exception as e:
-            LOG.debug(f"[pipeline_v2] volume_features error ({symbol}): {e}")
-
-    full_df = pd.concat(frames, axis=1)
-    full_df = full_df.ffill().bfill().fillna(0.0)
-
-    # Cross-asset signals (Week 11 — appended last, constant across rows)
-    if cfg.use_cross_asset and data_source is not None:
-        try:
-            from src.features.cross_asset_integration import append_cross_asset_row
-            full_df = append_cross_asset_row(full_df, data_source)
-        except Exception as e:
-            LOG.debug(f"[pipeline_v2] cross_asset error ({symbol}): {e}")
-
-    return full_df
-
-
-# ---------------------------------------------------------------------------
-# Drift monitoring
-# ---------------------------------------------------------------------------
-
-def _update_psi(
-    full_df:  pd.DataFrame,
-    cfg:      PipelineConfig,
-    bar_idx:  int,
-) -> float:
-    """
-    Fit or update DriftDetector with latest window, compute PSI,
-    write to psi_daily.jsonl, update Prometheus gauge.
-
-    Returns:
-        max_psi across all features, or 0.0 if not measured.
-    """
-    global _drift, _drift_baseline, _bar_count_for_psi
-    if not cfg.monitor_psi:
-        return 0.0
-
-    _bar_count_for_psi += 1
-
-    try:
-        from src.monitoring.drift import DriftDetector
-        import json
-        from datetime import datetime, timezone
-
-        # On first call — build baseline from first N bars
-        if _drift is None:
-            if len(full_df) >= cfg.psi_baseline_bars:
-                _drift_baseline = full_df.iloc[:cfg.psi_baseline_bars].copy()
-                _drift = DriftDetector(_drift_baseline)
-                LOG.info(f"[pipeline_v2] DriftDetector baseline fitted on {cfg.psi_baseline_bars} bars")
-            return 0.0
-
-        # Compute PSI every 50 bars (not every bar — expensive)
-        if _bar_count_for_psi % 50 != 0:
-            return 0.0
-
-        current_window = full_df.iloc[-100:]  # last 100 bars as current
-        psi_scores = _drift.compute_psi(current_window)
-        summary    = _drift.summary(psi_scores)
-        alerts     = _drift.check_alerts(psi_scores)
-        max_psi    = summary.get("max_psi", 0.0)
-
-        # Log to jsonl
-        record = {
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-            "bar_idx":   bar_idx,
-            **summary,
-            "n_alerts": len(alerts),
-        }
-        os.makedirs(os.path.dirname(os.path.abspath(cfg.psi_log_path)), exist_ok=True)
-        with open(cfg.psi_log_path, "a") as f:
-            f.write(json.dumps(record) + "\n")
-
-        # Prometheus gauge update (graceful if unavailable)
-        try:
-            from src.monitoring.prometheus_exporter import (
-                FEATURE_PSI_MAX, FEATURE_PSI_WARN, FEATURE_PSI_CRIT
-            )
-            FEATURE_PSI_MAX.set(max_psi)
-            FEATURE_PSI_WARN.set(summary.get("n_warning", 0))
-            FEATURE_PSI_CRIT.set(summary.get("n_drifted", 0))
-        except Exception:
-            pass
-
-        if alerts:
-            LOG.warning(f"[pipeline_v2] PSI DRIFT ALERT: {len(alerts)} features "
-                        f"(max_psi={max_psi:.4f})")
-        return max_psi
-
-    except Exception as e:
-        LOG.debug(f"[pipeline_v2] PSI update error: {e}")
-        return 0.0
-
-
-# ---------------------------------------------------------------------------
-# Adaptive sizing helper
-# ---------------------------------------------------------------------------
-
-def _apply_adaptive_size(
-    signal:  dict,
-    regime:  dict,
-    full_df: pd.DataFrame,
-    cfg:     PipelineConfig,
-) -> dict:
-    """
-    Fixed-fractional position sizing — flat risk per trade.
-
-    AUDIT FINDING (2026-03-29): Confidence-scaled sizing was HURTING PF.
-      Top-quartile lots → PF=0.891  (large lots on losers)
-      Bot-quartile lots → PF=4.479  (small lots on winners)
-      corr(size, R) = -0.186 → confidence is NOT a reliable size predictor.
-
-    Fix: Use flat fixed-fractional sizing. Risk exactly base_risk_pct of
-    account equity per trade, sized by SL distance in pips.
-    Confidence scaling re-enabled only after 200+ trades with WR > 55%.
-    """
-    from src.risk.adaptive_sizing import _pip_value
-
-    pip_val   = _pip_value(signal.get("symbol", "EURUSD"))
-    price     = signal.get("price", 0.0) or 0.0
-    sl        = signal.get("sl")  or price
-    stop_pips = abs(price - sl) / max(pip_val, 1e-10)
-
-    if stop_pips < 0.5:       # degenerate SL — safety floor
-        signal["size"] = 0.01
-        return signal
-
-    # Risk exactly base_risk_pct of equity — no confidence scaling
-    risk_usd  = cfg.account_equity * cfg.base_risk_pct
-    base_size = risk_usd / max(stop_pips * 10.0, 1e-9)   # $10/pip/lot for FX majors
-    signal["size"] = round(max(0.01, min(2.0, base_size)), 2)
-    return signal
-
-
-def _grade_signal_quality(features: dict, signal_side: str, regime_label: str) -> dict:
-    """Return a letter-grade quality assessment for the selected signal."""
-    default_payload = {"grade": "B", "score": None, "recommendation": "FULL"}
-    if signal_side not in {"BUY", "SELL"}:
-        return default_payload
-
-    try:
-        from src.backtest.quality_scorer import QualityScorer
-
-        scorer = QualityScorer()
-        result = scorer.calculate(
-            features=features,
-            signal=signal_side,
-            regime=str(regime_label or "UNKNOWN").strip().upper(),
-            confidence=0.5,
-        )
-        payload = result.to_dict()
-        payload["score"] = result.total_score
-        return payload
+        # Simple regime detection based on volatility and trend
+        volatility = _safe_float(features.get('volatility', 0))
+        atr = _safe_float(features.get('atr', 0))
+        close = _safe_float(features.get('close', 0))
+        sma_20 = _safe_float(features.get('sma_20', 0))
+        sma_50 = _safe_float(features.get('sma_50', 0))
+        
+        # High volatility = uncertain
+        if volatility > 0.02 or (atr / close if close > 0 else 0) > 0.015:
+            return 'UNCERTAIN'
+        
+        # Trend detection
+        if sma_20 > 0 and sma_50 > 0:
+            if sma_20 > sma_50 * 1.01:  # Uptrend
+                return 'TREND'
+            elif sma_20 < sma_50 * 0.99:  # Downtrend
+                return 'TREND'
+        
+        # Default to range
+        return 'RANGE'
     except Exception:
-        return default_payload
-
-
-def _apply_signal_tier_gate(signal: dict, cfg: PipelineConfig, quality_grade: str, last_features: dict = None) -> tuple[Optional[dict], str, float]:
-    """
-    Apply the 3-tier signal gate (v2 — tightened 2026-05-01):
-    - Tier-1 (strong):     conf >= 0.60 AND grade in {A, B} → full size (1.2x if conf >= 0.65)
-    - Tier-2 (borderline): 0.55 <= conf < 0.60 AND grade == C → half size
-    - Tier-3 (reject):     conf < 0.55 OR grade in {D, F} → skip
-    - MR Exception:        0.50 <= conf < 0.55 AND |boll_z| >= 1.1 → size *= 0.6
-    """
-    confidence = float(signal.get("confidence", 0.0) or 0.0)
-    grade = str(quality_grade or "F").strip().upper()
-
-    if last_features is None:
-        last_features = {}
-    boll_z = abs(last_features.get("boll_z", 0.0))
-    is_mr_exception = signal.get("strategy") == "silver_mr" and 0.50 <= confidence < 0.55 and boll_z >= 1.1
-
-    # Tier-3: reject low-confidence OR poor quality
-    if (confidence < cfg.tier3_confidence_floor and not is_mr_exception) or grade in {"D", "F"}:
-        return None, "reject", 0.0
-
-    # Exception handling for MR
-    if is_mr_exception:
-        gated = dict(signal)
-        gated["size"] = round(max(0.01, float(signal.get("size", 0.01) or 0.01) * 0.6), 2)
-        return gated, "exception_mr", 0.6
-
-    # Tier-1: high-confidence + good quality → full size
-    if confidence >= cfg.tier1_confidence_min and grade in {"A", "B"}:
-        if confidence >= 0.65:
-            gated = dict(signal)
-            gated["size"] = round(max(0.01, float(signal.get("size", 0.01) or 0.01) * 1.2), 2)
-            return gated, "strong", 1.2
-        return signal, "strong", 1.0
-
-    # Tier-2: borderline — BOTH conditions required (AND, not OR)
-    if confidence >= cfg.tier2_confidence_min and confidence < cfg.tier1_confidence_min and grade == "C":
-        gated = dict(signal)
-        gated["size"] = round(max(0.01, float(signal.get("size", 0.01) or 0.01) * 0.5), 2)
-        return gated, "borderline", 0.5
-
-    # Everything else rejected
-    return None, "reject", 0.0
-
-
-# ---------------------------------------------------------------------------
-# Strategy bank (multi-signal output for ensemble)
-# ---------------------------------------------------------------------------
-
-def _collect_strategy_signals(
-    symbol:   str,
-    features: dict,
-    full_df:  pd.DataFrame,
-    regime:   dict,
-    cfg_yaml: dict,
-    raw_df: pd.DataFrame = None,
-) -> List[object]:
-    """
-    Adaptive strategy layer.
-
-    Regime detection remains upstream. This stage maps the detected regime
-    into a context-aware strategy and returns a single explainable signal.
-    """
-    from src.decision.ensemble import StrategySignal
-    from src.strategies.strategy_module import AdaptiveStrategyModule
-
-    signals = []
-
-    df = raw_df if raw_df is not None else full_df
-    if df is None or df.empty or len(df) < 60:
-        return signals
-
-    required_cols = ["open", "high", "low", "close"]
-    if not all(col in df.columns for col in required_cols):
-        return signals
-
-    module = AdaptiveStrategyModule()
-    ml_payload = {
-        "move_prob": float(
-            features.get(
-                "move_prob",
-                features.get("probability_move_size", features.get("confidence", 0.5)),
-            )
-            or 0.5
-        ),
-        "expected_volatility": float(
-            features.get(
-                "expected_volatility",
-                features.get("atr_pct", features.get("volatility", 0.0)),
-            )
-            or 0.0
-        ),
-    }
-    sentiment_bias = features.get("h4_bias")
-    decision = module.evaluate(
-        symbol=symbol,
-        raw_df=df,
-        feature_df=full_df,
-        regime_payload=regime,
-        ml_payload=ml_payload,
-        sentiment_bias=float(sentiment_bias) if sentiment_bias is not None else None,
-    )
-
-    if not decision.should_trade:
-        return signals
-
-    strategy_signal_kwargs = {
-        "strategy": decision.strategy,
-        "symbol": symbol,
-        "side": decision.action,
-        "confidence": decision.confidence,
-        "price": decision.entry,
-        "sl": decision.sl,
-        "tp": decision.tp,
-        "regime": decision.regime_type,
-    }
-    metadata_key = "metadata" if "metadata" in inspect.signature(StrategySignal).parameters else "meta"
-    strategy_signal_kwargs[metadata_key] = dict(decision.metadata or {})
-    signals.append(StrategySignal(**strategy_signal_kwargs))
-
-    LOG.info(f"[ADAPTIVE SIGNAL] {symbol} {decision.strategy} {decision.action} @ {decision.entry}")
-
-    return signals
-
-
-# ---------------------------------------------------------------------------
-# Main pipeline entry point
-# ---------------------------------------------------------------------------
+        return 'UNKNOWN'
 
 class PipelineV2:
     """
@@ -528,9 +179,36 @@ class PipelineV2:
 
     def __init__(self, cfg: PipelineConfig = None, cfg_yaml: dict = None):
         self.cfg      = cfg or PipelineConfig()
+        self.config = self.cfg
         self.cfg_yaml = cfg_yaml or {}
         self._bar_idx = 0
         self._feature_names: List[str] = []
+        
+        # Initialize backtest and tracking states for Wave 1/2/3 parity
+        from collections import Counter, deque
+        self._skip_reason_counts = Counter()
+        self._edge_histogram = Counter()
+        self._accepted_trade_count = 0
+        self._decision_count = 0
+        self._decision_day_counts = Counter()
+        self._accepted_trade_day_counts = Counter()
+        self._hold_rejection_count = 0
+        self._cooldown_block_count = 0
+        self._low_volatility_block_count = 0
+        self._signal_quality_block_count = 0
+        self._timing_filter_block_count = 0
+        self._duplicate_signal_block_count = 0
+        self._flow_state_counts = Counter()
+        self._operating_mode_counts = Counter()
+        self._pending_signals = {}
+        self._strategy_performance = {}
+        self._candles_since_last_accepted = 0
+        self._flow_state = 'normal'
+        self._last_accepted_signals = {}
+        self._current_bar_idx = 0
+        self._raw_conf_history = deque(maxlen=500)
+        self.allocation_engine = None
+        self.finrl_adapter = None
 
     def process_bar(
         self,
@@ -801,3 +479,2085 @@ class PipelineV2:
     @property
     def feature_count(self) -> int:
         return len(self._feature_names)
+
+    def _passes_trade_timing_filters(self, context: Dict) -> Tuple[bool, bool, Optional[str]]:
+        if not getattr(self.cfg, 'enable_timing_filters', True):
+            return True, False, None
+
+        bars_since_last_exit = int(context.get('bars_since_last_exit', 9999))
+        last_trade_result = str(context.get('last_trade_result', '')).upper()
+        last_trade_r_multiple = float(context.get('last_trade_r_multiple', 0.0))
+        bars_since_last_trade = int(context.get('bars_since_last_trade', 9999))
+        min_bars_between_trades = int(getattr(self.cfg, 'min_bars_between_trades', 0))
+
+        cooldown_active = False
+        cooldown_reason = None
+
+        if (
+            last_trade_result == 'LOSS'
+            and last_trade_r_multiple < -1.0
+            and bars_since_last_exit < self.cfg.cooldown_bars_after_loss
+        ):
+            cooldown_active = True
+            cooldown_reason = 'cooldown_after_loss'
+        elif last_trade_result == 'WIN' and self.cfg.cooldown_bars_after_win > 0 and bars_since_last_exit < self.cfg.cooldown_bars_after_win:
+            cooldown_active = True
+            cooldown_reason = 'cooldown_after_win'
+
+        if min_bars_between_trades > 0 and bars_since_last_trade < min_bars_between_trades:
+            self._timing_filter_block_count += 1
+            return False, cooldown_active, 'min_bars_between_trades'
+
+        if bars_since_last_trade < self.cfg.trade_cluster_bars:
+            self._timing_filter_block_count += 1
+            return False, cooldown_active, 'trade_cluster_block'
+
+        if cooldown_active:
+            self._cooldown_block_count += 1
+            self._timing_filter_block_count += 1
+            return False, True, cooldown_reason
+
+        return True, False, None
+
+    def _compute_flow_state(self, trades_today: int) -> Tuple[str, float, float]:
+        """Compute flow state and threshold adjustments."""
+        if not getattr(self.cfg, 'enable_flow_balancer', True):
+            self._flow_state_counts['normal'] += 1
+            return 'normal', 0.0, 0.0
+        if self._candles_since_last_accepted >= self.cfg.flow_relaxed_after_bars:
+            state = 'relaxed'
+            conf_adj = self.cfg.flow_relaxed_conf_adjustment
+            edge_adj = self.cfg.flow_relaxed_edge_adjustment
+        elif trades_today > self.cfg.flow_tight_after_trades:
+            state = 'tight'
+            conf_adj = self.cfg.flow_tight_conf_adjustment
+            edge_adj = self.cfg.flow_tight_edge_adjustment
+        else:
+            state = 'normal'
+            conf_adj = 0.0
+            edge_adj = 0.0
+        self._flow_state_counts[state] += 1
+        return state, conf_adj, edge_adj
+
+    def _is_duplicate_signal(self, symbol: str, side: str, strategy: str) -> bool:
+        """Reject if last trade was same direction + same strategy within last 5 candles."""
+        if not getattr(self.cfg, 'enable_duplicate_signal_checks', True):
+            return False
+        last = self._last_accepted_signals.get(symbol)
+        if last is None:
+            return False
+        active_bar_idx = max(int(getattr(self, '_bar_idx', 0)), int(getattr(self, '_current_bar_idx', 0)))
+        bars_ago = active_bar_idx - int(last.get('bar_idx', 0))
+        if bars_ago <= self.cfg.duplicate_signal_window_bars and last.get('side') == side and last.get('strategy') == strategy:
+            self._duplicate_signal_block_count += 1
+            return True
+        return False
+
+    def _get_performance_size_modifier(self, strategy: str) -> Tuple[float, bool]:
+        """Returns (modifier, is_active) based on last 5 trades for this strategy."""
+        key = str(strategy).strip().upper()
+        history = self._strategy_performance.get(key, [])
+        if len(history) < 3:  # Need minimum 3 trades to activate
+            return 1.0, False
+        winrate = sum(1 for w in history if w) / len(history)
+        if winrate < 0.4:
+            return 0.7, True
+        elif winrate > 0.6:
+            return 1.2, True
+        return 1.0, False
+
+    def _risk_brain(self, candle: pd.Series, features: pd.Series, side: str, regime: str) -> Tuple[Optional[float], Optional[float], float]:
+        """
+        Stage 7: Risk Brain
+        Calculate SL, TP, and position size
+        """
+        try:
+            price = _safe_float(candle['close'])
+            atr = _safe_float(features.get('atr', 0))
+            
+            # Calculate SL/TP
+            if atr > 0:
+                # ATR-based
+                stop_dist = atr * self.cfg.stop_atr_mult
+                tp_dist = stop_dist * self.cfg.takeprofit_rr
+                
+                if side == 'buy':
+                    sl_price = price - stop_dist
+                    tp_price = price + tp_dist
+                else:
+                    sl_price = price + stop_dist
+                    tp_price = price - tp_dist
+            else:
+                # Percentage-based fallback
+                if side == 'buy':
+                    sl_price = price * (1 - self.cfg.sl_pct)
+                    tp_price = price * (1 + self.cfg.tp_pct)
+                else:
+                    sl_price = price * (1 + self.cfg.sl_pct)
+                    tp_price = price * (1 - self.cfg.tp_pct)
+            
+            # Calculate position size (risk-based)
+            account_balance = 10000  # Default
+            risk_amount = account_balance * self.cfg.risk_per_trade
+            stop_distance = abs(price - sl_price)
+            
+            if stop_distance > 0:
+                size = risk_amount / stop_distance
+            else:
+                size = 0.01  # Minimum size
+            
+            # Adjust size based on regime
+            if regime == 'UNCERTAIN':
+                size *= 0.5  # Reduce size in uncertain conditions
+            
+            return sl_price, tp_price, size
+        
+        except Exception as e:
+            if self.cfg.verbose:
+                print(f"[Pipeline] Risk Brain error: {e}")
+            return None, None, 0.01
+
+    def _rl_brain(self, features: pd.Series, context: Dict) -> Optional[object]:
+        """Stage 4: RL Brain (FinRL fallback in grey zone)"""
+        if self.finrl_adapter is None:
+            return None
+        try:
+            return None
+        except Exception as e:
+            if self.cfg.verbose:
+                print(f"[Pipeline] RL Brain error: {e}")
+            return None
+
+
+    def _load_gating_config(self):
+        """Load trade gating config from yaml"""
+        config_path = "config/trade_gating.yaml"
+        if os.path.exists(config_path):
+            try:
+                import yaml
+                with open(config_path, 'r') as f:
+                    gating_config = yaml.safe_load(f)
+                
+                if gating_config:
+                    self.config.min_confidence_normal = gating_config.get('min_confidence_normal', self.config.min_confidence_normal)
+                    self.config.min_confidence_uncertain = gating_config.get('min_confidence_uncertain', self.config.min_confidence_uncertain)
+                    self.config.max_trades_per_day_per_symbol = 10
+                    self.config.min_bars_between_trades = gating_config.get('min_bars_between_trades', self.config.min_bars_between_trades)
+                    self.config.max_open_positions = gating_config.get('max_open_positions', self.config.max_open_positions)
+                    self.config.loss_streak_cooldown_trades = gating_config.get('loss_streak_cooldown_trades', self.config.loss_streak_cooldown_trades)
+                    self.config.loss_streak_cooldown_bars = gating_config.get('loss_streak_cooldown_bars', self.config.loss_streak_cooldown_bars)
+                    self.config.calibrated_confidence_min = gating_config.get('calibrated_confidence_min', self.config.calibrated_confidence_min)
+                    self.config.confidence_deadzone_low = gating_config.get('confidence_deadzone_low', self.config.confidence_deadzone_low)
+                    self.config.confidence_deadzone_high = gating_config.get('confidence_deadzone_high', self.config.confidence_deadzone_high)
+                    self.config.edge_score_min = gating_config.get('edge_score_min', self.config.edge_score_min)
+                    self.config.tier1_confidence_min = gating_config.get('tier1_confidence_min', self.config.tier1_confidence_min)
+                    self.config.tier2_confidence_min = gating_config.get('tier2_confidence_min', self.config.tier2_confidence_min)
+                    self.config.tier3_confidence_floor = gating_config.get('tier3_confidence_floor', self.config.tier3_confidence_floor)
+                    self.config.cooldown_bars_after_loss = gating_config.get('cooldown_bars_after_loss', self.config.cooldown_bars_after_loss)
+                    self.config.cooldown_bars_after_win = gating_config.get('cooldown_bars_after_win', self.config.cooldown_bars_after_win)
+                    self.config.trade_cluster_bars = gating_config.get('trade_cluster_bars', self.config.trade_cluster_bars)
+                    self.config.enable_duplicate_signal_checks = gating_config.get(
+                        'enable_duplicate_signal_checks',
+                        self.config.enable_duplicate_signal_checks,
+                    )
+                    self.config.duplicate_signal_window_bars = gating_config.get(
+                        'duplicate_signal_window_bars',
+                        self.config.duplicate_signal_window_bars,
+                    )
+                    self.config.enable_timing_filters = gating_config.get(
+                        'enable_timing_filters',
+                        self.config.enable_timing_filters,
+                    )
+                    self.config.enable_flow_balancer = gating_config.get(
+                        'enable_flow_balancer',
+                        self.config.enable_flow_balancer,
+                    )
+                    self.config.flow_relaxed_after_bars = gating_config.get(
+                        'flow_relaxed_after_bars',
+                        self.config.flow_relaxed_after_bars,
+                    )
+                    self.config.flow_tight_after_trades = gating_config.get(
+                        'flow_tight_after_trades',
+                        self.config.flow_tight_after_trades,
+                    )
+                    self.config.flow_relaxed_conf_adjustment = gating_config.get(
+                        'flow_relaxed_conf_adjustment',
+                        self.config.flow_relaxed_conf_adjustment,
+                    )
+                    self.config.flow_relaxed_edge_adjustment = gating_config.get(
+                        'flow_relaxed_edge_adjustment',
+                        self.config.flow_relaxed_edge_adjustment,
+                    )
+                    self.config.flow_tight_conf_adjustment = gating_config.get(
+                        'flow_tight_conf_adjustment',
+                        self.config.flow_tight_conf_adjustment,
+                    )
+                    self.config.flow_tight_edge_adjustment = gating_config.get(
+                        'flow_tight_edge_adjustment',
+                        self.config.flow_tight_edge_adjustment,
+                    )
+                    self.config.enable_operating_mode_parameters = gating_config.get(
+                        'enable_operating_mode_parameters',
+                        self.config.enable_operating_mode_parameters,
+                    )
+                    
+                    if self.config.verbose:
+                        print(f"[Pipeline] Loaded gating config: {gating_config}")
+            except Exception as e:
+                print(f"[Pipeline] Failed to load gating config: {e}")
+    
+    def _load_models(self):
+        """Load primary and FinRL models"""
+        # Load primary model
+        if self.config.primary_model_path and os.path.exists(self.config.primary_model_path):
+            try:
+                if joblib:
+                    self.primary_model = joblib.load(self.config.primary_model_path)
+                    if self.config.verbose:
+                        print(f"[Pipeline] Loaded primary model from {self.config.primary_model_path}")
+            except Exception as e:
+                if self.config.verbose:
+                    print(f"[Pipeline] Failed to load primary model: {e}")
+        
+        # Load FinRL adapter (TODO: implement FinRL loading)
+        if self.config.finrl_policies_path and os.path.exists(self.config.finrl_policies_path):
+            if self.config.verbose:
+                print(f"[Pipeline] FinRL policies path: {self.config.finrl_policies_path}")
+            # TODO: Load FinRL adapter
+
+    def _load_confidence_calibration(self) -> Dict[str, Any]:
+        """Load optional Platt scaling parameters for ML confidence calibration."""
+        default_params = {"method": "platt", "a": 1.0, "b": 0.0}
+        calibration_path = Path("models/ml_confidence_calibration.json")
+        if not calibration_path.exists():
+            return default_params
+        try:
+            with open(calibration_path, 'r', encoding='utf-8') as f:
+                payload = json.load(f)
+            if payload.get("method") == "platt":
+                return {
+                    "method": "platt",
+                    "a": float(payload.get("a", 1.0)),
+                    "b": float(payload.get("b", 0.0)),
+                }
+        except Exception as exc:
+            logger.warning("Failed to load calibration parameters: %s", exc)
+        return default_params
+
+    def _calibrate_confidence(self, raw_confidence: float) -> float:
+        """Apply dynamic tanh scaling after ML prediction."""
+        clipped = min(max(float(raw_confidence), 1e-6), 1.0 - 1e-6)
+        
+        # Update history
+        self._raw_conf_history.append(clipped)
+        
+        # Calculate dynamic center (median of last 500)
+        if len(self._raw_conf_history) > 0:
+            import statistics
+            center = statistics.median(self._raw_conf_history)
+        else:
+            center = 0.55
+            
+        calibrated = 0.5 + 0.5 * math.tanh((clipped - center) * 6.0)
+        return float(min(max(calibrated, 0.0), 1.0))
+
+    def _edge_bucket(self, edge_score: float) -> str:
+        lower = int(max(0, min(9, edge_score * 10)))
+        upper = min(10, lower + 1)
+        return f"{lower / 10:.1f}-{upper / 10:.1f}"
+
+    def _record_edge_histogram(self, edge_score: float) -> None:
+        self._edge_histogram[self._edge_bucket(edge_score)] += 1
+
+    def _decision_payload(
+        self,
+        candle: pd.Series,
+        context: Dict,
+        regime: str,
+        strategy: str,
+        raw_confidence: Optional[float],
+        calibrated_confidence: Optional[float],
+        edge_score: Optional[float],
+        skip_reason: Optional[str],
+        cooldown_active: bool,
+        extra: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        timestamp = candle.get('timestamp', None)
+        payload = {
+            "timestamp": timestamp.isoformat() if hasattr(timestamp, 'isoformat') else str(timestamp),
+            "symbol": context.get('symbol', 'UNKNOWN'),
+            "ml_conf_raw": None if raw_confidence is None else round(float(raw_confidence), 6),
+            "ml_conf_calibrated": None if calibrated_confidence is None else round(float(calibrated_confidence), 6),
+            "edge_score": None if edge_score is None else round(float(edge_score), 6),
+            "regime": regime,
+            "strategy": strategy,
+            "skip_reason": skip_reason,
+            "cooldown_active": bool(cooldown_active),
+            "danger_reason": context.get('danger_reason'),
+            "danger_duration_bars": context.get('danger_duration_bars'),
+        }
+        if extra:
+            payload.update(extra)
+        return payload
+
+    def _log_decision_event(self, payload: Dict[str, Any]) -> None:
+        self._decision_count += 1
+        timestamp = payload.get("timestamp")
+        day_key = str(timestamp)[:10] if timestamp else "UNKNOWN"
+        self._decision_day_counts[day_key] += 1
+        if payload.get("skip_reason"):
+            self._skip_reason_counts[payload["skip_reason"]] += 1
+        if payload.get("edge_score") is not None:
+            self._record_edge_histogram(float(payload["edge_score"]))
+        if self.decision_log_path is None:
+            return
+        try:
+            with open(self.decision_log_path, 'a', encoding='utf-8') as f:
+                f.write(json.dumps(payload) + "\n")
+        except Exception as exc:
+            if self.config.verbose:
+                print(f"[DECISION] Failed to write decision log: {exc}")
+
+    def _reject_decision(
+        self,
+        candle: pd.Series,
+        context: Dict,
+        regime: str,
+        strategy: str,
+        raw_confidence: Optional[float],
+        calibrated_confidence: Optional[float],
+        edge_score: Optional[float],
+        skip_reason: str,
+        cooldown_active: bool = False,
+        extra: Optional[Dict[str, Any]] = None,
+    ) -> None:
+        context['rejected_reason'] = skip_reason
+        self._log_decision_event(
+            self._decision_payload(
+                candle=candle,
+                context=context,
+                regime=regime,
+                strategy=strategy,
+                raw_confidence=raw_confidence,
+                calibrated_confidence=calibrated_confidence,
+                edge_score=edge_score,
+                skip_reason=skip_reason,
+                cooldown_active=cooldown_active,
+                extra=extra,
+            )
+        )
+
+    def get_filter_diagnostics(self) -> Dict[str, Any]:
+        total_skips = sum(self._skip_reason_counts.values())
+        block_percentages = {}
+        if total_skips > 0:
+            for reason, count in self._skip_reason_counts.items():
+                block_percentages[reason] = round((count / total_skips) * 100.0, 2)
+        session_rejections = sum(
+            count for reason, count in self._skip_reason_counts.items()
+            if str(reason).startswith("Session:") or str(reason) == "tokyo_low_confidence"
+        )
+        debug_counters = {
+            "rejected_by_boll_z": int(self._skip_reason_counts.get("boll_z_filter", 0)),
+            "rejected_by_confidence": int(
+                self._skip_reason_counts.get("confidence_deadzone", 0)
+                + self._skip_reason_counts.get("calibrated_confidence_below_min", 0)
+                + self._skip_reason_counts.get("primary_confidence_below_block", 0)
+            ),
+            "rejected_by_session": int(session_rejections),
+            "rejected_by_soft_filter": int(self._skip_reason_counts.get("soft_filter_block", 0)),
+            "rejected_by_duplicate": int(self._skip_reason_counts.get("duplicate_signal", 0)),
+            "rejected_by_timing": int(
+                self._skip_reason_counts.get("min_bars_between_trades", 0)
+                + self._skip_reason_counts.get("trade_cluster_block", 0)
+                + self._skip_reason_counts.get("cooldown_after_loss", 0)
+                + self._skip_reason_counts.get("cooldown_after_win", 0)
+            ),
+        }
+        active_days = max(1, len(self._decision_day_counts))
+        trades_per_day = self._accepted_trade_count / active_days
+        avg_signals_per_day = self._decision_count / active_days
+        idle_pct = round(
+            ((self._decision_count - self._accepted_trade_count) / self._decision_count) * 100.0,
+            2,
+        ) if self._decision_count > 0 else 0.0
+        return {
+            "skip_reason_counts": dict(self._skip_reason_counts),
+            "skip_reason_percentages": block_percentages,
+            "edge_score_histogram": dict(sorted(self._edge_histogram.items())),
+            "accepted_trades": self._accepted_trade_count,
+            "trades_per_day": round(trades_per_day, 4),
+            "avg_signals_per_day": round(avg_signals_per_day, 4),
+            "idle_pct": idle_pct,
+            "debug_counters": debug_counters,
+            "hold_rejections": self._hold_rejection_count,
+            "cooldown_blocks": self._cooldown_block_count,
+            "low_volatility_blocks": self._low_volatility_block_count,
+            "signal_quality_blocks": self._signal_quality_block_count,
+            "wave_1_controls": {
+                "duplicate_signal_checks": bool(getattr(self.config, "enable_duplicate_signal_checks", True)),
+                "duplicate_signal_window_bars": int(getattr(self.config, "duplicate_signal_window_bars", 5)),
+                "timing_filters": bool(getattr(self.config, "enable_timing_filters", True)),
+                "min_bars_between_trades": int(getattr(self.config, "min_bars_between_trades", 0)),
+                "trade_cluster_bars": int(getattr(self.config, "trade_cluster_bars", 0)),
+                "cooldown_bars_after_loss": int(getattr(self.config, "cooldown_bars_after_loss", 0)),
+                "cooldown_bars_after_win": int(getattr(self.config, "cooldown_bars_after_win", 0)),
+                "flow_balancer": bool(getattr(self.config, "enable_flow_balancer", True)),
+                "operating_mode_parameters": bool(getattr(self.config, "enable_operating_mode_parameters", True)),
+            },
+            "wave_1_counters": {
+                "duplicate_signal_blocks": self._duplicate_signal_block_count,
+                "timing_filter_blocks": self._timing_filter_block_count,
+                "flow_state_counts": dict(self._flow_state_counts),
+                "operating_mode_counts": dict(self._operating_mode_counts),
+            },
+        }
+
+
+
+    def _soft_filter_score(self, confidence: float, edge_score: float, regime: str, strategy: str) -> int:
+        score = 0
+        if confidence > 0.60:
+            score += 1
+        if edge_score > 0.62:
+            score += 1
+        normalized_regime = str(regime).strip().upper()
+        normalized_strategy = str(strategy).strip().upper()
+        if (
+            (normalized_regime == 'RANGE' and normalized_strategy == 'MEAN_REVERSION')
+            or (normalized_regime == 'TREND' and normalized_strategy == 'TREND_PULLBACK')
+            or (normalized_regime == 'NEUTRAL' and normalized_strategy == 'MEAN_REVERSION')
+        ):
+            score += 1
+        return score
+
+    # ==================== EXECUTION INTELLIGENCE SYSTEMS ====================
+
+    def record_strategy_result(self, strategy: str, regime: str, is_win: bool, timestamp: Any = None) -> None:
+        """Track last N=5 trades per strategy for adaptive sizing (System 2)."""
+        key = str(strategy).strip().upper()
+        if key not in self._strategy_performance:
+            self._strategy_performance[key] = []
+        self._strategy_performance[key].append(is_win)
+        # Keep only last 5
+        if len(self._strategy_performance[key]) > 5:
+            self._strategy_performance[key] = self._strategy_performance[key][-5:]
+
+    def record_probability_trade_result(self, trade: Dict) -> None:
+        """Record trade results for probability based ML filter."""
+        if hasattr(self, 'probability_filter') and self.probability_filter:
+            try:
+                self.probability_filter.record_closed_trade(trade)
+            except Exception as e:
+                logger.warning(f"Failed to record trade result in probability filter: {e}")
+
+
+
+
+
+    def _compute_signal_quality(self, boll_z: Optional[float], edge_score: float, ml_confidence: float) -> float:
+        """Compute composite signal quality score (balanced, capped).
+        signal_quality = min(abs(boll_z), 2.0) * 0.3 + edge_score * 0.4 + ml_confidence * 0.3
+        Reject if < 0.60. Uses neutral default of 1.5 for boll_z when not available.
+        """
+        bz = min(abs(float(boll_z)), 2.0) if boll_z is not None else 1.5  # capped + neutral default
+        return bz * 0.3 + float(edge_score) * 0.4 + float(ml_confidence) * 0.3
+
+    def _grade_signal_quality(self, features: pd.Series, signal: str, regime: str, confidence: float) -> Dict[str, Any]:
+        """Score the setup and return a stable letter-grade payload for tier gating."""
+        default_payload = {
+            'grade': 'B',
+            'score': None,
+            'recommendation': 'FULL',
+        }
+        if self.quality_scorer is None or signal not in {'BUY', 'SELL'}:
+            return default_payload
+
+        try:
+            feature_dict = features.to_dict() if hasattr(features, 'to_dict') else dict(features)
+            result = self.quality_scorer.calculate(
+                features=feature_dict,
+                signal=signal,
+                regime=str(regime or 'UNKNOWN').strip().upper(),
+                confidence=confidence,
+            )
+            payload = result.to_dict()
+            payload['score'] = result.total_score
+            return payload
+        except Exception as e:
+            if self.config.verbose:
+                print(f"[Pipeline] Quality scoring failed: {e}")
+            return default_payload
+
+    def _apply_signal_tier_gate(
+        self,
+        confidence: float,
+        quality_grade: str,
+        size: float,
+    ) -> Tuple[Optional[float], str, float]:
+        """
+        Three-tier signal gating (v2 — tightened 2026-05-01):
+        - Tier-1 (strong):     conf >= 0.60 AND grade in {A, B} → full size (1.2x if conf >= 0.65)
+        - Tier-2 (borderline): 0.55 <= conf < 0.60 AND grade == C → half size
+        - Tier-3 (reject):     conf < 0.55 OR grade in {D, F} → skip
+        """
+        grade = str(quality_grade or 'F').strip().upper()
+
+        # Tier-3: reject low-confidence OR poor quality
+        if confidence < self.config.tier3_confidence_floor or grade in {'D', 'F'}:
+            return None, 'reject', 0.0
+
+        # Tier-1: high-confidence + good quality → full size
+        if confidence >= self.config.tier1_confidence_min and grade in {'A', 'B'}:
+            # High-confidence boost: 1.2x for very strong signals
+            if confidence >= 0.65:
+                return size * 1.2, 'strong', 1.2
+            return size, 'strong', 1.0
+
+        # Tier-2: borderline — BOTH conditions required (AND, not OR)
+        if confidence >= self.config.tier2_confidence_min and confidence < self.config.tier1_confidence_min and grade == 'C':
+            return size * 0.5, 'borderline', 0.5
+
+        # Everything else rejected (e.g. conf in [0.55, 0.60) with grade != C)
+        return None, 'reject', 0.0
+
+    @staticmethod
+    def _apply_delayed_entry_prices(decision: Decision, entry_price: float) -> Decision:
+        """Preserve original stop/target distances after delayed confirmation."""
+        original_entry = float(decision.entry_price or entry_price)
+        stop_distance = abs(original_entry - float(decision.sl_price or original_entry))
+        target_distance = abs(float(decision.tp_price or original_entry) - original_entry)
+        side = str(decision.side or '').lower()
+
+        decision.entry_price = float(entry_price)
+        if side == 'buy':
+            decision.sl_price = decision.entry_price - stop_distance
+            decision.tp_price = decision.entry_price + target_distance
+        elif side == 'sell':
+            decision.sl_price = decision.entry_price + stop_distance
+            decision.tp_price = decision.entry_price - target_distance
+        return decision
+
+    def _stage_pending_signal(self, candle: pd.Series, context: Dict, decision: Decision) -> None:
+        """Queue a decision so execution can only happen on the next candle."""
+        symbol = context.get('symbol', 'UNKNOWN')
+        timestamp = candle.get('timestamp', None)
+        signal_close = _safe_float(candle.get('close', decision.entry_price), decision.entry_price or 0.0)
+
+        context['entry_mode'] = 'delayed_confirmation'
+        decision.metadata = dict(decision.metadata or {})
+        decision.metadata['entry_mode'] = 'delayed_confirmation'
+        decision.metadata['signal_timestamp'] = timestamp.isoformat() if hasattr(timestamp, 'isoformat') else str(timestamp)
+        decision.metadata['signal_close'] = signal_close
+
+        self._pending_signals[symbol] = {
+            'decision': decision,
+            'timestamp': timestamp,
+            'signal_close': signal_close,
+            'direction': decision.side,
+            'strategy': decision.metadata.get('strategy', 'UNKNOWN'),
+        }
+
+        self._log_decision_event(
+            self._decision_payload(
+                candle=candle,
+                context=context,
+                regime=decision.regime,
+                strategy=decision.metadata.get('strategy', 'UNKNOWN'),
+                raw_confidence=decision.metadata.get('ml_conf_raw'),
+                calibrated_confidence=decision.confidence,
+                edge_score=decision.metadata.get('edge_score'),
+                skip_reason=None,
+                cooldown_active=bool(decision.metadata.get('cooldown_active', False)),
+                extra={
+                    'decision': 'PENDING_CONFIRMATION',
+                    'entry_mode': 'delayed_confirmation',
+                    'signal_timestamp': decision.metadata.get('signal_timestamp'),
+                },
+            )
+        )
+
+    def _process_pending_signal(self, candle: pd.Series, context: Dict) -> Optional[Decision]:
+        """Confirm the queued signal on the next candle or drop it permanently."""
+        symbol = context.get('symbol', 'UNKNOWN')
+        pending = self._pending_signals.pop(symbol, None)
+        if pending is None:
+            return None
+
+        decision = pending['decision']
+        current_close = _safe_float(candle.get('close', decision.entry_price), decision.entry_price or 0.0)
+        signal_close = _safe_float(pending.get('signal_close', decision.entry_price), decision.entry_price or 0.0)
+        side = str(decision.side or '').lower()
+        confirmed = (side == 'buy' and current_close > signal_close) or (side == 'sell' and current_close < signal_close)
+
+        if not confirmed:
+            self._reject_decision(
+                candle,
+                context,
+                decision.regime,
+                decision.metadata.get('strategy', 'UNKNOWN'),
+                decision.metadata.get('ml_conf_raw'),
+                decision.confidence,
+                decision.metadata.get('edge_score'),
+                'confirmation_failed',
+                extra={
+                    'entry_mode': 'delayed_confirmation',
+                    'signal_timestamp': decision.metadata.get('signal_timestamp'),
+                    'signal_close': signal_close,
+                    'confirmation_close': current_close,
+                },
+            )
+            return None
+
+        context['entry_mode'] = 'delayed_confirmation'
+        decision.metadata = dict(decision.metadata or {})
+        decision.metadata['entry_mode'] = 'delayed_confirmation'
+        confirm_ts = candle.get('timestamp', None)
+        decision.metadata['confirmation_timestamp'] = confirm_ts.isoformat() if hasattr(confirm_ts, 'isoformat') else str(confirm_ts)
+        decision = self._apply_delayed_entry_prices(decision, current_close)
+
+        self._log_decision_event(
+            self._decision_payload(
+                candle=candle,
+                context=context,
+                regime=decision.regime,
+                strategy=decision.metadata.get('strategy', 'UNKNOWN'),
+                raw_confidence=decision.metadata.get('ml_conf_raw'),
+                calibrated_confidence=decision.confidence,
+                edge_score=decision.metadata.get('edge_score'),
+                skip_reason=None,
+                cooldown_active=bool(decision.metadata.get('cooldown_active', False)),
+                extra={
+                    'decision': 'EXECUTE',
+                    'entry_mode': 'delayed_confirmation',
+                    'signal_timestamp': decision.metadata.get('signal_timestamp'),
+                },
+            )
+        )
+        # === ENTRY VALIDATION: Assert delayed confirmation (System 1) ===
+        entry_mode = decision.metadata.get('entry_mode', 'UNKNOWN')
+        if entry_mode != 'delayed_confirmation':
+            logger.critical(f"[CRITICAL] Trade executed WITHOUT delayed confirmation! entry_mode={entry_mode}")
+            print(f"[CRITICAL ERROR] Trade executed without delay! entry_mode={entry_mode}")
+
+        self._accepted_trade_count += 1
+        self._candles_since_last_accepted = 0  # Reset flow counter
+        # Record for duplicate signal detection (System 4)
+        accepted_strategy = decision.metadata.get('strategy', 'UNKNOWN')
+        self._last_accepted_signals[symbol] = {
+            'side': str(decision.side or '').lower(),
+            'strategy': str(accepted_strategy).strip().upper(),
+            'bar_idx': self._current_bar_idx,
+        }
+        day_key = confirm_ts.date().isoformat() if hasattr(confirm_ts, 'date') else str(confirm_ts)[:10]
+        self._accepted_trade_day_counts[day_key] += 1
+        return decision
+    
+    def _decide_inner(self, candle: pd.Series, context: Dict) -> Optional[Decision]:
+        """
+        Main decision pipeline - executes all 13 stages
+        
+        Args:
+            candle: Current price candle (OHLCV)
+            context: Trading context (symbol, timeframe, history, positions, etc.)
+        
+        Returns:
+            Decision object or None if no trade
+        """
+        symbol = context.get('symbol', 'UNKNOWN')
+        self._candles_since_last_accepted += 1
+        self._current_bar_idx += 1
+        pending_decision = self._process_pending_signal(candle, context)
+        if pending_decision is not None:
+            return pending_decision
+        
+        # Stage 1: Market Data Ingestion (already done - candle + context)
+        
+        # Stage 2: Feature Reactor (MTF)
+        # Use 'UNKNOWN' regime for initial extraction (or last known)
+        last_regime = context.get('regime', 'UNKNOWN')
+        features = self.feature_reactor.extract_mtf(candle, context, last_regime)
+        
+        if features.empty:
+            if self.config.verbose:
+                print(f"[Pipeline] {symbol}: Empty features")
+            return None
+        
+        # Save features_dict to context for downstream components and telemetry
+        context['features_dict'] = features.to_dict() if hasattr(features, 'to_dict') else dict(features)
+        
+        # Stage 3: Primary ML Brain
+        if self.ml_brain:
+            # Pass features to avoid re-extraction
+            primary_pred, primary_conf = self.ml_brain.predict(candle, context, last_regime, features=features)
+        else:
+            # Fallback
+            primary_conf, primary_pred = self._heuristic_decision(features)
+
+        raw_primary_conf = float(primary_conf)
+        calibrated_conf = self._calibrate_confidence(raw_primary_conf)
+        context['ml_conf_raw'] = raw_primary_conf
+        context['ml_conf_calibrated'] = calibrated_conf
+        print(f"[TRACE] {symbol}: ML pred={primary_pred}, raw_conf={raw_primary_conf:.3f}, calibrated_conf={calibrated_conf:.3f}")
+        primary_conf = calibrated_conf
+        normalized_side = self._normalize_trade_side(primary_pred)
+
+        # === EXECUTION INTELLIGENCE: Flow Balancer (System 3) ===
+        trades_today_count = int(context.get('trades_today', 0))
+        self._flow_state, flow_conf_adj, flow_edge_adj = self._compute_flow_state(trades_today_count)
+        context['flow_state'] = self._flow_state
+        effective_confidence_min = self.config.calibrated_confidence_min + flow_conf_adj
+        effective_edge_min = self.config.edge_score_min + flow_edge_adj
+        effective_boll_z_min = 0.8 + (0.0 if self._flow_state == 'normal' else (-0.2 if self._flow_state == 'relaxed' else 0.2))
+        if self._flow_state != 'normal':
+            print(f"[FLOW] {symbol}: state={self._flow_state}, conf_adj={flow_conf_adj:+.3f}, edge_adj={flow_edge_adj:+.3f}, candles_dry={self._candles_since_last_accepted}")
+
+        if str(primary_pred).strip().upper() == 'HOLD' or normalized_side is None:
+            self._hold_rejection_count += 1
+            context['rejected_reason'] = 'hold_rejection'
+            return None
+
+        if self.config.confidence_deadzone_low < primary_conf < self.config.confidence_deadzone_high:
+            self._reject_decision(candle, context, 'UNKNOWN', 'UNROUTED', raw_primary_conf, primary_conf, None, 'confidence_deadzone')
+            return None
+
+        if primary_conf < effective_confidence_min:
+            self._reject_decision(candle, context, 'UNKNOWN', 'UNROUTED', raw_primary_conf, primary_conf, None, 'calibrated_confidence_below_min',
+                                  extra={'effective_min': effective_confidence_min, 'flow_state': self._flow_state})
+            return None
+
+        # Stage 4: RL Brain (grey zone fallback)
+        rl_size_multiplier = 1.0
+        context['rl_active'] = self.finrl_adapter is not None
+        context['rl_size_multiplier'] = rl_size_multiplier
+        if self.config.enable_rl_fallback:
+            if self.config.primary_block_thresh < primary_conf < self.config.primary_high_thresh:
+                rl_decision = self._rl_brain(features, context)
+                if rl_decision:
+                    self._stage_pending_signal(candle, context, rl_decision)
+                    return None
+        
+        # Check if primary confidence is high enough
+        # Get candles for mode calculation
+        candles = context.get('history', [])
+        n_bars = len(candles) if hasattr(candles, '__len__') else 50
+        if getattr(self.config, 'enable_operating_mode_parameters', True):
+            mode, sufficiency, mode_config = self.filter_engine.compute_mode(n_bars)
+        else:
+            from src.backtest.adaptive_filters import CONFIRMATION_CONFIG
+            mode, sufficiency, mode_config = "CONFIRMATION", 1.0, CONFIRMATION_CONFIG
+        context['operating_mode'] = mode
+        context['data_sufficiency'] = sufficiency
+        
+        if primary_conf < self.config.primary_block_thresh:
+            # === DIAGNOSTIC: Unconditional logging ===
+            can_exp = self.filter_engine.can_explore(mode_config)
+            print(f"[DIAG] {symbol}: mode={mode}, pred={primary_pred}, conf={primary_conf:.3f}, can_explore={can_exp}, n_bars={n_bars}")
+            
+            # === EXPLORATION OVERRIDE CHECKPOINT 0 (EARLIEST) ===
+            if mode == 'LEARNING' and primary_pred in ['BUY', 'SELL']:
+                if can_exp:
+                    print(f"[EXPLORATION] {symbol}: CHECKPOINT 0 - conf={primary_conf:.3f} < block_thresh, mode={mode}")
+                    exploration_trade = self._create_exploration_trade(
+                        candle, primary_pred, features, mode_config, symbol, context
+                    )
+                    if exploration_trade:
+                        print(f"[EXPLORATION] {symbol}: Override at primary_block_thresh check!")
+                        self._stage_pending_signal(candle, context, exploration_trade)
+                        return None
+                else:
+                    print(f"[EXPLORATION] {symbol}: Cannot explore - budget exhausted")
+            else:
+                print(f"[DIAG] {symbol}: Exploration condition FAILED - mode={mode} (need LEARNING), pred={primary_pred} (need BUY/SELL)")
+            
+            self._reject_decision(
+                candle,
+                context,
+                'UNKNOWN',
+                'UNROUTED',
+                raw_primary_conf,
+                primary_conf,
+                None,
+                'primary_confidence_below_block',
+            )
+            if self.config.verbose:
+                print(f"[Pipeline] {symbol}: Blocked - primary_conf={primary_conf:.3f} too low (mode={mode})")
+            return None
+        
+        # === ADAPTIVE: Update AdaptiveState with candle ===
+        self.adaptive_state.update_candle(candle, features)
+        
+        # Stage 5: Regime Engine (with AdaptiveState)
+        # Map MTF features to Regime Engine expected format (M5_sma_20 -> sma_20)
+        regime_features = self._map_features_for_regime(features)
+        regime, regime_conf = self.regime_engine.detect(regime_features, self.adaptive_state)
+        regime_context = self.regime_engine.get_regime_context()
+        
+        # Stage 6: Sentiment Brain (TODO)
+        sentiment = None
+        
+        # === ADAPTIVE: Build context with adaptive info ===
+        context['confidence'] = primary_conf
+        context['volatility_level'] = self.adaptive_state.volatility_level
+        context['drawdown'] = self.adaptive_state.rolling_drawdown
+        context['loss_streak'] = self.adaptive_state.loss_streak
+        context['win_streak'] = self.adaptive_state.win_streak
+        context['regime'] = regime
+        context['danger_reason'] = regime_context.get('danger_reason')
+        context['danger_duration_bars'] = regime_context.get('danger_duration_bars', 0)
+
+        route_decision = self._route_strategy(candle, context, features)
+        context['strategy_route'] = route_decision['strategy']
+        route_strategy = str(route_decision['strategy']).strip().upper()
+        route_boll_z = route_decision.get('boll_z')
+
+        if route_strategy == 'SKIP':
+            self._reject_decision(
+                candle,
+                context,
+                regime,
+                route_decision['strategy'],
+                raw_primary_conf,
+                primary_conf,
+                None,
+                'router_skip',
+                extra={'strategy_reason': route_decision.get('reason')},
+            )
+            return None
+
+        # === EXECUTION INTELLIGENCE: Performance Memory -> Entry Strictness (System 2) ===
+        perf_modifier, perf_active = self._get_performance_size_modifier(route_strategy)
+        context['performance_modifier'] = perf_modifier
+        context['performance_adjustment_active'] = perf_active
+        if perf_active:
+            if perf_modifier < 0.8:
+                effective_edge_min += 0.02  # Underperforming strategy -> stricter entry
+                print(f"[PERF] {symbol}: {route_strategy} underperforming (mod={perf_modifier:.2f}), tightening edge +0.02")
+            elif perf_modifier > 1.1:
+                effective_edge_min -= 0.02  # Outperforming strategy -> looser entry
+                print(f"[PERF] {symbol}: {route_strategy} outperforming (mod={perf_modifier:.2f}), loosening edge -0.02")
+
+        if route_strategy == 'MEAN_REVERSION' and route_boll_z is not None and abs(float(route_boll_z)) < effective_boll_z_min:
+            self._reject_decision(
+                candle,
+                context,
+                regime,
+                route_decision['strategy'],
+                raw_primary_conf,
+                primary_conf,
+                None,
+                'boll_z_filter',
+                extra={'boll_z': route_boll_z, 'boll_z_min': effective_boll_z_min, 'flow_state': self._flow_state},
+            )
+            return None
+
+        if normalized_side is None:
+            self._reject_decision(candle, context, regime, route_decision['strategy'], raw_primary_conf, primary_conf, None, f"invalid_trade_side:{primary_pred}")
+            return None
+        
+        # Build context_output for RiskBrain V2
+        context_output = {
+            'operating_mode': mode,
+            'manipulation_risk': 0.0,  # TODO: Get from ContextBrain
+            'sr_strength': 0.5,
+        }
+        
+        # Determine if this is an exploration trade
+        is_exploration = (mode == 'LEARNING' and self.filter_engine.can_explore(mode_config))
+        
+        # Stage 7: Risk Brain V2 (with adaptive RR and degradative sizing)
+        risk_result = self.risk_brain.calculate_sl_tp(
+            entry_price=_safe_float(candle['close']),
+            side=primary_pred,
+            atr=_safe_float(features.get('M5_atr_14', 0)),
+            regime=regime,
+            context=context,
+            adaptive_state=self.adaptive_state,
+            exploration_trade=is_exploration,
+            context_output=context_output
+        )
+        
+        # Extract results from new dict format
+        sl_price = risk_result.get('sl_price', 0)
+        tp_price = risk_result.get('tp_price', 0)
+        size = risk_result.get('position_size', 0)
+        risk_decision = risk_result.get('risk_decision', 'BLOCK')
+        risk_reason = risk_result.get('risk_reason', 'unknown')
+        rr_ratio = risk_result.get('rr', 0)
+        
+        # === MARK-2 INTELLIGENCE ===
+        # Update regime strength from features
+        atr = _safe_float(features.get('M5_atr_14', 0))
+        atr_avg = _safe_float(features.get('M5_atr_sma_20', atr))  # Fallback to current ATR
+        self.mark2.update_regime(features.to_dict() if hasattr(features, 'to_dict') else dict(features))
+        
+        # Get MARK-2 modifiers
+        mark2_output = self.mark2.get_modifiers(
+            price=_safe_float(candle['close']),
+            regime=regime,
+            side=primary_pred,
+            base_min_conf=mode_config.ml_buy_threshold if primary_pred == 'BUY' else mode_config.ml_sell_threshold
+        )
+        
+        # === MARK-3 EDGE_SCORE (Profit Acceleration) ===
+        from src.backtest.edge_score import calculate_volatility_alignment, calculate_structure_quality
+        
+        # Get structure quality from context brain (if available)
+        sr_strength = context_output.get('sr_strength', 0.5)
+        trend_alignment = 0.6 if regime == 'TREND' else 0.4  # Simple proxy
+        structure_quality = calculate_structure_quality(sr_strength, trend_alignment)
+        
+        # Get volatility alignment
+        vol_alignment = calculate_volatility_alignment(atr, atr_avg if atr_avg > 0 else atr)
+        
+        # Compute edge score
+        edge_output = self.edge_score.compute(
+            ml_confidence=primary_conf,
+            regime_strength=mark2_output.regime_strength,
+            structure_quality=structure_quality,
+            volatility_alignment=vol_alignment,
+            regime=regime,
+            is_exploration=is_exploration
+        )
+
+        if edge_output.edge_score < effective_edge_min:
+            self._reject_decision(candle, context, regime, route_decision['strategy'], raw_primary_conf, primary_conf, edge_output.edge_score, 'low_edge',
+                                  extra={'effective_min': effective_edge_min, 'flow_state': self._flow_state, 'perf_active': perf_active})
+            return None
+
+        if (
+            route_strategy == 'MEAN_REVERSION'
+            and route_boll_z is not None
+            and abs(float(route_boll_z)) < 1.0
+            and edge_output.edge_score <= 0.70
+        ):
+            self._reject_decision(
+                candle,
+                context,
+                regime,
+                route_decision['strategy'],
+                raw_primary_conf,
+                primary_conf,
+                edge_output.edge_score,
+                'mr_quality_gate',
+                extra={'boll_z': route_boll_z, 'mr_boll_z_soft_band': 1.0, 'mr_edge_override_min': 0.70},
+            )
+            return None
+        
+        # Check safeguards for boost
+        boost_allowed = edge_output.boost_allowed
+        if boost_allowed:
+            can_boost, boost_reason = self.edge_safeguards.can_boost(candle.get('timestamp', None))
+            if not can_boost:
+                boost_allowed = False
+                # Recompute without boost
+                edge_output = self.edge_score.compute(
+                    ml_confidence=primary_conf,
+                    regime_strength=mark2_output.regime_strength,
+                    structure_quality=structure_quality,
+                    volatility_alignment=vol_alignment,
+                    regime="DANGER",  # Force no boost
+                    is_exploration=True
+                )
+        
+        # === MARK-3.1: EDGE DISCOVERY (READ-ONLY OBSERVATION) ===
+        # Log signal context for A-grade edge discovery
+        # Does NOT change any trading behavior
+        try:
+            from src.backtest.edge_discovery import get_edge_discovery
+            from src.backtest.session_gate import detect_session
+            
+            discovery = get_edge_discovery()
+            timestamp = candle.get('timestamp', None)
+            session = detect_session(timestamp) if timestamp else "OFF"
+            
+            discovery.log_signal(
+                timestamp=timestamp,
+                symbol=symbol,
+                session=session,
+                edge_score=edge_output.edge_score,
+                regime_strength=mark2_output.regime_strength,
+                regime_type=regime,
+                rr_ratio=rr_ratio,
+                atr=atr,
+                atr_avg=atr_avg,
+                sr_strength=sr_strength,
+                decision="PENDING",  # Will be updated later
+                ml_confidence=primary_conf,
+                ml_side=primary_pred,
+                edge_multiplier=edge_output.size_multiplier,
+                mark2_modifier=mark2_output.final_size_modifier,
+            )
+        except Exception as e:
+            # Silent fail - discovery is optional observation
+            pass
+        
+        # === SIZING PIPELINE: base → EDGE → MARK-2 ===
+        original_size = size
+        
+        # Step 1: Apply EDGE_SCORE multiplier (MARK-3)
+        edge_adjusted = size * edge_output.size_multiplier
+        
+        # Step 2: Apply MARK-2 safety modifiers (always after edge)
+        after_mark2 = edge_adjusted * mark2_output.final_size_modifier
+        
+        # Step 3: Apply performance memory modifier (System 2)
+        perf_adjusted = after_mark2 * perf_modifier
+
+        # Step 4: Apply floor (never zero)
+        size = max(original_size * 0.1, perf_adjusted)
+        
+        # Track if boost was applied
+        was_boosted = edge_output.size_multiplier > 1.0 and boost_allowed
+        if was_boosted:
+            self.edge_safeguards.record_trade(was_boosted=True, timestamp=candle.get('timestamp', None))
+        
+        # Check MARK-2 cooldown
+        if not mark2_output.can_trade and risk_decision != 'BLOCK':
+            risk_decision = 'BLOCK'
+            risk_reason = f"MARK-2 Cooldown ({mark2_output.cooldown_remaining_min:.1f} min remaining)"
+        
+        # Log RiskBrain + EDGE + MARK-2 decision
+        edge_info = f"EDGE:{edge_output.edge_score:.2f}({edge_output.quality_tier})"
+        mark2_info = f"MARK-2:{mark2_output.final_size_modifier:.2f}"
+        boost_tag = "🚀" if was_boosted else ""
+        print(f"[TRACE] {symbol}: RiskBrain {risk_decision} - RR={rr_ratio:.2f}, size={size:.4f} [{edge_info}|{mark2_info}]{boost_tag}, {risk_reason}")
+        
+        if edge_output.edge_score > 0.7 or edge_output.size_multiplier != 1.0:
+            print(f"[EDGE] {symbol}: score={edge_output.edge_score:.2f}, tier={edge_output.quality_tier}, mult={edge_output.size_multiplier:.2f}")
+        if mark2_output.final_size_modifier < 0.95:
+            print(f"[MARK-2] {symbol}: Memory={mark2_output.memory_mod:.2f}, Ego={mark2_output.ego_mod:.2f} (score={mark2_output.ego_score:.2f}), Regime={mark2_output.regime_mod:.2f}")
+
+        # === SESSION GATE (Trading Hours Control) ===
+        timestamp = candle.get('timestamp', None)
+        if timestamp is not None:
+            session_output = self.session_gate.evaluate(
+                timestamp=timestamp,
+                symbol=symbol,
+                edge_score=edge_output.edge_score,
+                regime_strength=mark2_output.regime_strength,
+                confidence=primary_conf,
+            )
+            
+            # Add session to context for downstream use
+            context['session'] = session_output.session
+            context['session_policy'] = session_output.policy
+            
+            if not session_output.allowed:
+                # Session blocked - do not trade
+                risk_decision = 'BLOCK'
+                risk_reason = f"Session: {session_output}"
+            else:
+                # Apply session size multiplier
+                size = size * session_output.size_multiplier
+                if session_output.session == 'TOKYO' and primary_conf < self.config.tokyo_min_confidence:
+                    risk_decision = 'BLOCK'
+                    risk_reason = 'tokyo_low_confidence'
+                if session_output.size_multiplier < 1.0:
+                    print(f"[SESSION] {symbol}: {session_output.session} size×{session_output.size_multiplier:.2f}")
+
+        # === WEAPON SYSTEM ROUTING (MARK-3.3) ===
+        # Routes to appropriate strategy: RIFLE (primary) or SCALPEL (micro)
+        weapon_strategy = None
+        weapon_signal = None
+        if self.weapon_router is not None and risk_decision != 'BLOCK':
+            try:
+                from src.strategy import MarketSnapshot, AgentContext
+                
+                # Build market snapshot
+                weapon_snapshot = MarketSnapshot(
+                    timestamp=timestamp,
+                    symbol=symbol,
+                    price=float(candle['close']),
+                    atr=atr,
+                    atr_avg=context.get('atr_avg', atr),
+                    high_20=context.get('high_20', 0),
+                    low_20=context.get('low_20', 0),
+                    sma_20=context.get('sma_20', 0),
+                    bb_upper=context.get('bb_upper', 0),
+                    bb_lower=context.get('bb_lower', 0)
+                )
+                
+                # Build agent context
+                weapon_context = AgentContext(
+                    ml_confidence=primary_conf,
+                    ml_prediction=primary_pred,
+                    edge_score=edge_output.edge_score,
+                    edge_tier=edge_output.quality_tier,
+                    regime=regime,
+                    regime_strength=mark2_output.regime_strength,
+                    session=context.get('session', 'OFF'),
+                    mark2_can_trade=mark2_output.can_trade,
+                    mark2_cooldown_min=mark2_output.cooldown_remaining_min,
+                    memory_mod=mark2_output.memory_mod,
+                    memory_pain_level=1.0 - mark2_output.memory_mod,
+                    base_size=size,
+                    rr_ratio=rr_ratio
+                )
+                
+                # Route to strategy
+                weapon_strategy, weapon_signal = self.weapon_router.route(weapon_snapshot, weapon_context)
+                
+                # Log decision
+                if self.weapon_logger:
+                    self.weapon_logger.log_decision(
+                        timestamp=timestamp,
+                        symbol=symbol,
+                        session=weapon_context.session,
+                        strategy_selected=weapon_strategy.weapon_class.value if weapon_strategy else "NONE",
+                        strategy_name=weapon_strategy.name if weapon_strategy else "",
+                        weapon_class=weapon_strategy.weapon_class.value if weapon_strategy else "",
+                        signal=weapon_signal.signal.value if weapon_signal else "HOLD",
+                        decision_reason=weapon_signal.reason if weapon_signal else "No strategy criteria met",
+                        ml_confidence=primary_conf,
+                        ml_prediction=primary_pred,
+                        edge_score=edge_output.edge_score,
+                        edge_tier=edge_output.quality_tier,
+                        regime=regime,
+                        regime_strength=mark2_output.regime_strength,
+                        mark2_can_trade=mark2_output.can_trade,
+                        mark2_modifier=mark2_output.final_size_modifier,
+                        edge_multiplier=edge_output.size_multiplier,
+                        strategy_size_mult=weapon_signal.size_multiplier if weapon_signal else 0.0,
+                        final_size=size * (weapon_signal.size_multiplier if weapon_signal else 0.0),
+                        was_blocked=weapon_strategy is None,
+                        block_reason="" if weapon_strategy else "No strategy match"
+                    )
+                
+                # Apply strategy-specific sizing (SCALPEL = 12%)
+                if weapon_signal and weapon_signal.size_multiplier < 1.0:
+                    size = size * weapon_signal.size_multiplier
+                    print(f"[WEAPON] {symbol}: {weapon_strategy.name} size×{weapon_signal.size_multiplier:.2f}")
+                    
+            except Exception as e:
+                # Silent fail - weapon routing is optional
+                if self.config.verbose:
+                    print(f"[WEAPON] Error: {e}")
+
+        # === EXPERIENCE REASONING MODULE (ERM) ===
+        # Adaptive learning from past mistakes. Does NOT block, only guides sizing.
+        # MODE: ACTIVE - Apply sizing adjustments based on learned patterns
+        erm_decision = None
+        if self.erm is not None and risk_decision != 'BLOCK':
+            try:
+                # Build ERM context
+                erm_context = {
+                    'symbol': symbol,
+                    'session': context.get('session', 'OFF'),
+                    'regime': regime,
+                    'regime_strength': mark2_output.regime_strength,
+                    'edge_score': edge_output.edge_score,
+                    'edge_tier': edge_output.quality_tier,
+                    'ml_confidence': primary_conf,
+                    'rr_ratio': rr_ratio,
+                    'volatility_bucket': context.get('volatility_bucket', 'MID'),
+                }
+                
+                erm_decision = self.erm.evaluate(erm_context)
+                
+                # Store for post-trade update
+                context['erm_context'] = erm_context
+                context['erm_decision'] = erm_decision
+                context['erm_size_multiplier'] = 1.0
+                
+                # Calibration mode: keep ERM observational only (no size reduction yet).
+                if self.config.verbose and erm_decision is not None:
+                    print(f"[ERM] {symbol}: OBSERVE action={erm_decision.action} conf={erm_decision.confidence:.1%}")
+                        
+            except Exception as e:
+                if self.config.verbose:
+                    print(f"[ERM] Error: {e}")
+
+        
+        # Check for BLOCK decision
+        if risk_decision == 'BLOCK' or size <= 0:
+            self._reject_decision(candle, context, regime, route_decision['strategy'], raw_primary_conf, primary_conf, edge_output.edge_score, risk_reason)
+            if self.config.verbose:
+                print(f"[Pipeline] {symbol}: Blocked by RiskBrain - {risk_reason}")
+            return None
+
+        atr_pctile_for_guard = route_decision.get('atr_pctile')
+        if atr_pctile_for_guard is not None:
+            if atr_pctile_for_guard < self.config.volatility_low_pctile:
+                if str(route_decision['strategy']).strip().upper() != 'MEAN_REVERSION':
+                    self._low_volatility_block_count += 1
+                    self._reject_decision(candle, context, regime, route_decision['strategy'], raw_primary_conf, primary_conf, edge_output.edge_score, 'low_volatility')
+                    return None
+                # System 4: Strong MR only in dead markets - require |boll_z| > 1.2
+                if route_boll_z is not None and abs(float(route_boll_z)) <= 1.2:
+                    self._low_volatility_block_count += 1
+                    self._reject_decision(
+                        candle, context, regime, route_decision['strategy'],
+                        raw_primary_conf, primary_conf, edge_output.edge_score,
+                        'low_vol_weak_mr',
+                        extra={'atr_pctile': atr_pctile_for_guard, 'boll_z': route_boll_z, 'required_boll_z': 1.2},
+                    )
+                    return None
+                size *= 0.5
+                context['low_volatility_size_reduction'] = True
+            if atr_pctile_for_guard > self.config.volatility_high_pctile:
+                self._reject_decision(candle, context, regime, route_decision['strategy'], raw_primary_conf, primary_conf, edge_output.edge_score, 'extreme_volatility')
+                return None
+
+        timing_allowed, cooldown_active, timing_reason = self._passes_trade_timing_filters(context)
+        context['cooldown_active'] = cooldown_active
+        if not timing_allowed:
+            self._reject_decision(
+                candle,
+                context,
+                regime,
+                route_decision['strategy'],
+                raw_primary_conf,
+                primary_conf,
+                edge_output.edge_score,
+                timing_reason or 'timing_filter_block',
+                cooldown_active=cooldown_active,
+            )
+            return None
+
+        router_regime = str(route_decision.get('classified_regime', regime)).strip().upper()
+        if router_regime == 'NEUTRAL' and str(route_decision['strategy']).strip().upper() == 'MEAN_REVERSION':
+            context['neutral_regime_size_reduction'] = False
+        if str(regime).strip().upper() == 'DANGER':
+            if str(route_decision['strategy']).strip().upper() != 'MEAN_REVERSION':
+                self._reject_decision(
+                    candle,
+                    context,
+                    regime,
+                    route_decision['strategy'],
+                    raw_primary_conf,
+                    primary_conf,
+                    edge_output.edge_score,
+                    'danger_strategy_block',
+                    cooldown_active=context.get('cooldown_active', False),
+                    extra={
+                        'danger_reason': context.get('danger_reason'),
+                        'danger_duration_bars': context.get('danger_duration_bars'),
+                    },
+                )
+                return None
+            size *= 0.3
+            context['danger_size_reduction'] = True
+        
+        # Stage 8: Meta-Gating Brain (with Adaptive Supervision)
+        ml_decision = {'side': primary_pred, 'confidence': primary_conf}
+        
+        # === CONTEXT BRAIN: Get operating mode and adaptive thresholds ===
+        n_bars = len(candles) if hasattr(candles, '__len__') else self.adaptive_state.candle_count
+        if getattr(self.config, 'enable_operating_mode_parameters', True):
+            mode, sufficiency, mode_config = self.filter_engine.compute_mode(n_bars)
+        else:
+            from src.backtest.adaptive_filters import CONFIRMATION_CONFIG
+            mode, sufficiency, mode_config = "CONFIRMATION", 1.0, CONFIRMATION_CONFIG
+        context['operating_mode'] = mode
+        context['data_sufficiency'] = sufficiency
+        self._operating_mode_counts[mode] += 1
+        
+        # Use adaptive threshold from filter engine (0.35 LEARNING, 0.65 CONFIRMATION)
+        MIN_CONF = mode_config.ml_buy_threshold if primary_pred == 'BUY' else mode_config.ml_sell_threshold
+        
+        if primary_conf < MIN_CONF:
+            # === EXPLORATION OVERRIDE CHECKPOINT 1 ===
+            if mode == 'LEARNING' and self.filter_engine.can_explore(mode_config):
+                exploration_trade = self._create_exploration_trade(
+                    candle, primary_pred, features, mode_config, symbol, context
+                )
+                if exploration_trade:
+                    print(f"[EXPLORATION] {symbol}: Override at confidence check - conf={primary_conf:.3f} < {MIN_CONF:.2f}")
+                    self._stage_pending_signal(candle, context, exploration_trade)
+                    return None
+            
+            if self.config.verbose:
+                print(f"[Pipeline] {symbol}: Blocked - conf {primary_conf:.3f} < {MIN_CONF:.2f} [{mode}]")
+            return None
+        
+        # Log mode info
+        if self.config.verbose:
+            print(f"[Pipeline] {symbol}: Mode={mode}, sufficiency={sufficiency:.2f}, threshold={MIN_CONF:.2f}")
+        
+        if self.config.enable_meta_gating:
+            # === LEARNING MODE: Skip strict meta-gating, allow exploration ===
+            if mode == 'LEARNING':
+                if self.config.verbose:
+                    print(f"[Pipeline] {symbol}: LEARNING mode - relaxed meta-gating")
+            # Use adaptive supervision if AdaptiveState is ready (lowered warmup to 20)
+            elif self.adaptive_state.candle_count > 20:
+                allowed, reason = self.meta_gating.supervise_adaptive(
+                    ml_decision, features, context, self.adaptive_state
+                )
+                if not allowed:
+                    # === EXPLORATION OVERRIDE CHECKPOINT 2 ===
+                    if mode == 'LEARNING' and self.filter_engine.can_explore(mode_config):
+                        exploration_trade = self._create_exploration_trade(
+                            candle, primary_pred, features, mode_config, symbol, context
+                        )
+                        if exploration_trade:
+                            print(f"[EXPLORATION] {symbol}: Override at meta-gating - {reason}")
+                            self._stage_pending_signal(candle, context, exploration_trade)
+                            return None
+                    
+                    if self.config.verbose:
+                        print(f"[Pipeline] {symbol}: Blocked by adaptive meta-gating: {reason}")
+                    return None
+            else:
+                # Fall back to standard supervision during warmup
+                if not self.meta_gating.supervise(ml_decision, None, features, context):
+                    # === EXPLORATION OVERRIDE at standard meta-gating ===
+                    if mode == 'LEARNING' and self.filter_engine.can_explore(mode_config):
+                        print(f"[EXPLORATION] {symbol}: Override at standard meta-gating")
+                        exploration_trade = self._create_exploration_trade(
+                            candle, primary_pred, features, mode_config, symbol, context
+                        )
+                        if exploration_trade:
+                            self._stage_pending_signal(candle, context, exploration_trade)
+                            return None
+                    if self.config.verbose:
+                        print(f"[Pipeline] {symbol}: Blocked by meta-gating")
+                    return None
+        
+        # Stage 9: Portfolio Brain (TODO)
+        if self.config.enable_portfolio_brain:
+            pass  # TODO: Check correlation, exposure limits
+        
+        # Stage 10-11: Risk + Throttle Gates
+        if not self._check_gates(context):
+            # === EXPLORATION OVERRIDE at risk/throttle gates ===
+            if mode == 'LEARNING' and self.filter_engine.can_explore(mode_config):
+                print(f"[EXPLORATION] {symbol}: Override at risk/throttle gates")
+                exploration_trade = self._create_exploration_trade(
+                    candle, primary_pred, features, mode_config, symbol, context
+                )
+                if exploration_trade:
+                    self._stage_pending_signal(candle, context, exploration_trade)
+                    return None
+            if self.config.verbose:
+                print(f"[Pipeline] {symbol}: Blocked by risk/throttle gates")
+            return None
+
+        # === EXECUTION INTELLIGENCE: Duplicate Signal Rejection (System 4) ===
+        if self._is_duplicate_signal(symbol, str(normalized_side or ''), route_strategy):
+            self._reject_decision(
+                candle, context, regime, route_decision['strategy'],
+                raw_primary_conf, primary_conf, edge_output.edge_score,
+                'duplicate_signal',
+                cooldown_active=context.get('cooldown_active', False),
+            )
+            return None
+
+        # === EXECUTION INTELLIGENCE: Signal Quality Gate (System 5) — Adaptive Threshold ===
+        signal_quality = self._compute_signal_quality(route_boll_z, edge_output.edge_score, primary_conf)
+        context['signal_quality'] = signal_quality
+        quality_payload = self._grade_signal_quality(features, str(primary_pred).strip().upper(), regime, primary_conf)
+        quality_grade = str(quality_payload.get('grade', 'B')).strip().upper()
+        context['quality_grade'] = quality_grade
+        context['quality_score'] = quality_payload.get('score')
+
+        # Adaptive threshold: base + volatility adjustment + regime adjustment
+        sq_base = 0.68
+        sq_atr = atr_pctile_for_guard  # from route_decision, may be None
+        if sq_atr is not None:
+            if sq_atr > 0.7:
+                sq_threshold = sq_base - 0.03  # high vol → more opportunities
+            elif sq_atr < 0.3:
+                sq_threshold = sq_base + 0.03  # low vol → stricter
+            else:
+                sq_threshold = sq_base
+        else:
+            sq_threshold = sq_base
+
+        normalized_regime_sq = str(regime).strip().upper()
+        if normalized_regime_sq == 'TREND':
+            sq_threshold += 0.02
+        elif normalized_regime_sq == 'RANGE':
+            sq_threshold -= 0.01
+        # Cap combined adjustment delta to prevent over-loosening
+        sq_delta = sq_threshold - sq_base
+        sq_delta = max(-0.04, min(0.04, sq_delta))
+        sq_threshold = sq_base + sq_delta
+
+        # Special case: high-vol RANGE can over-relax — enforce floor
+        if sq_atr is not None and sq_atr > 0.7 and normalized_regime_sq == 'RANGE':
+            sq_threshold = max(sq_threshold, 0.66)
+
+        # Clamp to safe band
+        sq_threshold = max(0.60, min(0.75, sq_threshold))
+        context['signal_quality_threshold'] = sq_threshold
+
+        # Safety guards: hard floors on components
+        sq_edge_floor = edge_output.edge_score >= 0.60
+        sq_conf_floor = primary_conf >= 0.50
+
+        if signal_quality < sq_threshold or not sq_edge_floor or not sq_conf_floor:
+            self._signal_quality_block_count += 1
+            reject_reason = 'low_signal_quality'
+            if not sq_edge_floor:
+                reject_reason = 'signal_quality_edge_floor'
+            elif not sq_conf_floor:
+                reject_reason = 'signal_quality_conf_floor'
+            self._reject_decision(
+                candle, context, regime, route_decision['strategy'],
+                raw_primary_conf, primary_conf, edge_output.edge_score,
+                reject_reason,
+                cooldown_active=context.get('cooldown_active', False),
+                extra={
+                    'signal_quality': round(signal_quality, 4),
+                    'signal_quality_threshold': round(sq_threshold, 4),
+                    'atr_pctile': sq_atr,
+                    'regime': normalized_regime_sq,
+                    'edge_floor_pass': sq_edge_floor,
+                    'conf_floor_pass': sq_conf_floor,
+                    'boll_z_raw': route_boll_z,
+                    'boll_z_capped': min(abs(float(route_boll_z)), 2.0) if route_boll_z is not None else 1.5,
+                },
+            )
+            return None
+
+        size, signal_tier, tier_size_multiplier = self._apply_signal_tier_gate(primary_conf, quality_grade, size)
+        if size is None:
+            reject_reason = 'tier3_reject'
+            if primary_conf < self.config.tier3_confidence_floor:
+                reject_reason = 'tier3_low_confidence'
+            elif quality_grade in {'D', 'F'}:
+                reject_reason = f'tier3_quality_{quality_grade.lower()}'
+            self._reject_decision(
+                candle,
+                context,
+                regime,
+                route_decision['strategy'],
+                raw_primary_conf,
+                primary_conf,
+                edge_output.edge_score,
+                reject_reason,
+                cooldown_active=context.get('cooldown_active', False),
+                extra={
+                    'quality_grade': quality_grade,
+                    'quality_score': quality_payload.get('score'),
+                    'signal_quality': round(signal_quality, 4),
+                },
+            )
+            return None
+        context['signal_tier'] = signal_tier
+        context['signal_tier_size_multiplier'] = tier_size_multiplier
+
+        normalized_regime = str(regime).strip().upper()
+        normalized_strategy = str(route_decision['strategy']).strip().upper()
+        soft_score = self._soft_filter_score(primary_conf, edge_output.edge_score, normalized_regime, normalized_strategy)
+        high_conviction_bypass = primary_conf > 0.72 and edge_output.edge_score > 0.70
+        soft_threshold = 1
+        if self._flow_state == 'relaxed':
+            soft_threshold = 0
+        elif self._flow_state == 'tight':
+            soft_threshold = 2
+        context['soft_filter_score'] = soft_score
+        context['soft_filter_threshold'] = soft_threshold
+        context['high_conviction_bypass'] = high_conviction_bypass
+        if normalized_regime == 'RANGE' and normalized_strategy != 'MEAN_REVERSION':
+            self._reject_decision(candle, context, regime, route_decision['strategy'], raw_primary_conf, primary_conf, edge_output.edge_score, 'regime_alignment_violation')
+            return None
+        if normalized_regime == 'TREND' and normalized_strategy != 'TREND_PULLBACK':
+            self._reject_decision(candle, context, regime, route_decision['strategy'], raw_primary_conf, primary_conf, edge_output.edge_score, 'regime_alignment_violation')
+            return None
+
+        # Stage 12: Execution Reflex Engine - Build final decision
+        decision = Decision(
+            action='open',
+            side=normalized_side,
+            entry_price=_safe_float(candle['close']),
+            size=size,
+            sl_price=sl_price,
+            tp_price=tp_price,
+            decision_source='PRIMARY',
+            regime=regime,
+            confidence=primary_conf,
+            features=features.to_dict() if self.config.log_features else None,
+            metadata={
+                'symbol': symbol,
+                'strategy': route_decision['strategy'],
+                'strategy_reason': route_decision['reason'],
+                'strategy_confidence': route_decision['confidence'],
+                'ml_conf_raw': raw_primary_conf,
+                'ml_conf_calibrated': primary_conf,
+                'edge_score': edge_output.edge_score,
+                'skip_reason': None,
+                'cooldown_active': context.get('cooldown_active', False),
+                'soft_filter_score': soft_score,
+                'soft_filter_threshold': context.get('soft_filter_threshold'),
+                'high_conviction_bypass': high_conviction_bypass,
+                'signal_tier': context.get('signal_tier'),
+                'signal_tier_size_multiplier': context.get('signal_tier_size_multiplier'),
+                'quality_grade': context.get('quality_grade'),
+                'quality_score': context.get('quality_score'),
+                'neutral_regime_size_reduction': context.get('neutral_regime_size_reduction', False),
+                'low_volatility_size_reduction': context.get('low_volatility_size_reduction', False),
+                'danger_size_reduction': context.get('danger_size_reduction', False),
+                'danger_reason': context.get('danger_reason'),
+                'danger_duration_bars': context.get('danger_duration_bars', 0),
+                'timeframe': context.get('timeframe', 'UNKNOWN'),
+                'timestamp': datetime.utcnow().isoformat(),
+                'regime_conf': regime_conf,
+                # Adaptive metadata
+                'volatility_level': self.adaptive_state.volatility_level,
+                'drawdown': self.adaptive_state.rolling_drawdown,
+                'loss_streak': self.adaptive_state.loss_streak,
+                'risk_pct': context.get('risk_pct', 0.01),
+                'rl_active': context.get('rl_active', False),
+                'rl_size_multiplier': context.get('rl_size_multiplier', 1.0),
+                'adjusted_threshold': self.config.primary_high_thresh,
+                # === EXECUTION INTELLIGENCE LOGGING ===
+                'entry_mode': 'delayed_confirmation',
+                'signal_quality': context.get('signal_quality'),
+                'performance_modifier': context.get('performance_modifier', 1.0),
+                'performance_adjustment_active': context.get('performance_adjustment_active', False),
+                'flow_state': self._flow_state,
+                'flow_conf_adj': flow_conf_adj,
+                'flow_edge_adj': flow_edge_adj,
+                'effective_edge_min': effective_edge_min,
+                'effective_boll_z_min': effective_boll_z_min,
+            }
+        )
+        self._stage_pending_signal(candle, context, decision)
+
+        if self.config.verbose:
+            print(f"[Pipeline] {symbol}: PENDING {decision.side} @ {decision.entry_price:.5f} "
+                  f"size={decision.size:.4f} conf={decision.confidence:.3f} regime={regime} "
+                  f"mode=delayed_confirmation")
+
+        return None
+
+    def run_phase2_diagnostics(
+        self,
+        symbol: str,
+        features: Dict[str, Any],
+        regime: str,
+        confidence: float,
+        signal_generated: bool,
+        execution_count: int,
+        bar_data: Dict[str, Any]
+    ):
+        """Run diagnostics observers: update drift monitor and check for anomalies."""
+        if self.drift_monitor:
+            self.drift_monitor.update(
+                features=features,
+                regime=regime,
+                confidence=confidence
+            )
+        if self.anomaly_detector:
+            self.anomaly_detector.check(
+                bar_data=bar_data,
+                features=features,
+                signal_generated=signal_generated,
+                confidence=confidence,
+                bar_index=self._current_bar_idx,
+                execution_count=execution_count
+            )
+
+    def decide(self, candle: pd.Series, context: Dict) -> Optional[Decision]:
+        """
+        Main decision pipeline wrapper - runs inner stages, then executes 
+        Stage 13 Diagnostics and dispatches WebSocket telemetry updates (Phase 3.1).
+        """
+        symbol = context.get('symbol', 'UNKNOWN')
+        
+        # 1. Run the primary pipeline stages
+        decision = self._decide_inner(candle, context)
+        
+        # 2. Extract state variables for diagnostics and bridge
+        last_regime = context.get('regime', 'UNKNOWN')
+        regime_quality = getattr(self, '_last_regime_quality', 1.0)
+        confidence = context.get('ml_conf_calibrated', 0.5)
+        
+        # Check if a trade was initiated this bar
+        signal_generated = False
+        execution_count = 0
+        if decision is not None and decision.action == 'open':
+            signal_generated = True
+            execution_count = 1
+        elif symbol in self._pending_signals:
+            signal_generated = True
+
+        # Extract structured bar data for data quality monitors
+        bar_data = {
+            'timestamp': str(candle.get('timestamp', '')),
+            'open': _safe_float(candle.get('open', 0)),
+            'high': _safe_float(candle.get('high', 0)),
+            'low': _safe_float(candle.get('low', 0)),
+            'close': _safe_float(candle.get('close', 0)),
+            'volume': _safe_float(candle.get('volume', 0))
+        }
+        
+        # 3. Stage 13: Run Diagnostics observer (Drift, Anomaly, Health)
+        features_dict = context.get('features_dict', {})
+        self.run_phase2_diagnostics(
+            symbol=symbol,
+            features=features_dict,
+            regime=last_regime,
+            confidence=confidence,
+            signal_generated=signal_generated,
+            execution_count=execution_count,
+            bar_data=bar_data
+        )
+        
+        # 4. Phase 3.1: Event serialization & WebSocket dispatching
+        try:
+            from src.utils.hud_bridge import HUDTelemetryBridge
+            
+            # Map statuses for the 13 stages to display on HUD
+            stages = {
+                1: {"name": "Data Ingestion", "status": "PASS", "output": f"{symbol} candle ready", "time_ms": 0.2},
+                2: {"name": "Feature Reactor", "status": "PASS", "output": f"{len(features_dict)} indicators", "time_ms": 3.2},
+                3: {"name": "ML Brain", "status": "PASS" if self.ml_brain else "STUB", "output": f"conf={confidence:.3f}", "time_ms": 25.0},
+                4: {"name": "RL Brain", "status": "STUB", "output": "INACTIVE", "time_ms": 0.0},
+                5: {"name": "Volatility Brain", "status": "PASS", "output": f"{last_regime} (q={regime_quality:.2f})", "time_ms": 4.1},
+                6: {"name": "Sentiment Brain", "status": "STUB", "output": "INACTIVE", "time_ms": 0.0},
+                7: {"name": "Risk Brain", "status": "PASS" if decision or symbol in self._pending_signals else "STUB", "output": f"size={decision.size:.2f} lot" if decision else "Hold Sizing", "time_ms": 1.2},
+                8: {"name": "Meta-Gating", "status": "PASS" if confidence >= 0.5 else "BLOCK", "output": "Cleared" if confidence >= 0.5 else "Blocked", "time_ms": 1.0},
+                9: {"name": "Portfolio Brain", "status": "PASS" if self.allocation_engine else "STUB", "output": f"Weight={context.get('allocation_weights', {}).get(context.get('strategy_route'), 1.0):.2f}", "time_ms": 1.8},
+                10: {"name": "Risk Gates", "status": "PASS" if not context.get('cooldown_active') else "BLOCK", "output": "Cleared", "time_ms": 0.4},
+                11: {"name": "Throttle Gates", "status": "PASS" if not context.get('cooldown_active') else "BLOCK", "output": "Cooldown OK", "time_ms": 0.4},
+                12: {"name": "Execution Reflex", "status": "ENRICH" if signal_generated else "PASS", "output": "EXECUTE" if decision else "Hold", "time_ms": 4.5},
+                13: {"name": "Diagnostics (Log)", "status": "WARN" if self.drift_monitor and self.drift_monitor.get_drift_severity() != 'NONE' else "PASS", "output": f"Drift={self.drift_monitor.get_drift_severity() if self.drift_monitor else 'NONE'}", "time_ms": 2.1}
+            }
+            
+            # Map rejection reasons
+            rejected_reason = context.get('rejected_reason')
+            if rejected_reason:
+                if 'confidence' in rejected_reason:
+                    stages[3]["status"] = "FAIL"
+                    stages[3]["output"] = f"Low confidence"
+                elif 'regime' in rejected_reason:
+                    stages[5]["status"] = "FAIL"
+                    stages[5]["output"] = f"Regime conflict"
+                elif 'risk' in rejected_reason:
+                    stages[7]["status"] = "FAIL"
+                    stages[7]["output"] = f"Risk block"
+                elif 'meta' in rejected_reason:
+                    stages[8]["status"] = "FAIL"
+                    stages[8]["output"] = f"Meta-gate block"
+                elif 'cooldown' in rejected_reason or 'timing' in rejected_reason:
+                    stages[11]["status"] = "FAIL"
+                    stages[11]["output"] = f"Cooldown block"
+                stages[12]["status"] = "FAIL"
+                stages[12]["output"] = f"Rejected: {rejected_reason}"
+            
+            # Async broadcast via non-blocking bridge queue
+            HUDTelemetryBridge.dispatch_stage_update(symbol, self._current_bar_idx, stages)
+            
+            # Broadcast drift alerts if active
+            drift_sev = self.drift_monitor.get_drift_severity() if self.drift_monitor else 'NONE'
+            if drift_sev in ('MEDIUM', 'HIGH'):
+                HUDTelemetryBridge.dispatch_log("WARNING", "DriftMonitor", f"[DriftMonitor] Statistical drift detected: severity={drift_sev}")
+            
+            # Broadcast anomaly logs
+            active_anoms = self.anomaly_detector.get_active_anomalies() if self.anomaly_detector else []
+            for anom in active_anoms:
+                HUDTelemetryBridge.dispatch_log(anom.severity, "AnomalyDetector", f"[Anomaly] {anom.anomaly_type}: {anom.description}")
+            
+            # Broadcast 2D regime map coordinates
+            regime_data = {
+                "adx_14": float(features_dict.get('M5_adx_14', features_dict.get('adx_14', 20.0))),
+                "atr_pctile": float(features_dict.get('M5_atr_pctile', features_dict.get('atr_pctile', 0.5))),
+                "classified": last_regime,
+                "quality": regime_quality,
+                "stability": self.regime_engine_v2.get_regime_stability() if self.regime_engine_v2 else 1.0
+            }
+            HUDTelemetryBridge.dispatch_regime(symbol, regime_data)
+            
+            # Broadcast dynamic strategy board updates
+            if self.strategy_registry and self.strategy_metrics:
+                strat_list = []
+                for name in self.strategy_registry.all_names():
+                    m = self.strategy_metrics.get_metrics(name)
+                    entry = self.strategy_registry.get_entry(name)
+                    status = "HEALTHY"
+                    if entry and entry.is_throttled:
+                        status = "THROTTLED"
+                    elif entry and entry.is_sandbox:
+                        status = "SANDBOX"
+                    strat_list.append({
+                        "name": name,
+                        "win_rate": m.win_rate,
+                        "expectancy": m.expectancy,
+                        "allocation": context.get('allocation_weights', {}).get(name, 0.0),
+                        "status": status
+                    })
+                HUDTelemetryBridge.dispatch_strategies(strat_list)
+
+        except Exception as exc:
+            logger.debug(f"[HUD Bridge] Telemetry dispatch failed: {exc}")
+            
+        return decision
+
+    @staticmethod
+    def _normalize_trade_side(side: Optional[str]) -> Optional[str]:
+        """Only BUY/SELL are executable; HOLD or anything else is non-tradable."""
+        if side is None:
+            return None
+        normalized = str(side).strip().upper()
+        if normalized in {"BUY", "SELL"}:
+            return normalized.lower()
+        return None
+
+    def _route_strategy(self, candle: pd.Series, context: Dict, features: pd.Series) -> Dict[str, Any]:
+        """Run the deterministic router every bar and return strategy metadata."""
+        timestamp = candle.get('timestamp', None)
+        hour = timestamp.hour if hasattr(timestamp, 'hour') else 12
+
+        adx_val = self._require_router_feature(features, ['M5_adx_14', 'adx_14', 'adx14'], 'adx_14')
+        atr_pctile = self._require_router_feature(features, ['M5_atr_pctile', 'atr_pctile', 'vol_atr_pctile_100'], 'atr_pctile')
+        boll_z = self._require_router_feature(features, ['M5_boll_z', 'boll_z'], 'boll_z')
+        ret_std = _safe_float(features.get('ret_std', features.get('M5_returns_std_20', 0.0)), 0.0)
+
+        strategy = "UNROUTED"
+        reason = "weapon_system_disabled"
+        confidence = 0.0
+
+        if adx_val is None or atr_pctile is None or boll_z is None:
+            reason = "missing_router_features"
+            route_info = {
+                "timestamp": timestamp.isoformat() if hasattr(timestamp, 'isoformat') else str(timestamp),
+                "symbol": context.get('symbol', 'UNKNOWN'),
+                "strategy": "SKIP",
+                "reason": reason,
+                "confidence": 0.0,
+                "adx": None if adx_val is None else round(float(adx_val), 4),
+                "atr_pctile": None if atr_pctile is None else round(float(atr_pctile), 4),
+                "boll_z": None if boll_z is None else round(float(boll_z), 4),
+            }
+            self._log_strategy_route(route_info)
+            return route_info
+
+        if self.strategy_router is not None:
+            from src.pipeline.regime_classifier import classify_regime_scalar
+
+            regime_info = classify_regime_scalar(adx_val, atr_pctile, ret_std)
+            route = self.strategy_router.route(
+                regime_score=regime_info["regime_score"],
+                adx_val=adx_val,
+                atr_pctile=atr_pctile,
+                hour=hour,
+                regime_label=regime_info["regime"],
+            )
+            strategy = route.strategy
+            reason = route.reason
+            confidence = route.confidence
+
+        route_info = {
+            "timestamp": timestamp.isoformat() if hasattr(timestamp, 'isoformat') else str(timestamp),
+            "symbol": context.get('symbol', 'UNKNOWN'),
+            "strategy": strategy,
+            "reason": reason,
+            "confidence": round(float(confidence), 4),
+            "classified_regime": regime_info["regime"] if self.strategy_router is not None else None,
+            "adx": round(float(adx_val), 4),
+            "atr_pctile": round(float(atr_pctile), 4),
+            "boll_z": round(float(boll_z), 4),
+        }
+        if self._router_debug_samples < 5:
+            print(f"ADX={adx_val:.4f}, ATR={atr_pctile:.4f}, BOLL_Z={boll_z:.4f}")
+            self._router_debug_samples += 1
+        self._log_strategy_route(route_info)
+        return route_info
+
+    def _require_router_feature(self, features: pd.Series, keys: List[str], feature_name: str) -> Optional[float]:
+        """Fetch a router-critical feature without silently falling back to misleading defaults."""
+        for key in keys:
+            if key in features.index:
+                value = _safe_float(features.get(key), np.nan)
+                if not np.isnan(value):
+                    return float(value)
+        LOG = globals().get("logger")
+        if LOG:
+            LOG.error(f"[ROUTER] Missing required feature: {feature_name} (checked {keys})")
+        else:
+            print(f"[ROUTER] Missing required feature: {feature_name} (checked {keys})")
+        return None
+
+    def _log_strategy_route(self, route_info: Dict[str, Any]) -> None:
+        """Minimal per-bar router logging for validation."""
+        if self.strategy_router_log_path is None:
+            return
+        try:
+            with open(self.strategy_router_log_path, 'a', encoding='utf-8') as f:
+                f.write(json.dumps(route_info) + "\n")
+        except Exception:
+            if self.config.verbose:
+                print("[ROUTER] Failed to write router log")
+    
+    def _map_features_for_regime(self, features: pd.Series) -> pd.Series:
+        """Map M5_ prefixed features to standard names for Regime Engine"""
+        mapping = {
+            'M5_sma_20': 'sma_20',
+            'M5_sma_50': 'sma_50',
+            'M5_bb_width': 'bb_width',
+            'M5_atr_14': 'atr_14',
+            'M5_volatility': 'volatility',
+            'M5_close': 'close'
+        }
+        mapped = features.copy()
+        for m5_col, std_col in mapping.items():
+            if m5_col in features:
+                mapped[std_col] = features[m5_col]
+        return mapped
+
+    def _extract_features(self, candle: pd.Series, context: Dict) -> Optional[pd.Series]:
+        """
+        Stage 2: Feature Reactor
+        Extract features from current candle and historical data
+        """
+        try:
+            # Get historical data from context
+            history = context.get('history')
+            if history is None or len(history) < 50:
+                if self.config.verbose:
+                    print(f"[Pipeline] Insufficient history: {len(history) if history is not None else 0}")
+                return None
+            
+            # Compute technical indicators on historical data
+            df_with_indicators = _compute_technical_indicators(history)
+            
+            # Return features from last row
+            return df_with_indicators.iloc[-1]
+        
+        except Exception as e:
+            if self.config.verbose:
+                print(f"[Pipeline] Feature extraction failed: {e}")
+                traceback.print_exc()
+            return None
+    
+    def _primary_brain(self, features: pd.Series, context: Dict) -> Tuple[float, str]:
+        """
+        Stage 3: Primary ML Brain
+        Get confidence and prediction from primary model
+        """
+        if self.primary_model is None:
+            # Fallback to heuristic
+            return self._heuristic_decision(features)
+        
+        try:
+            # Prepare feature vector
+            # TODO: Align features with model's expected features
+            feature_vector = features.fillna(0).values.reshape(1, -1)
+            
+            # Get prediction
+            if hasattr(self.primary_model, 'predict_proba'):
+                proba = self.primary_model.predict_proba(feature_vector)
+                confidence = float(np.max(proba[0]))
+                pred_class = int(np.argmax(proba[0]))
+                side = 'buy' if pred_class == 1 else 'sell'
+            elif hasattr(self.primary_model, 'predict'):
+                pred = self.primary_model.predict(feature_vector)
+                side = 'buy' if float(pred[0]) > 0 else 'sell'
+                confidence = min(abs(float(pred[0])), 1.0)
+            else:
+                return self._heuristic_decision(features)
+            
+            return confidence, side
+        
+        except Exception as e:
+            if self.config.verbose:
+                print(f"[Pipeline] Primary model error: {e}")
+            return self._heuristic_decision(features)
+    
+    def _heuristic_decision(self, features: pd.Series) -> Tuple[float, str]:
+        """Fallback heuristic decision logic"""
+        try:
+            # Simple momentum-based heuristic
+            close = _safe_float(features.get('close', 0))
+            sma_20 = _safe_float(features.get('sma_20', 0))
+            rsi = _safe_float(features.get('rsi', 50))
+            
+            if close > sma_20 and rsi < 70:
+                return 0.75, 'buy'
+            elif close < sma_20 and rsi > 30:
+                return 0.75, 'sell'
+            else:
+                return 0.30, 'hold'
+        except Exception:
+            return 0.0, 'hold'
+    
+    def _create_exploration_trade(
+        self, 
+        candle: pd.Series, 
+        side: str, 
+        features: pd.Series, 
+        mode_config,
+        symbol: str,
+        context: Dict
+    ) -> Optional[Decision]:
+        """
+        Create an exploration trade with safety constraints.
+        
+        Constraints:
+        - RR >= 1.2
+        - Size capped at 0.3x (exploration_size_cap)
+        - Max 2 trades/day
+        - No execution if manipulation_risk > 0.7
+        """
+        from datetime import datetime
+        
+        try:
+            entry = _safe_float(candle['close'])
+            atr = _safe_float(features.get('M5_atr_14', features.get('atr_14', 0.001)))
+            normalized_side = self._normalize_trade_side(side)
+
+            if context.get('regime') == 'DANGER' or normalized_side is None:
+                return None
+            
+            # Safety check: Skip if ATR is too small
+            if atr < 0.00001:
+                print(f"[EXPLORATION] {symbol}: Skipped - ATR too small ({atr})")
+                return None
+            
+            # Check manipulation risk from Context Brain
+            manipulation_risk = context.get('manipulation_risk', 0)
+            if manipulation_risk > 0.7:
+                print(f"[EXPLORATION] {symbol}: Skipped - manipulation risk {manipulation_risk:.2f} > 0.7")
+                return None
+            
+            # Calculate SL/TP with minimum RR of 1.2
+            MIN_RR = 1.2
+            sl_distance = atr * 1.5  # Tight SL for exploration
+            tp_distance = sl_distance * MIN_RR
+            
+            if normalized_side == 'buy':
+                sl_price = entry - sl_distance
+                tp_price = entry + tp_distance
+            else:  # sell
+                sl_price = entry + sl_distance
+                tp_price = entry - tp_distance
+            
+            # Capped position size (0.3x normal)
+            size = mode_config.exploration_size_cap  # 0.3
+            
+            # Record exploration trade
+            self.filter_engine.record_exploration()
+            
+            # Build exploration decision
+            decision = Decision(
+                action='open',
+                side=normalized_side,
+                entry_price=entry,
+                size=size,
+                sl_price=sl_price,
+                tp_price=tp_price,
+                decision_source='EXPLORATION',
+                regime=context.get('regime', 'UNKNOWN'),
+                confidence=0.35,  # Fixed low confidence for exploration
+                features=None,  # Don't log features for exploration
+                metadata={
+                    'symbol': symbol,
+                    'timeframe': context.get('timeframe', 'M5'),
+                    'timestamp': datetime.utcnow().isoformat(),
+                    'trade_type': 'EXPLORATION',
+                    'strategy': context.get('strategy_route', 'EXPLORATION'),
+                    'exploration_count': self.filter_engine.exploration_count,
+                    'manipulation_risk': manipulation_risk,
+                    'rr_ratio': MIN_RR,
+                    'reason': 'LEARNING mode exploration trade'
+                }
+            )
+            
+            print(f"[EXPLORATION] {symbol}: Created {normalized_side.upper()} @ {entry:.5f} size={size:.2f} "
+                  f"SL={sl_price:.5f} TP={tp_price:.5f} RR={MIN_RR} "
+                  f"(trade #{self.filter_engine.exploration_count})")
+            
+            return decision
+            
+        except Exception as e:
+            print(f"[EXPLORATION] {symbol}: Failed to create trade - {e}")
+            return None
+    
+
+    
+
+    
+    def _meta_gating(self, features: pd.Series, regime: str, confidence: float, context: Dict) -> bool:
+        """
+        Stage 8: Meta-Gating Brain
+        Filter conditions that historically produce poor trades
+        """
+        try:
+            # 1. Confidence Filter
+            min_conf = self.config.min_confidence_normal
+            if regime == 'UNCERTAIN':
+                min_conf = self.config.min_confidence_uncertain
+            
+            if confidence < min_conf:
+                if self.config.verbose:
+                    print(f"[Meta-Gating] Low confidence: {confidence:.3f} < {min_conf} ({regime})")
+                return False
+            
+            # 2. Regime Filter
+            if regime == 'UNCERTAIN':
+                volatility = _safe_float(features.get('volatility', 0))
+                if volatility > 0.03:  # Very high volatility
+                    return False
+            
+            # 3. Extreme RSI Filter
+            rsi = _safe_float(features.get('rsi', 50))
+            if rsi < 10 or rsi > 90:
+                return False
+            
+            # 4. Volume Filter
+            if 'volume_ratio' in features:
+                volume_ratio = _safe_float(features.get('volume_ratio', 1))
+                if volume_ratio < 0.3:  # Very low volume
+                    return False
+            
+            return True
+        
+        except Exception:
+            return True  # Allow trade if gating fails
+    
+    def _check_gates(self, context: Dict) -> bool:
+        """
+        Stage 10-11: Risk + Throttle Gates
+        Check position limits and frequency throttles
+        """
+        try:
+            # 1. Max Open Positions
+            open_positions = context.get('open_positions', [])
+            if len(open_positions) >= self.config.max_open_positions:
+                if self.config.verbose:
+                    print(f"[Gates] Max open positions reached: {len(open_positions)}")
+                return False
+            
+            # 2. Daily Trade Limits
+            trades_today = context.get('trades_today', 0)
+            if trades_today >= self.config.max_trades_per_day_per_symbol:
+                if self.config.verbose:
+                    print(f"[Gates] Daily trade limit reached: {trades_today}")
+                return False
+            
+            # 3. Minimum Bars Between Trades
+            bars_since_last_trade = context.get('bars_since_last_trade', 9999)
+            if bars_since_last_trade < self.config.min_bars_between_trades:
+                if self.config.verbose:
+                    print(f"[Gates] Cooldown active: {bars_since_last_trade} < {self.config.min_bars_between_trades} bars")
+                return False
+            
+            # 4. Loss Streak Cooldown
+            consecutive_losses = context.get('consecutive_losses', 0)
+            bars_since_last_loss = context.get('bars_since_last_loss', 9999)
+            
+            if consecutive_losses >= self.config.loss_streak_cooldown_trades:
+                if bars_since_last_loss < self.config.loss_streak_cooldown_bars:
+                    if self.config.verbose:
+                        print(f"[Gates] Loss streak cooldown: {consecutive_losses} losses, {bars_since_last_loss} bars ago")
+                    return False
+            
+            return True
+        
+        except Exception:
+            return True  # Allow trade if gate check fails
+
+
+
+def _safe_float(x: object, default: float = 0.0) -> float:
+    try:
+        if x is None:
+            return default
+        return float(x)
+    except Exception:
+        return default
+

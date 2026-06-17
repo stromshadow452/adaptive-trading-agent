@@ -1,29 +1,23 @@
 """
 src/risk/adaptive_sizing.py
 ============================
-SCOPUS Adaptive Position Sizing — Week 8.
+SCOPUS Adaptive Position Sizing — Phase 2 upgrade.
 
-Replaces fixed `default_size` with confidence-tiered, volatility-scaled
-position sizing. Integrates with existing PortfolioBrain and PaperExecutor.
+Replaces fixed `default_size` with confidence-tiered, volatility-scaled,
+regime-aware position sizing.
 
-Usage:
-    from src.risk.adaptive_sizing import AdaptiveSizer
+Phase-1 (original) steps:
+  Step 1: confidence_multiplier()  — 0.5×–1.25× based on model confidence
+  Step 2: vol_multiplier()         — 0.60×–1.10× based on ATR percentile
+  Step 3–8: kelly_cap, per-symbol cap, portfolio cap, absolute bounds
 
-    sizer = AdaptiveSizer(account_equity=10_000.0, base_risk_pct=0.01)
-    size  = sizer.compute(
-        confidence  = 0.72,
-        atr_pctile  = 0.45,       # from vol_atr_pctile_100 feature
-        entry_price = 1.1000,
-        stop_price  = 1.0950,
-        symbol      = "EURUSD",
-    )
-    # → lots: 0.07
+Phase-2 (new) steps appended after step 8:
+  Step 9:  regime_quality_mult    — lower quality regime reduces size
+  Step 10: drawdown_mult          — portfolio drawdown reduces global risk
+  Step 11: allocation_mult        — strategy allocation weight scales size
+  Step 12: correlation_mult       — correlated exposure reduces new position size
 
-Design:
-  Step 1: confidence_multiplier()  — scales 0.5×–1.25× based on model confidence
-  Step 2: vol_multiplier()         — scales 0.60×–1.10× based on ATR percentile
-  Step 3: kelly_cap()              — hard Kelly fraction cap (never > 0.25 Kelly)
-  Step 4: portfolio_cap()          — hard 2% per symbol, 6% total exposure cap
+Backward compatible: all Phase-2 params are optional with identity defaults.
 """
 from __future__ import annotations
 
@@ -167,15 +161,23 @@ class AdaptiveSizer:
 
     def compute(
         self,
-        confidence:  float,
-        atr_pctile:  float,
-        entry_price: float,
-        stop_price:  float,
-        symbol:      str = "EURUSD",
-        override_equity: Optional[float] = None,
+        confidence:          float,
+        atr_pctile:          float,
+        entry_price:         float,
+        stop_price:          float,
+        symbol:              str = "EURUSD",
+        override_equity:     Optional[float] = None,
+        # ── Phase-2 adaptive inputs ────────────────────────────────────
+        regime_quality:      float = 1.0,   # 0–1; from RegimeEngineV2
+        current_drawdown:    float = 0.0,   # 0–1; from PortfolioState.get_current_dd()
+        allocation_weight:   float = 1.0,   # 0–1; from AllocationEngine
+        correlated_exposure: float = 0.0,   # 0–1; total correlated open risk
     ) -> float:
         """
         Compute final position size in lots.
+
+        Phase-2 inputs are all optional with identity defaults so existing
+        callers continue to work unchanged.
 
         Returns:
             0.0 if below confidence floor or risk caps would be breached.
@@ -203,7 +205,7 @@ class AdaptiveSizer:
         base_risk_usd = equity * self.base_risk_pct
         base_size     = base_risk_usd / (stop_pips * _DOLLAR_PER_PIP_PER_LOT)
 
-        # ── 4. Apply multipliers ───────────────────────────────────────
+        # ── 4. Apply Phase-1 multipliers ───────────────────────────────
         raw_size = base_size * conf_mult * vol_mult
 
         # ── 5. Kelly cap ───────────────────────────────────────────────
@@ -228,14 +230,52 @@ class AdaptiveSizer:
         capped_new_risk  = min(raw_size * stop_pips * _DOLLAR_PER_PIP_PER_LOT, max_new_risk)
         raw_size = capped_new_risk / max(stop_pips * _DOLLAR_PER_PIP_PER_LOT, 1e-9)
 
-        # ── 8. Absolute bounds ─────────────────────────────────────────
-        final_size = float(np.clip(raw_size, MIN_SIZE_LOTS, MAX_SIZE_LOTS))
+        # ── 8. Absolute bounds (Phase-1 final) ─────────────────────────
+        raw_size = float(np.clip(raw_size, MIN_SIZE_LOTS, MAX_SIZE_LOTS))
+
+        # ══ Phase-2: Adaptive multipliers ═════════════════════════════
+
+        # ── 9. Regime quality multiplier ──────────────────────────────
+        # Low regime quality (uncertain classification) → reduce size
+        # Clamped: quality=0 → 0.5×, quality=1 → 1.0×
+        regime_quality_clamped = float(np.clip(regime_quality, 0.0, 1.0))
+        regime_quality_mult = 0.5 + 0.5 * regime_quality_clamped
+
+        # ── 10. Portfolio drawdown multiplier ─────────────────────────
+        # Increasing drawdown reduces global risk appetite
+        # At drawdown=0.10 (10%) → mult ~0.70; at 0.20+ → mult ~0.40
+        dd_clamped = float(np.clip(current_drawdown, 0.0, 0.50))
+        drawdown_mult = max(0.30, 1.0 - dd_clamped * 3.0)
+
+        # ── 11. Strategy allocation multiplier ────────────────────────
+        # Zero allocation (throttled) → no position; 1.0 → full size
+        alloc_clamped = float(np.clip(allocation_weight, 0.0, 1.0))
+        allocation_mult = max(0.20, alloc_clamped) if alloc_clamped > 0 else 0.0
+        if allocation_mult == 0.0:
+            logger.debug(
+                f"[AdaptiveSizer] {symbol}: allocation_weight=0 → skip (strategy throttled)"
+            )
+            return 0.0
+
+        # ── 12. Correlated exposure multiplier ────────────────────────
+        # High correlated open exposure reduces new position
+        # At corr_exp=0.5 (50%) → mult ~0.50; floor at 0.25
+        corr_clamped = float(np.clip(correlated_exposure, 0.0, 1.0))
+        correlation_mult = max(0.25, 1.0 - corr_clamped * 1.5)
+
+        # ── Apply Phase-2 multipliers ──────────────────────────────────
+        final_size = raw_size * regime_quality_mult * drawdown_mult * allocation_mult * correlation_mult
+        final_size = float(np.clip(final_size, MIN_SIZE_LOTS, MAX_SIZE_LOTS))
         final_size = round(final_size, 2)
 
         logger.debug(
-            f"[AdaptiveSizer] {symbol}: conf={confidence:.2f} ({conf_mult:.2f}×) "
-            f"vol_pctile={atr_pctile:.2f} ({vol_mult:.2f}×) "
-            f"base={base_size:.3f} → final={final_size:.2f} lots"
+            f"[AdaptiveSizer] {symbol}: conf={confidence:.2f}({conf_mult:.2f}×) "
+            f"vol={atr_pctile:.2f}({vol_mult:.2f}×) "
+            f"regime_q={regime_quality:.2f}({regime_quality_mult:.2f}×) "
+            f"dd={current_drawdown:.2f}({drawdown_mult:.2f}×) "
+            f"alloc={allocation_weight:.2f}({allocation_mult:.2f}×) "
+            f"corr={correlated_exposure:.2f}({correlation_mult:.2f}×) "
+            f"→ {final_size:.2f} lots"
         )
         return final_size
 
@@ -263,7 +303,7 @@ class AdaptiveSizer:
         return sum(self._open_risk.values()) / max(self.equity, 1.0)
 
     def sizing_breakdown(self, confidence: float, atr_pctile: float) -> dict:
-        """Return a breakdown of multipliers for transparency/logging."""
+        """Return a Phase-1 breakdown of multipliers for transparency/logging."""
         return {
             "confidence":        round(confidence, 4),
             "conf_multiplier":   confidence_multiplier(confidence),
@@ -273,4 +313,39 @@ class AdaptiveSizer:
                 confidence_multiplier(confidence) * vol_regime_multiplier(atr_pctile), 4),
             "base_risk_pct":     self.base_risk_pct,
             "max_risk_symbol":   self.max_risk_symbol,
+        }
+
+    def sizing_breakdown_v2(
+        self,
+        confidence: float,
+        atr_pctile: float,
+        regime_quality: float = 1.0,
+        current_drawdown: float = 0.0,
+        allocation_weight: float = 1.0,
+        correlated_exposure: float = 0.0,
+    ) -> dict:
+        """Return full Phase-2 breakdown of all multipliers for logging."""
+        conf_mult = confidence_multiplier(confidence)
+        vol_mult  = vol_regime_multiplier(atr_pctile)
+        regime_quality_mult = 0.5 + 0.5 * float(np.clip(regime_quality, 0.0, 1.0))
+        dd_mult = max(0.30, 1.0 - float(np.clip(current_drawdown, 0.0, 0.50)) * 3.0)
+        alloc_clamped = float(np.clip(allocation_weight, 0.0, 1.0))
+        alloc_mult = max(0.20, alloc_clamped) if alloc_clamped > 0 else 0.0
+        corr_mult = max(0.25, 1.0 - float(np.clip(correlated_exposure, 0.0, 1.0)) * 1.5)
+        combined = conf_mult * vol_mult * regime_quality_mult * dd_mult * alloc_mult * corr_mult
+        return {
+            "confidence":           round(confidence, 4),
+            "conf_multiplier":      round(conf_mult, 4),
+            "atr_pctile":           round(atr_pctile, 4),
+            "vol_multiplier":       round(vol_mult, 4),
+            "regime_quality":       round(regime_quality, 4),
+            "regime_quality_mult":  round(regime_quality_mult, 4),
+            "current_drawdown":     round(current_drawdown, 4),
+            "drawdown_mult":        round(dd_mult, 4),
+            "allocation_weight":    round(allocation_weight, 4),
+            "allocation_mult":      round(alloc_mult, 4),
+            "correlated_exposure":  round(correlated_exposure, 4),
+            "correlation_mult":     round(corr_mult, 4),
+            "combined_multiplier":  round(combined, 4),
+            "base_risk_pct":        self.base_risk_pct,
         }
